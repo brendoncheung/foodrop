@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "334205662898",
+    "firebase_url": "https://foodrop-a41e7.firebaseio.com",
+    "project_id": "foodrop-a41e7",
+    "storage_bucket": "foodrop-a41e7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:334205662898:android:8242dc272414165e73bbab",
+        "android_client_info": {
+          "package_name": "com.alephreach.foodrop"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "334205662898-ta969o62q1f9dd0ppeti9c777kaba85c.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCaUGthLeY8qWGvq6-RTnk34uN5QCwan90"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "334205662898-ta969o62q1f9dd0ppeti9c777kaba85c.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
