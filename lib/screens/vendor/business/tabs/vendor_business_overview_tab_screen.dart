@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:foodrop/screens/vendor/business/tabs/vendor_business_overview_today.dart';
-import 'package:foodrop/screens/vendor/business/tabs/vendor_business_overview_tomorrow.dart';
+import 'package:foodrop/screens/vendor/business/tabs/vendor_business_overview_yesterday.dart';
 
 class VendorBusinessTabScreen extends StatefulWidget {
   VendorBusinessTabScreen({Key key}) : super(key: key);
@@ -22,14 +22,8 @@ class _VendorBusinessTabScreenState extends State<VendorBusinessTabScreen> {
           title: Text("Business overview"),
           bottom: TabBar(
             tabs: [
-              Tab(
-                text: "Today",
-                icon: Icon(Icons.today),
-              ),
-              Tab(
-                text: "Tomorrow",
-                icon: Icon(Icons.next_week),
-              ),
+              Tab(text: "Today", icon: Icon(Icons.today)),
+              Tab(text: "Yesterday", icon: Icon(Icons.calendar_view_day)),
             ],
           ),
         ),

@@ -25,10 +25,6 @@ class _VendorBusinessOverviewTodayScreenState extends State<VendorBusinessOvervi
         BusinessGlanceTile(title: "Distinct customer visits", number: 56),
         BusinessGlanceTile(title: "Repeat customer visit", number: 56),
         BusinessGlanceTile(title: "New customers", number: 56),
-        Divider(height: 1),
-        BusinessGlanceTile(title: "Customer visits", number: 56),
-        BusinessGlanceTile(title: "Customer visits", number: 56),
-        BusinessGlanceTile(title: "Customer visits", number: 56),
       ],
     );
   }
