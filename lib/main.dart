@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:foodrop/core/services/authentication/authenication_service.dart';
+
 import 'package:firebase_core/firebase_core.dart';
-import 'package:foodrop/pages/wrapper.dart';
+import 'package:foodrop/screens/client/client_bottom_navigation.dart';
+import 'package:foodrop/screens/client/theme/client_theme_data.dart';
+import 'package:foodrop/screens/vendor/business/tabs/vendor_business_overview_today.dart';
+import 'package:foodrop/screens/vendor/order/vendor_order_screen.dart';
+import 'package:foodrop/screens/vendor/promotion/vendor_promotion_screen.dart';
+import 'package:foodrop/screens/vendor/rewards/vendor_rewards_screen.dart';
+import 'package:foodrop/screens/vendor/theme/vendor_theme_data.dart';
 
-import 'package:provider/provider.dart';
-
-import 'package:foodrop/core/models/user.dart';
-
-// TODO: find out how provider package can DI your services
+import 'package:foodrop/screens/vendor/vendor_bottom_navigation.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -15,21 +17,18 @@ void main() async {
   runApp(FoodropRoot());
 }
 
-class FoodropRoot extends StatelessWidget {
+class FoodropRoot extends StatefulWidget {
+  @override
+  _FoodropRootState createState() => _FoodropRootState();
+}
+
+class _FoodropRootState extends State<FoodropRoot> {
+  var isVendorMode = true;
+
   @override
   Widget build(BuildContext context) {
-    //debugPaintSizeEnabled = true;
-    return StreamProvider<User>.value(
-      catchError: (context, error) {
-        print("StreamBuilder $error");
-      },
-      value: AuthenticationService().currentUser,
-      child: MaterialApp(
-        home: Scaffold(
-          resizeToAvoidBottomInset: false,
-          body: Wrapper(),
-        ),
-      ),
-    );
+    return MaterialApp(
+        home: isVendorMode ? VendorBottomNavigation() : ClientBottomNavigation(),
+        theme: isVendorMode ? VendorThemeData.themeData : ClientThemeData.themeData);
   }
 }
