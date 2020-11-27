@@ -25,4 +25,8 @@ class VendorMenuItemRepository {
   int get itemCount {
     return _items.length;
   }
+
+  void set addItem(VendorMenuItem item) {
+    _items.add(item);
+  }
 }

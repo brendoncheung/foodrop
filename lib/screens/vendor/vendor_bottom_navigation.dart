@@ -4,7 +4,7 @@ import 'package:foodrop/screens/vendor/business/tabs/vendor_business_overview_ta
 import 'package:foodrop/screens/vendor/order/vendor_order_screen.dart';
 import 'package:foodrop/screens/vendor/promotion/vendor_promotion_screen.dart';
 import 'package:foodrop/screens/vendor/rewards/vendor_rewards_screen.dart';
-import 'package:foodrop/screens/vendor/settings/vendor_setting.dart';
+import 'package:foodrop/screens/vendor/settings/vendor_setting_screen.dart';
 
 class VendorBottomNavigation extends StatefulWidget {
   void Function(int) onTap;

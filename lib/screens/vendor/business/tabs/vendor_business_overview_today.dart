@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:foodrop/screens/vendor/widgets/business_glance_tile.dart';
+import 'package:foodrop/screens/vendor/business/widgets/business_glance_tile.dart';
 
 class VendorBusinessOverviewTodayScreen extends StatefulWidget {
   @override

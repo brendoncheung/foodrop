@@ -7,10 +7,19 @@ class UnknownRouteScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Container(
-        child: Text("Sorry, unknown route: $routeInfo"),
-      ),
-    );
+    return Scaffold(
+        appBar: AppBar(title: Text("Error!")),
+        body: Padding(
+          padding: EdgeInsets.all(16),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text("You are seeing this page because this route has not yet been registered/ implemented, called on onUnknownRoute in MaterialApp"),
+              SizedBox(height: 16),
+              Text("Route name: $routeInfo"),
+            ],
+          ),
+        ));
   }
 }
