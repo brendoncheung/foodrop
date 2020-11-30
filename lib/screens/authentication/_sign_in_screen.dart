@@ -24,7 +24,7 @@ class SignInScreen extends StatelessWidget {
               RaisedButton(
                 child: Text("Log in"),
                 onPressed: () {
-                  client_auth.logInUserWithEmailAndPassword("ming.cheung@outlook.com", "Bme19900112");
+                  client_auth.createUserWithEmailAndPassword("ming.cheung@outlook.com", "Bme19900112");
                 },
               ),
               RaisedButton(

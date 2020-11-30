@@ -16,7 +16,7 @@ class ClientAuthenticationService {
     _auth.signInWithEmailAndPassword(email: email, password: password);
   }
 
-  void logOutUser() {
+  Future<void> logOutUser() {
     _auth.signOut();
   }
 

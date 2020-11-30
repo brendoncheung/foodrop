@@ -27,6 +27,7 @@ class _ClientProfileScreenState extends State<ClientProfileScreen> {
         title: Text("Profile"),
       ),
       body: ListView(
+        // TODO probably dumb for having two consumers here, might be better to convert to local scope
         children: [
           Consumer<ClientAuthenticationService>(
             builder: (context, clientAuth, child) {
@@ -49,6 +50,7 @@ class _ClientProfileScreenState extends State<ClientProfileScreen> {
             builder: (context, clientAuth, child) {
               print("auth from list tile: hash = ${clientAuth.hashCode}");
               return ListTile(
+                // TODO: sign out actually returns in future, use a provider to async it
                 onTap: clientAuth.logOutUser,
                 title: Text(
                   "Log out",
