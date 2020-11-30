@@ -6,14 +6,14 @@ class VendorMenuItemListView extends StatelessWidget {
   final List<VendorMenuItem> _menus;
   final void Function(VendorMenuItem) _onTapHandler;
 
-  VendorMenuItemListView({List<VendorMenuItem> list, Function onTapHandler})
+  VendorMenuItemListView({List<VendorMenuItem> list, Function(VendorMenuItem) onTapHandler})
       : _menus = list,
         _onTapHandler = onTapHandler;
 
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      itemCount: _menus.length,
+      itemCount: _menus == null ? 0 : _menus.length,
       itemBuilder: (context, index) {
         var menu = _menus[index];
         return VendorMenuItemListTile(item: menu);

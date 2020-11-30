@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:foodrop/screens/vendor/settings/vendor_add_menu_items_screen.dart';
 import 'package:foodrop/screens/vendor/settings/vendor_edit_menu_items_screen.dart';
 import 'package:foodrop/screens/vendor/settings/widgets/vendor_setting_screen_list_tile.dart';
+import 'package:provider/provider.dart';
 
 class VendorSettingScreen extends StatelessWidget {
   void onTapHandler() {}

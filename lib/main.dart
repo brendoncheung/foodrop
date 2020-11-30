@@ -2,7 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import 'package:firebase_core/firebase_core.dart';
+import 'package:foodrop/core/authentication/client_authentication_service.dart';
 import 'package:foodrop/core/repositories/vendor/vendor_menu_item_repository.dart';
+import 'package:foodrop/screens/authentication/_sign_up_screen.dart';
+import 'package:foodrop/screens/authentication/wrapper.dart';
 import 'package:foodrop/screens/client/client_bottom_navigation.dart';
 import 'package:foodrop/screens/client/theme/client_theme_data.dart';
 import 'package:foodrop/screens/error/unknown_route_screen.dart';
@@ -41,14 +44,15 @@ class _FoodropRootState extends State<FoodropRoot> {
 
     return MultiProvider(
       providers: [
-        //repository dependencies
         Provider(create: (_) => VendorMenuItemRepository()),
+        Provider(create: (_) => ClientAuthenticationService()),
       ],
       child: MaterialApp(
-        home: isVendorMode ? VendorBottomNavigation() : ClientBottomNavigation(),
+        home: AuthenticationFlowScreenWrapper(),
         theme: isVendorMode ? VendorThemeData.themeData : ClientThemeData.themeData,
         routes: {
           VendorAddMenuItemsScreen.ROUTE_NAME: (_) => VendorAddMenuItemsScreen(),
+          SignUpScreen.ROUTE_NAME: (_) => SignUpScreen(),
         },
         onUnknownRoute: (settings) {
           return MaterialPageRoute(

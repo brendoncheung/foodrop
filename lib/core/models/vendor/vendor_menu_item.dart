@@ -10,4 +10,9 @@ class VendorMenuItem {
     @required this.description,
     @required this.price,
   });
+
+  VendorMenuItem.fromMap(Map<String, dynamic> map)
+      : name = map['name'],
+        description = map['description'],
+        price = map['price'];
 }
