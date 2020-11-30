@@ -30,6 +30,7 @@ class _ClientProfileScreenState extends State<ClientProfileScreen> {
         children: [
           Consumer<ClientAuthenticationService>(
             builder: (context, clientAuth, child) {
+              print("auth from switch tile: hash = ${clientAuth.hashCode}");
               return SwitchListTile(
                 value: isVendorMode,
                 onChanged: (value) => switchMode(value, clientAuth),
@@ -44,6 +45,22 @@ class _ClientProfileScreenState extends State<ClientProfileScreen> {
               );
             },
           ),
+          Consumer<ClientAuthenticationService>(
+            builder: (context, clientAuth, child) {
+              print("auth from list tile: hash = ${clientAuth.hashCode}");
+              return ListTile(
+                onTap: clientAuth.logOutUser,
+                title: Text(
+                  "Log out",
+                  style: Theme.of(context).textTheme.subtitle1,
+                ),
+                trailing: Icon(
+                  Icons.logout,
+                  color: Colors.red,
+                ),
+              );
+            },
+          )
         ],
       ),
     );
