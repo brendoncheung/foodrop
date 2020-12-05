@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:foodrop/core/authentication/client_authentication_service.dart';
+import 'package:foodrop/core/authentication/authentication_service.dart';
 import 'package:provider/provider.dart';
 
 class ClientProfileScreen extends StatefulWidget {
@@ -11,13 +11,18 @@ class ClientProfileScreen extends StatefulWidget {
 
 class _ClientProfileScreenState extends State<ClientProfileScreen> {
   bool isVendorMode = false;
-
-  void switchMode(bool value, ClientAuthenticationService service) {
+  bool isLoading = false;
+  void switchMode(bool value, AuthenticationService service) {
     setState(() {
       isVendorMode = value;
     });
-
     service.switchToVendorMode();
+  }
+
+  void setLoading(bool b) {
+    setState(() {
+      isLoading = b;
+    });
   }
 
   @override
@@ -26,45 +31,55 @@ class _ClientProfileScreenState extends State<ClientProfileScreen> {
       appBar: AppBar(
         title: Text("Profile"),
       ),
-      body: ListView(
-        // TODO probably dumb for having two consumers here, might be better to convert to local scope
-        children: [
-          Consumer<ClientAuthenticationService>(
-            builder: (context, clientAuth, child) {
-              print("auth from switch tile: hash = ${clientAuth.hashCode}");
-              return SwitchListTile(
-                value: isVendorMode,
-                onChanged: (value) => switchMode(value, clientAuth),
-                title: Text(
-                  "Vendor mode",
-                  style: Theme.of(context).textTheme.subtitle1,
+      body: isLoading
+          ? Center(
+              child: CircularProgressIndicator(),
+            )
+          : ListView(
+              // TODO probably dumb for having two consumers here, might be better to convert to local scope
+              children: [
+                Consumer<AuthenticationService>(
+                  builder: (context, clientAuth, child) {
+                    print("auth from switch tile: hash = ${clientAuth.hashCode}");
+                    return SwitchListTile(
+                      value: isVendorMode,
+                      onChanged: (value) => switchMode(value, clientAuth),
+                      title: Text(
+                        "Vendor mode",
+                        style: Theme.of(context).textTheme.subtitle1,
+                      ),
+                      subtitle: Text(
+                        "This will switch to vendor mode",
+                        style: Theme.of(context).textTheme.caption,
+                      ),
+                    );
+                  },
                 ),
-                subtitle: Text(
-                  "This will switch to vendor mode",
-                  style: Theme.of(context).textTheme.caption,
-                ),
-              );
-            },
-          ),
-          Consumer<ClientAuthenticationService>(
-            builder: (context, clientAuth, child) {
-              print("auth from list tile: hash = ${clientAuth.hashCode}");
-              return ListTile(
-                // TODO: sign out actually returns in future, use a provider to async it
-                onTap: clientAuth.logOutUser,
-                title: Text(
-                  "Log out",
-                  style: Theme.of(context).textTheme.subtitle1,
-                ),
-                trailing: Icon(
-                  Icons.logout,
-                  color: Colors.red,
-                ),
-              );
-            },
-          )
-        ],
-      ),
+                Consumer<AuthenticationService>(
+                  builder: (context, clientAuth, child) {
+                    print("auth from list tile: hash = ${clientAuth.hashCode}");
+                    return ListTile(
+                      // TODO: sign out actually returns in future, use a provider to async it
+                      onTap: () async {
+                        setLoading(true);
+                        await Future.delayed(Duration(seconds: 1));
+                        print("signing out");
+                        await clientAuth.logOutUser();
+                        setLoading(false);
+                      },
+                      title: Text(
+                        "Log out",
+                        style: Theme.of(context).textTheme.subtitle1,
+                      ),
+                      trailing: Icon(
+                        Icons.logout,
+                        color: Colors.red,
+                      ),
+                    );
+                  },
+                )
+              ],
+            ),
     );
   }
 }
