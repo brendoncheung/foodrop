@@ -1,5 +1,6 @@
 const functions = require('firebase-functions');
 const admin = require('firebase-admin');
+admin.initializeApp();
 
 //! You deploy your functions using this CLI command: firebase deploy --only functions
 
@@ -12,12 +13,16 @@ exports.randomNumber = functions.https.onRequest((request, response) => {
     response.send(number.toString);
 });
 
+// introduction to cloud functions: https://www.youtube.com/watch?v=d9GrysWH1Lc
+// difference between http endpoint and callable https://medium.com/@topeomot/why-you-should-be-using-firebase-http-callable-functions-a96c328f0600
+
+
 exports.addClientRole = functions.https.onCall((data, context) => {
-    console.print(context)
-    return admin.auth().getUserByEmail(data.email).then(user => {
-        return admin.auth().setCustomUserClaims(user.uid, {
-            client: true
-        })
+
+    
+    functions.logger.log("addClientRole incoming data", data);
+    return admin.auth().setCustomUserClaims(data.uid, {
+        client: true
     })
 })
 

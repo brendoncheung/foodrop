@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:foodrop/core/authentication/authentication_service.dart';
-import 'package:foodrop/core/authentication/cloud_function_testing.dart';
 import 'package:foodrop/core/repositories/vendor/vendor_menu_item_repository.dart';
 import 'package:foodrop/screens/authentication/_client_sign_up_screen.dart';
 import 'package:foodrop/screens/authentication/wrapper.dart';
@@ -30,11 +29,8 @@ class FoodropRoot extends StatefulWidget {
 class _FoodropRootState extends State<FoodropRoot> {
   var isVendorMode = true;
 
-  var a = TestingFirebaseFunctions();
-
   @override
   Widget build(BuildContext context) {
-    a.callable();
     print("context: ${context.hashCode}");
     return MultiProvider(
       providers: [

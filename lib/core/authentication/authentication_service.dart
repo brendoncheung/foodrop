@@ -11,10 +11,16 @@ class AuthenticationService {
   }
 
   Future<void> createClientWithEmailAndPassword(String email, String password) async {
-    var userCredential = _auth.createUserWithEmailAndPassword(email: email, password: password);
-    // TODO: return a future of Map<String : dynamic> for things like onData or onError to notify the register page
-    // _functions.httpsCallable('addClientRole');
-    // callable.call(<String, dynamic>{"uid": userCredential.user.uid});
+    try {
+      var userCredential = await _auth.createUserWithEmailAndPassword(email: email, password: password);
+      HttpsCallable callable = _functions.httpsCallable("addClientRole");
+      await callable.call({
+        "email": email,
+        "uid": userCredential.user.uid,
+      });
+    } catch (err) {
+      print("creating user error : ${err}");
+    }
   }
 
   void logInUserWithEmailAndPassword(String email, String password) async {
@@ -27,11 +33,18 @@ class AuthenticationService {
     _auth.signOut();
   }
 
+  Future<bool> isUserClient() async {
+    var result = await _auth.currentUser.getIdTokenResult();
+    return result.claims["client"];
+  }
+
   Stream<UserClient> onAuthChangeStream() {
     return _auth.authStateChanges().map(_firebaseUserToUserClient);
   }
 
   UserClient _firebaseUserToUserClient(User user) {
+    var value = user.getIdTokenResult(true);
+    value.then((value) => {print(value.claims)});
     return UserClient(uid: user.uid);
   }
 }
