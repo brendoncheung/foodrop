@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:foodrop/core/authentication/authentication_service.dart';
-import 'package:foodrop/screens/authentication/_client_sign_up_screen.dart';
 import 'package:provider/provider.dart';
+import '../../core/authentication/authentication_service.dart';
+import '../../screens/authentication/_client_sign_up_screen.dart';
 
 class SignInScreen extends StatefulWidget {
   @override
@@ -70,10 +70,13 @@ class _SignInScreenState extends State<SignInScreen> {
                     obscureText: true,
                     decoration: InputDecoration(hintText: "Password"),
                   ),
-                  RaisedButton(child: Text("Log in"), onPressed: _onLogInButtonPressedHandler),
+                  RaisedButton(
+                      child: Text("Log in"),
+                      onPressed: _onLogInButtonPressedHandler),
                   RaisedButton(
                     child: Text("Register"),
-                    onPressed: () => Navigator.pushNamed(context, ClientSignUpScreen.ROUTE_NAME),
+                    onPressed: () => Navigator.pushNamed(
+                        context, ClientSignUpScreen.ROUTE_NAME),
                   ),
                   Center(
                     child: Visibility(
