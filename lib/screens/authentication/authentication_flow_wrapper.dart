@@ -5,7 +5,7 @@ import 'package:foodrop/screens/authentication/_sign_in_screen.dart';
 import 'package:foodrop/screens/client/client_bottom_navigation.dart';
 import 'package:provider/provider.dart';
 
-class AuthenticationFlowScreenWrapper extends StatelessWidget {
+class AuthenticationFlowWrapper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var client_auth = Provider.of<AuthenticationService>(context);
@@ -19,8 +19,6 @@ class AuthenticationFlowScreenWrapper extends StatelessWidget {
       builder: (context, child) {
         return Consumer<UserClient>(
           builder: (_, userClient, child) {
-            print("wrapper");
-            userClient == null ? print("user is null") : print("user is not null");
             return userClient == null ? SignInScreen() : ClientBottomNavigation();
           },
         );

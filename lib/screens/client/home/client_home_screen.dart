@@ -16,20 +16,9 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
   Widget build(BuildContext context) {
     var client_auth = Provider.of<AuthenticationService>(context);
 
-    return Center(
-      child: Column(
-        children: [
-          RaisedButton(
-            child: Text("Check claims"),
-            onPressed: () async {
-              var isClient = await client_auth.isUserClient();
-              setState(() {
-                isUserClient = isClient;
-              });
-            },
-          ),
-          isUserClient ? Text("User is client") : CircularProgressIndicator()
-        ],
+    return Scaffold(
+      body: Center(
+        child: Text("home"),
       ),
     );
   }

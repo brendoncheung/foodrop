@@ -16,14 +16,14 @@ exports.randomNumber = functions.https.onRequest((request, response) => {
 // introduction to cloud functions: https://www.youtube.com/watch?v=d9GrysWH1Lc
 // difference between http endpoint and callable https://medium.com/@topeomot/why-you-should-be-using-firebase-http-callable-functions-a96c328f0600
 
-
-exports.addClientRole = functions.https.onCall((data, context) => {
-
-    
-    functions.logger.log("addClientRole incoming data", data);
-    return admin.auth().setCustomUserClaims(data.uid, {
-        client: true
-    })
+exports.addVendorRole = functions.https.onCall((data, context) => {
+    if(context.auth.token.vendor !== true) {
+        return admin.auth().setCustomUserClaims(data.uid, {
+            vendor: true
+        })
+    } else {
+        return;
+    }
 })
 
 // http callable

@@ -3,12 +3,23 @@ import 'package:flutter/material.dart';
 import 'package:foodrop/core/authentication/authentication_service.dart';
 import 'package:provider/provider.dart';
 
-class ClientSignUpScreen extends StatelessWidget {
+class SignUpScreen extends StatefulWidget {
   static const String ROUTE_NAME = '/sign-up-screen';
 
+  @override
+  _SignUpScreenState createState() => _SignUpScreenState();
+}
+
+class _SignUpScreenState extends State<SignUpScreen> {
   var emailController = TextEditingController();
+
   var passwordController = TextEditingController();
+
   var formKey = GlobalKey<FormState>();
+
+  var isLoading = false;
+
+  var signUpError = "";
 
   String emailValidator(String v) {
     //TODO: write validation code for emails
@@ -17,6 +28,16 @@ class ClientSignUpScreen extends StatelessWidget {
   String passwordValidator(String v) {
     //TODO: write password validator code
     v.length >= 6 ? null : "Password should be at least 6 characters";
+  }
+
+  void setLoading(bool b) {
+    setState(() {
+      isLoading = b;
+    });
+  }
+
+  void setErrorMessage(String msg) {
+    signUpError = msg;
   }
 
   @override
@@ -45,10 +66,26 @@ class ClientSignUpScreen extends StatelessWidget {
                 onPressed: () async {
                   var email = emailController.text.trim();
                   var password = passwordController.text.trim();
-                  await auth.createClientWithEmailAndPassword(email, password);
-                  //TODO need to validate if the creation was successful
-                  Navigator.of(context).pop();
+                  try {
+                    setLoading(true);
+                    await auth.createClientWithEmailAndPassword(email, password);
+                    Navigator.of(context).pop();
+                  } on FirebaseAuthException catch (err) {
+                    setErrorMessage(err.message);
+                  } finally {
+                    setLoading(false);
+                  }
                 },
+              ),
+              Center(
+                child: Visibility(
+                  child: CircularProgressIndicator(),
+                  visible: isLoading,
+                ),
+              ),
+              Text(
+                signUpError,
+                style: TextStyle(color: Colors.red),
               ),
             ],
           ),

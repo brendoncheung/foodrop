@@ -1,6 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:foodrop/core/authentication/authentication_service.dart';
-import 'package:foodrop/screens/authentication/_client_sign_up_screen.dart';
+import 'package:foodrop/screens/authentication/_sign_up_screen.dart';
 import 'package:provider/provider.dart';
 
 class SignInScreen extends StatefulWidget {
@@ -20,6 +21,7 @@ class _SignInScreenState extends State<SignInScreen> {
   var _key = GlobalKey<FormState>();
   var emailTextFieldController = TextEditingController();
   var passwordTextFieldController = TextEditingController();
+  var loginError = "";
 
   @override
   Widget build(BuildContext context) {
@@ -34,8 +36,14 @@ class _SignInScreenState extends State<SignInScreen> {
         var email = emailTextFieldController.text.trim();
         var password = passwordTextFieldController.text.trim();
         await Future.delayed(Duration(seconds: 1));
-        await client_auth.logInUserWithEmailAndPassword(email, password);
-        setLoading(false);
+
+        try {
+          await client_auth.logInUserWithEmailAndPassword(email, password);
+        } on FirebaseAuthException catch (err) {
+          loginError = err.message;
+        } finally {
+          setLoading(false);
+        }
       }
     }
 
@@ -49,7 +57,7 @@ class _SignInScreenState extends State<SignInScreen> {
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            colors: [Colors.purple, Colors.blue, Colors.green],
+            colors: [Colors.blue, Colors.white],
           ),
         ),
         padding: EdgeInsets.all(16),
@@ -73,7 +81,11 @@ class _SignInScreenState extends State<SignInScreen> {
                   RaisedButton(child: Text("Log in"), onPressed: _onLogInButtonPressedHandler),
                   RaisedButton(
                     child: Text("Register"),
-                    onPressed: () => Navigator.pushNamed(context, ClientSignUpScreen.ROUTE_NAME),
+                    onPressed: () => Navigator.pushNamed(context, SignUpScreen.ROUTE_NAME),
+                  ),
+                  Text(
+                    loginError,
+                    style: TextStyle(color: Colors.red),
                   ),
                   Center(
                     child: Visibility(
