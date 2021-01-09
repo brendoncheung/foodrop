@@ -1,41 +1,72 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:foodrop/core/models/client/client_user.dart';
 import 'package:cloud_functions/cloud_functions.dart';
+
+import '../models/client/client_user.dart';
 
 class AuthenticationService {
   final _auth = FirebaseAuth.instance;
   final _functions = FirebaseFunctions.instance;
 
-  void switchToVendorMode() {
-    // TODO check whether the user is in fact a vendor, if not, initiate vendor authentication screen flow
+  void switchToVendorMode() {}
+
+  Future<bool> createClientWithEmailAndPassword(
+      String email, String password) async {
+    var userCredential = await _auth.createUserWithEmailAndPassword(
+        email: email, password: password);
+    return userCredential.user != null;
   }
 
-  Future<void> createClientWithEmailAndPassword(String email, String password) async {
-    try {
-      var userCredential = await _auth.createUserWithEmailAndPassword(email: email, password: password);
-      HttpsCallable callable = _functions.httpsCallable("addClientRole");
-      await callable.call({
-        "email": email,
-        "uid": userCredential.user.uid,
-      });
-    } catch (err) {
-      print("creating user error : ${err}");
+  Future<UserClient> signInWithGoogle() async {
+    var googleSignIn = GoogleSignIn();
+    print("attempting to sign in with google");
+    var googleAccount = await googleSignIn.signIn();
+    if (googleAccount != null) {
+      var googleAuth = await googleAccount.authentication;
+      if (googleAuth.idToken != null) {
+        final credential = GoogleAuthProvider.credential(
+            idToken: googleAuth.idToken, accessToken: googleAuth.accessToken);
+        final userCredential = await _auth.signInWithCredential(credential);
+        return UserClient(
+          uid: userCredential.user.uid,
+          firstName: userCredential.user.displayName,
+        );
+      } else {
+        throw FirebaseAuthException(message: "accesstoken denied");
+      }
+    } else {
+      throw FirebaseAuthException(message: "sign in aborted by user");
     }
   }
 
-  void logInUserWithEmailAndPassword(String email, String password) async {
-    var user = await _auth.signInWithEmailAndPassword(email: email, password: password);
-    var token = await _auth.currentUser.getIdTokenResult();
-    print(token.claims);
+  Future<UserClient> signInAnonymous() async {
+    final userCredential = await _auth.signInAnonymously();
+    return UserClient(uid: userCredential.user.uid);
   }
 
-  Future<void> logOutUser() {
-    _auth.signOut();
+  Future<bool> logInUserWithEmailAndPassword(
+      String email, String password) async {
+    var userCredential = await _auth.signInWithEmailAndPassword(
+        email: email, password: password);
+    return userCredential.user != null;
+  }
+
+  Future<void> logOutUser() async {
+    final googleSignIn = GoogleSignIn();
+    await googleSignIn.signOut(); //sign out of google
+    _auth.signOut(); // sign out from firebase
   }
 
   Future<bool> isUserClient() async {
-    var result = await _auth.currentUser.getIdTokenResult();
+    var result = await _auth.currentUser.getIdTokenResult(true);
     return result.claims["client"];
+  }
+
+  Future<bool> isUserVendor() async {
+    var result = await _auth.currentUser.getIdTokenResult(true);
+    print("Claims: ${result.claims}");
+    return result.claims["vendor"];
   }
 
   Stream<UserClient> onAuthChangeStream() {
@@ -44,7 +75,7 @@ class AuthenticationService {
 
   UserClient _firebaseUserToUserClient(User user) {
     var value = user.getIdTokenResult(true);
-    value.then((value) => {print(value.claims)});
+    value.then((value) => {print("Claims: ${value.claims}")});
     return UserClient(uid: user.uid);
   }
 }

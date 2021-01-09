@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:foodrop/core/authentication/authentication_service.dart';
 import 'package:foodrop/core/repositories/vendor/vendor_menu_item_repository.dart';
-import 'package:foodrop/screens/authentication/_client_sign_up_screen.dart';
-import 'package:foodrop/screens/authentication/wrapper.dart';
+import 'package:foodrop/screens/authentication/_sign_up_screen.dart';
+import 'package:foodrop/screens/authentication/authentication_flow_wrapper.dart';
 import 'package:foodrop/screens/client/theme/client_theme_data.dart';
 import 'package:foodrop/screens/error/unknown_route_screen.dart';
 import 'package:foodrop/screens/vendor/settings/vendor_add_menu_items_screen.dart';
@@ -38,11 +38,11 @@ class _FoodropRootState extends State<FoodropRoot> {
         Provider(create: (_) => AuthenticationService()),
       ],
       child: MaterialApp(
-        home: AuthenticationFlowScreenWrapper(),
+        home: AuthenticationFlowWrapper(),
         theme: isVendorMode ? VendorThemeData.themeData : ClientThemeData.themeData,
         routes: {
           VendorAddMenuItemsScreen.ROUTE_NAME: (_) => VendorAddMenuItemsScreen(),
-          ClientSignUpScreen.ROUTE_NAME: (_) => ClientSignUpScreen(),
+          SignUpScreen.ROUTE_NAME: (_) => SignUpScreen(),
         },
         onUnknownRoute: (settings) {
           return MaterialPageRoute(

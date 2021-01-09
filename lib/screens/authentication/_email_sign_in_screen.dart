@@ -1,14 +1,15 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../core/authentication/authentication_service.dart';
-import '../../screens/authentication/_client_sign_up_screen.dart';
+import '../../screens/authentication/_sign_up_screen.dart';
 
-class SignInScreen extends StatefulWidget {
+class EmailSignInScreen extends StatefulWidget {
   @override
-  _SignInScreenState createState() => _SignInScreenState();
+  _EmailSignInScreenState createState() => _EmailSignInScreenState();
 }
 
-class _SignInScreenState extends State<SignInScreen> {
+class _EmailSignInScreenState extends State<EmailSignInScreen> {
   var loading = false;
 
   void setLoading(bool b) {
@@ -20,6 +21,7 @@ class _SignInScreenState extends State<SignInScreen> {
   var _key = GlobalKey<FormState>();
   var emailTextFieldController = TextEditingController();
   var passwordTextFieldController = TextEditingController();
+  var loginError = "";
 
   @override
   Widget build(BuildContext context) {
@@ -34,8 +36,15 @@ class _SignInScreenState extends State<SignInScreen> {
         var email = emailTextFieldController.text.trim();
         var password = passwordTextFieldController.text.trim();
         await Future.delayed(Duration(seconds: 1));
-        await client_auth.logInUserWithEmailAndPassword(email, password);
-        setLoading(false);
+
+        try {
+          await client_auth.logInUserWithEmailAndPassword(email, password);
+          Navigator.of(context).pop();
+        } on FirebaseAuthException catch (err) {
+          loginError = err.message;
+        } finally {
+          setLoading(false);
+        }
       }
     }
 
@@ -46,12 +55,12 @@ class _SignInScreenState extends State<SignInScreen> {
       ),
       body: Container(
         decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [Colors.purple, Colors.blue, Colors.green],
-          ),
-        ),
+//          gradient: LinearGradient(
+//            begin: Alignment.topCenter,
+//            end: Alignment.bottomCenter,
+//            colors: [Colors.blue, Colors.white],
+//          ),
+            ),
         padding: EdgeInsets.all(16),
         child: Form(
           key: _key,
@@ -75,8 +84,17 @@ class _SignInScreenState extends State<SignInScreen> {
                       onPressed: _onLogInButtonPressedHandler),
                   RaisedButton(
                     child: Text("Register"),
-                    onPressed: () => Navigator.pushNamed(
-                        context, ClientSignUpScreen.ROUTE_NAME),
+//<<<<<<< HEAD
+//                    onPressed: () => Navigator.pushNamed(
+//                        context, ClientSignUpScreen.ROUTE_NAME),
+//=======
+                    onPressed: () =>
+                        Navigator.pushNamed(context, SignUpScreen.ROUTE_NAME),
+//                  ),
+//                  Text(
+//                    loginError,
+//                    style: TextStyle(color: Colors.red),
+//>>>>>>> b2ccf30279c7a8d05a09559cca32522f0be53bde
                   ),
                   Center(
                     child: Visibility(
