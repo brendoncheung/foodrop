@@ -32,12 +32,12 @@ class _EmailSignInScreenState extends State<EmailSignInScreen> {
         // https://stackoverflow.com/questions/44991968/how-can-i-dismiss-the-on-screen-keyboard/56946311#56946311
         // hide the keyboard
         FocusScope.of(context).unfocus();
-        setLoading(true);
         var email = emailTextFieldController.text.trim();
         var password = passwordTextFieldController.text.trim();
         await Future.delayed(Duration(seconds: 1));
 
         try {
+          setLoading(true);
           await client_auth.logInUserWithEmailAndPassword(email, password);
           Navigator.of(context).pop();
         } on FirebaseAuthException catch (err) {
@@ -79,22 +79,10 @@ class _EmailSignInScreenState extends State<EmailSignInScreen> {
                     obscureText: true,
                     decoration: InputDecoration(hintText: "Password"),
                   ),
-                  RaisedButton(
-                      child: Text("Log in"),
-                      onPressed: _onLogInButtonPressedHandler),
+                  RaisedButton(child: Text("Log in"), onPressed: _onLogInButtonPressedHandler),
                   RaisedButton(
                     child: Text("Register"),
-//<<<<<<< HEAD
-//                    onPressed: () => Navigator.pushNamed(
-//                        context, ClientSignUpScreen.ROUTE_NAME),
-//=======
-                    onPressed: () =>
-                        Navigator.pushNamed(context, SignUpScreen.ROUTE_NAME),
-//                  ),
-//                  Text(
-//                    loginError,
-//                    style: TextStyle(color: Colors.red),
-//>>>>>>> b2ccf30279c7a8d05a09559cca32522f0be53bde
+                    onPressed: () => Navigator.pushNamed(context, SignUpScreen.ROUTE_NAME),
                   ),
                   Center(
                     child: Visibility(

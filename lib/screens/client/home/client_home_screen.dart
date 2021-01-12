@@ -19,11 +19,7 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Home"),
-        actions: [
-          IconButton(
-              icon: Icon(Icons.logout),
-              onPressed: () => client_auth.logOutUser())
-        ],
+        actions: [IconButton(icon: Icon(Icons.logout), onPressed: () => client_auth.logOutUser())],
       ),
       body: Center(
         child: Text("home"),

@@ -16,7 +16,7 @@ void main() async {
   // you have to call this because firebase calls native code to configure firebase:
   // https://stackoverflow.com/questions/63873338/what-does-widgetsflutterbinding-ensureinitialized-d
   WidgetsFlutterBinding.ensureInitialized();
-  FirebaseApp fba = await Firebase.initializeApp();
+  await Firebase.initializeApp();
 
   runApp(FoodropRoot());
 }

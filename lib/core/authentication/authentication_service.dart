@@ -11,10 +11,8 @@ class AuthenticationService {
 
   void switchToVendorMode() {}
 
-  Future<bool> createClientWithEmailAndPassword(
-      String email, String password) async {
-    var userCredential = await _auth.createUserWithEmailAndPassword(
-        email: email, password: password);
+  Future<bool> createClientWithEmailAndPassword(String email, String password) async {
+    var userCredential = await _auth.createUserWithEmailAndPassword(email: email, password: password);
     return userCredential.user != null;
   }
 
@@ -25,8 +23,7 @@ class AuthenticationService {
     if (googleAccount != null) {
       var googleAuth = await googleAccount.authentication;
       if (googleAuth.idToken != null) {
-        final credential = GoogleAuthProvider.credential(
-            idToken: googleAuth.idToken, accessToken: googleAuth.accessToken);
+        final credential = GoogleAuthProvider.credential(idToken: googleAuth.idToken, accessToken: googleAuth.accessToken);
         final userCredential = await _auth.signInWithCredential(credential);
         return UserClient(
           uid: userCredential.user.uid,
@@ -45,10 +42,8 @@ class AuthenticationService {
     return UserClient(uid: userCredential.user.uid);
   }
 
-  Future<bool> logInUserWithEmailAndPassword(
-      String email, String password) async {
-    var userCredential = await _auth.signInWithEmailAndPassword(
-        email: email, password: password);
+  Future<bool> logInUserWithEmailAndPassword(String email, String password) async {
+    var userCredential = await _auth.signInWithEmailAndPassword(email: email, password: password);
     return userCredential.user != null;
   }
 
