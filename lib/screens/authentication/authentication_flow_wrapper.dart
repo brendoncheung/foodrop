@@ -22,9 +22,7 @@ class AuthenticationFlowWrapper extends StatelessWidget {
       builder: (context, child) {
         return Consumer<UserClient>(
           builder: (_, userClient, child) {
-            return userClient == null
-                ? SignInScreenNew()
-                : VendorBottomNavigation();
+            return userClient == null ? SignInScreenNew() : ClientBottomNavigation();
           },
         );
       },

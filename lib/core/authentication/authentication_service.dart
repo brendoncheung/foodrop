@@ -65,12 +65,12 @@ class AuthenticationService {
   }
 
   Stream<UserClient> onAuthChangeStream() {
-    return _auth.authStateChanges().map(_firebaseUserToUserClient);
+    return _auth.authStateChanges().asyncMap(_firebaseUserToUserClient);
   }
 
-  UserClient _firebaseUserToUserClient(User user) {
-    var value = user.getIdTokenResult(true);
-    value.then((value) => {print("Claims: ${value.claims}")});
-    return UserClient(uid: user.uid);
+  Future<UserClient> _firebaseUserToUserClient(User user) async {
+    var value = await user.getIdTokenResult(true);
+    var isVendor = value.claims['vendor'] == null;
+    return UserClient(uid: user.uid, isVendor: isVendor);
   }
 }
