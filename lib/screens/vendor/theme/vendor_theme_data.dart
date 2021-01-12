@@ -8,8 +8,8 @@ import 'package:flutter/material.dart';
 class VendorThemeData {
   static ThemeData get themeData {
     return ThemeData(
-      primaryColor: Colors.purple,
-      accentColor: Colors.orange,
+      primaryColor: Colors.red,
+      accentColor: Colors.redAccent,
       textTheme: ThemeData.light().textTheme.copyWith(
             bodyText1: TextStyle(
               color: Color.fromRGBO(20, 51, 51, 1),

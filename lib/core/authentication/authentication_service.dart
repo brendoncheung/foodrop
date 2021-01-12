@@ -30,7 +30,7 @@ class AuthenticationService {
           firstName: userCredential.user.displayName,
         );
       } else {
-        throw FirebaseAuthException(message: "accesstoken denied");
+        throw FirebaseAuthException(message: "access token denied");
       }
     } else {
       throw FirebaseAuthException(message: "sign in aborted by user");
