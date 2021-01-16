@@ -9,16 +9,18 @@ import '../vendor/vendor_bottom_navigation.dart';
 import '_sign_in_screen_new.dart';
 
 class AuthenticationFlowWrapper extends StatelessWidget {
+  static String ROUTE_NAME = "/authentication-wrapper";
+
   @override
   Widget build(BuildContext context) {
-    var client_auth = Provider.of<AuthenticationService>(context);
+    var auth = Provider.of<AuthenticationService>(context);
 
     return StreamProvider<UserClient>.value(
       catchError: (context, error) {
         print(error.toString());
         return null;
       },
-      value: client_auth.onAuthChangeStream(),
+      value: auth.onAuthChangeStream(),
       builder: (context, child) {
         return Consumer<UserClient>(
           builder: (_, userClient, child) {
