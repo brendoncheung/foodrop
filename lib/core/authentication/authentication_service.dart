@@ -56,6 +56,7 @@ class AuthenticationService {
   Future<bool> isUserVendor() async {
     var result = await _auth.currentUser.getIdTokenResult(true);
     print("Claims: ${result.claims}");
+    print("result: ${result.claims["vendor"]}");
     return result.claims["vendor"];
   }
 

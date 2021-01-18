@@ -18,6 +18,39 @@ class _ClientProfileScreenState extends State<ClientProfileScreen> {
     });
   }
 
+  Future<void> _showMyDialog() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Not a vendor'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text('You must register to become a vendor'),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Register'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: Text('Return'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     var auth = Provider.of<AuthenticationService>(context);
@@ -32,7 +65,10 @@ class _ClientProfileScreenState extends State<ClientProfileScreen> {
             value: isVendorMode,
             onChanged: (value) async {
               switchMode(value);
-              await auth.isUserVendor();
+              var isVendor = await auth.isUserVendor();
+              if (!isVendor && isVendorMode) {
+                _showMyDialog();
+              }
             },
             title: Text(
               "Vendor mode",
