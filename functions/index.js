@@ -21,9 +21,10 @@ exports.addVendorRole = functions.https.onCall((data, context) => {
 // remember the onCreate trigger happens at the very end.
 
 exports.onCreateNewUser = functions.auth.user().onCreate((user) => {
-    return;
-    functions.logger.log("onCreateNewUser");
+    functions.logger.log("onCreateNewUser", user.uid);
     return admin.auth().setCustomUserClaims(user.uid, {
         vendor: false
     })
 })
+
+// TODO: create function to add user to firestore

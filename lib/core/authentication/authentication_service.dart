@@ -53,11 +53,6 @@ class AuthenticationService {
     _auth.signOut(); // sign out from firebase
   }
 
-  Future<bool> isUserClient() async {
-    var result = await _auth.currentUser.getIdTokenResult(true);
-    return result.claims["client"];
-  }
-
   Future<bool> isUserVendor() async {
     var result = await _auth.currentUser.getIdTokenResult(true);
     print("Claims: ${result.claims}");

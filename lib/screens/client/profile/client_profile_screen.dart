@@ -12,8 +12,7 @@ class ClientProfileScreen extends StatefulWidget {
 class _ClientProfileScreenState extends State<ClientProfileScreen> {
   bool isVendorMode = false;
 
-  void switchMode(bool value, AuthenticationService service) async {
-    bool isVendor = await service.isUserVendor();
+  void switchMode(bool value) {
     setState(() {
       isVendorMode = value;
     });
@@ -31,7 +30,10 @@ class _ClientProfileScreenState extends State<ClientProfileScreen> {
         children: [
           SwitchListTile(
             value: isVendorMode,
-            onChanged: (value) => switchMode(value, auth),
+            onChanged: (value) async {
+              switchMode(value);
+              await auth.isUserVendor();
+            },
             title: Text(
               "Vendor mode",
               style: Theme.of(context).textTheme.subtitle1,
