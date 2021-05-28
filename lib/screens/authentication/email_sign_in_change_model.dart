@@ -13,8 +13,9 @@ class EmailSignInChangeModel with EmailAndPasswordValidators, ChangeNotifier {
       this.formType = EmailSignInFormType.signIn,
       this.isLoading = false,
       this.submitted = false,
-      this.preferredName = "",
-      this.fullName = "",
+      this.userName = "",
+      this.firstName = "",
+      this.lastName = "",
       this.phoneNumber = ""});
   final AuthenticationService auth;
   String email;
@@ -22,8 +23,9 @@ class EmailSignInChangeModel with EmailAndPasswordValidators, ChangeNotifier {
   EmailSignInFormType formType;
   bool isLoading;
   bool submitted;
-  String fullName;
-  String preferredName;
+  String firstName;
+  String lastName;
+  String userName;
   String phoneNumber;
 
   Future<void> submit() async {
@@ -86,10 +88,10 @@ class EmailSignInChangeModel with EmailAndPasswordValidators, ChangeNotifier {
     );
   }
 
-  void updateFullName(String fullName) => updateWith(fullName: fullName);
+  void updateFullName(String fullName) => updateWith(firstName: fullName);
 
   void updatePreferredName(String preferredName) =>
-      updateWith(preferredName: preferredName);
+      updateWith(userName: preferredName);
 
   void updatePhoneNumber(String phoneNumber) =>
       updateWith(phoneNumber: phoneNumber);
@@ -104,16 +106,18 @@ class EmailSignInChangeModel with EmailAndPasswordValidators, ChangeNotifier {
       EmailSignInFormType formType,
       bool isLoading,
       bool submitted,
-      String fullName,
-      String preferredName,
+      String firstName,
+      String lastName,
+      String userName,
       String phoneNumber}) {
     this.email = email ?? this.email;
     this.password = password ?? this.password;
     this.formType = formType ?? this.formType;
     this.isLoading = isLoading ?? this.isLoading;
     this.submitted = submitted ?? this.submitted;
-    this.fullName = fullName ?? this.fullName;
-    this.preferredName = preferredName ?? this.preferredName;
+    this.firstName = firstName ?? this.firstName;
+    this.lastName = lastName ?? this.lastName;
+    this.userName = userName ?? this.userName;
     this.phoneNumber = phoneNumber ?? this.phoneNumber;
     notifyListeners();
   }

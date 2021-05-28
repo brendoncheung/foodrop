@@ -1,6 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:foodrop/core/models/client/client_user.dart';
 import 'package:provider/provider.dart';
 
 import '../../core/authentication/authentication_service.dart';
@@ -28,7 +27,7 @@ class _EmailSignInScreenState extends State<EmailSignInScreen> {
   @override
   Widget build(BuildContext context) {
     final client_auth = Provider.of<AuthenticationService>(context);
-    final currentUser = Provider.of<UserClient>(context);
+    // final currentUser = Provider.of<UserClient>(context);
 
     void _onLogInButtonPressedHandler() async {
       if (_key.currentState.validate()) {
@@ -39,11 +38,11 @@ class _EmailSignInScreenState extends State<EmailSignInScreen> {
 
         try {
           setLoading(true);
-          final _user =
-              await client_auth.logInUserWithEmailAndPassword(email, password);
-          String _uid = _user.uid;
+          await client_auth.logInUserWithEmailAndPassword(email, password);
+
           // currentUser.uid = _uid;
           //TODO: update UserClient.uid
+          // currentUser
           Navigator.of(context).pop();
         } on FirebaseAuthException catch (err) {
           loginError = err.message;

@@ -21,9 +21,11 @@ class AuthenticationFlowWrapper extends StatelessWidget {
         return Consumer<UserClient>(
           builder: (_, userClient, child) {
             if (userClient == null) {
-              auth.signInAnonymous().then((user) => print(
-                  "isAnonymous: ${user.isAnonymous}, UserId; ${user.uid}"));
+              // signInAnonymously if the user hasnt signed in yet.
+              auth.signInAnonymous();
             }
+            // print("rebuild authentication flow ");
+            // print("uid: ${userClient.uid}, email: ${userClient.emailAddress}");
 
             return ClientBottomNavigation();
           },

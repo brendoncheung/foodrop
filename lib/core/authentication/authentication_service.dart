@@ -1,7 +1,8 @@
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:foodrop/core/models/client/client_user.dart';
-import 'package:google_sign_in/google_sign_in.dart';
+
+// import 'package:google_sign_in/google_sign_in.dart';
 
 import '../models/client/client_user.dart';
 
@@ -18,34 +19,37 @@ class AuthenticationService {
     return userCredential.user != null;
   }
 
-  Future<User> logInUserWithEmailAndPassword(
+  Future<Stream<UserClient>> logInUserWithEmailAndPassword(
       String email, String password) async {
-    var userCredential = await _auth.signInWithEmailAndPassword(
-        email: email, password: password);
-    return userCredential.user;
+    await _auth.signInWithEmailAndPassword(email: email, password: password);
+    return _auth.authStateChanges().map((user) => UserClient(
+        uid: user.uid,
+        isAnonymous: false,
+        emailAddress: user.email,
+        photoUrl: user.photoURL));
   }
 
-  Future<UserClient> signInWithGoogle() async {
-    var googleSignIn = GoogleSignIn();
-    print("attempting to sign in with google");
-    var googleAccount = await googleSignIn.signIn();
-    if (googleAccount != null) {
-      var googleAuth = await googleAccount.authentication;
-      if (googleAuth.idToken != null) {
-        final credential = GoogleAuthProvider.credential(
-            idToken: googleAuth.idToken, accessToken: googleAuth.accessToken);
-        final userCredential = await _auth.signInWithCredential(credential);
-        return UserClient(
-          uid: userCredential.user.uid,
-          firstName: userCredential.user.displayName,
-        );
-      } else {
-        throw FirebaseAuthException(message: "access token denied");
-      }
-    } else {
-      throw FirebaseAuthException(message: "sign in aborted by user");
-    }
-  }
+  // Future<UserClient> signInWithGoogle() async {
+  //   var googleSignIn = GoogleSignIn();
+  //   print("attempting to sign in with google");
+  //   var googleAccount = await googleSignIn.signIn();
+  //   if (googleAccount != null) {
+  //     var googleAuth = await googleAccount.authentication;
+  //     if (googleAuth.idToken != null) {
+  //       final credential = GoogleAuthProvider.credential(
+  //           idToken: googleAuth.idToken, accessToken: googleAuth.accessToken);
+  //       final userCredential = await _auth.signInWithCredential(credential);
+  //       return UserClient(
+  //         uid: userCredential.user.uid,
+  //         firstName: userCredential.user.displayName,
+  //       );
+  //     } else {
+  //       throw FirebaseAuthException(message: "access token denied");
+  //     }
+  //   } else {
+  //     throw FirebaseAuthException(message: "sign in aborted by user");
+  //   }
+  // }
 
   Future<UserClient> signInAnonymous() async {
     final userCredential = await _auth.signInAnonymously();
@@ -53,8 +57,8 @@ class AuthenticationService {
   }
 
   Future<void> logOutUser() async {
-    final googleSignIn = GoogleSignIn();
-    await googleSignIn.signOut(); //sign out of google
+    // final googleSignIn = GoogleSignIn();
+    // await googleSignIn.signOut(); //sign out of google
     _auth.signOut(); // sign out from firebase
   }
 
@@ -72,4 +76,12 @@ class AuthenticationService {
   UserClient _firebaseUserToUserClient(User user) {
     return UserClient(uid: user.uid, isVendor: false);
   }
+
+  // Future<void> signOut() async {
+  //   // final googleSignIn = GoogleSignIn();
+  //   // await googleSignIn.signOut();
+  //   // final facebookLogin = FacebookLogin();
+  //   // await facebookLogin.logOut();
+  //   await _auth.signOut();
+  // }
 }

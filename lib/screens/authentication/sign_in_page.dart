@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
-import '../../core/authentication/authentication_service.dart';
 import '../../screens/authentication/widgets/sign_in_button.dart';
 import '../../screens/authentication/widgets/social_sign_in_button.dart';
-import '_email_sign_in_screen.dart';
+import 'email_sign_in_page.dart';
 
 //import 'package:firebase_auth/firebase_auth.dart';
 //import 'package:flutter/material.dart';
@@ -37,7 +35,7 @@ class SignInPage extends StatelessWidget {
 
   void _signInWithEmail(BuildContext context) {
     Navigator.of(context).push(MaterialPageRoute(
-        fullscreenDialog: true, builder: (context) => EmailSignInScreen()));
+        fullscreenDialog: true, builder: (context) => EmailSignInPage()));
   }
 
   @override
@@ -78,21 +76,21 @@ class SignInPage extends StatelessWidget {
             ),
           ),
           SizedBox(height: 48.0),
-          SocialSignInButton(
-              assetName: 'assets/images/google-logo.png',
-              text: 'Sign in with Google',
-              textColor: Colors.black87,
-              color: Colors.white,
-              onPressed: () async {
-                try {
-                  final auth = Provider.of<AuthenticationService>(context,
-                      listen: false);
-                  await auth.signInWithGoogle().then((value) => print("XXXXX"));
-                } catch (e) {
-                  print(e.toString());
-                }
-              }),
-          SizedBox(height: 8.0),
+          // SocialSignInButton(
+          //     assetName: 'assets/images/google-logo.png',
+          //     text: 'Sign in with Google',
+          //     textColor: Colors.black87,
+          //     color: Colors.white,
+          //     onPressed: () async {
+          //       try {
+          //         final auth = Provider.of<AuthenticationService>(context,
+          //             listen: false);
+          //         await auth.signInWithGoogle().then((value) => print("XXXXX"));
+          //       } catch (e) {
+          //         print(e.toString());
+          //       }
+          //     }),
+          // SizedBox(height: 8.0),
           SocialSignInButton(
             assetName: 'assets/images/facebook-logo.png',
             text: 'Sign in with Facebook',

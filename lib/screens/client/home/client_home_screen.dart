@@ -17,8 +17,7 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
   @override
   Widget build(BuildContext context) {
     var client_auth = Provider.of<AuthenticationService>(context);
-    // print("xxxxxxxxxxxxxxxx");
-    // print(client_auth.);
+
     return Scaffold(
       appBar: AppBar(
         title: Text("Home"),

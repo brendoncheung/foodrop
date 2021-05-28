@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:foodrop/core/models/client/client_user.dart';
 import 'package:foodrop/screens/client/favourite/client_favourite_screen.dart';
 import 'package:foodrop/screens/client/gift/client_gift_screen.dart';
 import 'package:foodrop/screens/client/home/client_home_screen.dart';
 import 'package:foodrop/screens/client/orders/client_order_screen.dart';
+import 'package:provider/provider.dart';
 
 class ClientBottomNavigation extends StatefulWidget {
   // void Function(int) onTap;
@@ -31,6 +33,12 @@ class _ClientBottomNavigationState extends State<ClientBottomNavigation> {
 
   @override
   Widget build(BuildContext context) {
+    final user = Provider.of<UserClient>(context);
+    print("build clientBottomNavigation ");
+    // if (user != null) {
+    //   print(user.uid);
+    // }
+
     return Scaffold(
       // appBar: AppBar(
       //   actions: [Text("Sign In")],
