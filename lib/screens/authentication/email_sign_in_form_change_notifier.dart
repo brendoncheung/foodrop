@@ -29,8 +29,17 @@ class EmailSignInFormChangeNotifier extends StatefulWidget {
 
 class _EmailSignInFormChangeNotifierState
     extends State<EmailSignInFormChangeNotifier> {
+  final TextEditingController _tecFirstName = TextEditingController();
+  final TextEditingController _tecLastName = TextEditingController();
+  final TextEditingController _tecUserName = TextEditingController();
+  final TextEditingController _tecMobileNumber = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+
+  final FocusNode _fnFirstName = FocusNode();
+  final FocusNode _fnLastName = FocusNode();
+  final FocusNode _fnUserName = FocusNode();
+  final FocusNode _fnMobileNumber = FocusNode();
   final FocusNode _emailFocusNode = FocusNode();
   final FocusNode _passwordFocusNode = FocusNode();
 
@@ -38,17 +47,37 @@ class _EmailSignInFormChangeNotifierState
 
   @override
   void dispose() {
+    _tecFirstName.dispose();
+    _tecLastName.dispose();
+    _tecUserName.dispose();
+    _tecMobileNumber.dispose();
     _emailController.dispose();
     _passwordController.dispose();
+    _fnFirstName.dispose();
+    _fnLastName.dispose();
+    _fnUserName.dispose();
+    _fnMobileNumber.dispose();
     _emailFocusNode.dispose();
     _passwordFocusNode.dispose();
+
     super.dispose();
   }
 
   Future<void> _submit() async {
     try {
       await widget.model.submit();
+      print("signed in attempted");
+      // final db = Provider.of<Database>(context, listen: false);
+      // print("xxxxxxxxxxxxxxxxxxxx");
+      // db.test();
+      print("xxxxxxxxxxxxxxxxxxxx");
+      // print(Provider.of<UserClient>(context).uid);
+      // final auth = Provider.of<AuthenticationService>(context);
+      // final currentuser = auth.getUser();
       Navigator.of(context).pop();
+      Navigator.of(context).pop();
+
+      // print("uid: ${currentuser.uid}, $currentuser");
     } on FirebaseAuthException catch (e) {
       showExceptionAlertDialog(
         context,
@@ -71,19 +100,75 @@ class _EmailSignInFormChangeNotifierState
     _passwordController.clear();
   }
 
-  TextField _buildPasswordTextField() {
+  TextField _buildFirstNameTextField() {
     return TextField(
-      controller: _passwordController,
-      focusNode: _passwordFocusNode,
+      controller: _tecFirstName,
+      focusNode: _fnFirstName,
       decoration: InputDecoration(
-        labelText: 'Password',
-        errorText: model.passwordErrorText,
+        labelText: 'Full Name',
+        hintText: 'John',
+        errorText: model.nonEmptyText,
         enabled: model.isLoading == false,
       ),
-      obscureText: true,
-      textInputAction: TextInputAction.done,
-      onChanged: model.updatePassword,
-      onEditingComplete: _submit,
+      autocorrect: false,
+      // keyboardType: TextInputType,
+      textInputAction: TextInputAction.next,
+      onChanged: model.updateFirstName,
+      onEditingComplete: () => _emailEditingComplete(),
+    );
+  }
+
+  TextField _buildLastNameTextField() {
+    return TextField(
+      controller: _tecLastName,
+      focusNode: _fnLastName,
+      decoration: InputDecoration(
+        labelText: 'Last Name',
+        hintText: 'Smith',
+        errorText: model.nonEmptyText,
+        enabled: model.isLoading == false,
+      ),
+      autocorrect: false,
+      // keyboardType: TextInputType,
+      textInputAction: TextInputAction.next,
+      onChanged: model.updateLastName,
+      onEditingComplete: () => _emailEditingComplete(),
+    );
+  }
+
+  TextField _buildUserNameTextField() {
+    return TextField(
+      controller: _tecUserName,
+      focusNode: _fnUserName,
+      decoration: InputDecoration(
+        labelText: 'Preferred Name',
+        hintText: 'Dark Vader',
+        errorText: model.nonEmptyText,
+        enabled: model.isLoading == false,
+      ),
+      autocorrect: false,
+      // keyboardType: TextInputType.emailAddress,
+      textInputAction: TextInputAction.next,
+      onChanged: model.updateUserName,
+      onEditingComplete: () => _emailEditingComplete(),
+    );
+  }
+
+  TextField _buildMobileNumberField() {
+    return TextField(
+      controller: _tecMobileNumber,
+      focusNode: _fnMobileNumber,
+      decoration: InputDecoration(
+        labelText: 'Phone Number',
+        hintText: '022-22222222',
+        errorText: model.nonEmptyText,
+        enabled: model.isLoading == false,
+      ),
+      autocorrect: false,
+      keyboardType: TextInputType.number,
+      textInputAction: TextInputAction.next,
+      onChanged: model.updateMobileNumber,
+      onEditingComplete: () => _emailEditingComplete(),
     );
   }
 
@@ -105,64 +190,19 @@ class _EmailSignInFormChangeNotifierState
     );
   }
 
-  TextEditingController _tecFullName = TextEditingController();
-  TextEditingController _tecPreferredName = TextEditingController();
-  TextEditingController _tecPhoneNumber = TextEditingController();
-  FocusNode _fnFullName = FocusNode();
-  FocusNode _fnPreferredName = FocusNode();
-  FocusNode _fnPhoneNumber = FocusNode();
-
-  TextField _buildFullNameTextField() {
+  TextField _buildPasswordTextField() {
     return TextField(
-      controller: _tecFullName,
-      focusNode: _fnFullName,
+      controller: _passwordController,
+      focusNode: _passwordFocusNode,
       decoration: InputDecoration(
-        labelText: 'Full Name',
-        hintText: 'John Smith',
-        errorText: model.nonEmptyText,
+        labelText: 'Password',
+        errorText: model.passwordErrorText,
         enabled: model.isLoading == false,
       ),
-      autocorrect: false,
-      // keyboardType: TextInputType,
-      textInputAction: TextInputAction.next,
-      onChanged: model.updateFullName,
-      onEditingComplete: () => _emailEditingComplete(),
-    );
-  }
-
-  TextField _buildPreferredNameTextField() {
-    return TextField(
-      controller: _tecPreferredName,
-      focusNode: _fnPreferredName,
-      decoration: InputDecoration(
-        labelText: 'Preferred Name',
-        hintText: 'Dark Vader',
-        errorText: model.nonEmptyText,
-        enabled: model.isLoading == false,
-      ),
-      autocorrect: false,
-      // keyboardType: TextInputType.emailAddress,
-      textInputAction: TextInputAction.next,
-      onChanged: model.updatePreferredName,
-      onEditingComplete: () => _emailEditingComplete(),
-    );
-  }
-
-  TextField _buildPhoneNumberField() {
-    return TextField(
-      controller: _tecPhoneNumber,
-      focusNode: _fnPhoneNumber,
-      decoration: InputDecoration(
-        labelText: 'Phone Number',
-        hintText: '022-22222222',
-        errorText: model.nonEmptyText,
-        enabled: model.isLoading == false,
-      ),
-      autocorrect: false,
-      keyboardType: TextInputType.number,
-      textInputAction: TextInputAction.next,
-      onChanged: model.updatePhoneNumber,
-      onEditingComplete: () => _emailEditingComplete(),
+      obscureText: true,
+      textInputAction: TextInputAction.done,
+      onChanged: model.updatePassword,
+      onEditingComplete: _submit,
     );
   }
 
@@ -181,11 +221,13 @@ class _EmailSignInFormChangeNotifierState
   List<Widget> _buildChildren() {
     return [
       TextButton(onPressed: () {}, child: Text("")),
-      _buildFullNameTextField(),
+      _buildFirstNameTextField(),
       SizedBox(height: 8.0),
-      _buildPreferredNameTextField(),
+      _buildLastNameTextField(),
       SizedBox(height: 8.0),
-      _buildPhoneNumberField(),
+      _buildUserNameTextField(),
+      SizedBox(height: 8.0),
+      _buildMobileNumberField(),
       SizedBox(height: 8.0),
       _buildEmailTextField(),
       SizedBox(height: 8.0),

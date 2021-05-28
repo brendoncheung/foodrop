@@ -35,9 +35,9 @@ class _ClientBottomNavigationState extends State<ClientBottomNavigation> {
   Widget build(BuildContext context) {
     final user = Provider.of<UserClient>(context);
     print("build clientBottomNavigation ");
-    // if (user != null) {
-    //   print(user.uid);
-    // }
+    if (user != null) {
+      print("user email address: ${user.emailAddress}");
+    }
 
     return Scaffold(
       // appBar: AppBar(

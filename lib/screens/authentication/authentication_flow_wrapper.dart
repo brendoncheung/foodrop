@@ -10,7 +10,7 @@ class AuthenticationFlowWrapper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var auth = Provider.of<AuthenticationService>(context, listen: false);
-
+    print("building AuthenticationFlowWrapper");
     return StreamProvider<UserClient>.value(
       catchError: (context, error) {
         print(error.toString());

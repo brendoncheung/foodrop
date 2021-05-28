@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:foodrop/core/authentication/authentication_service.dart';
+import 'package:foodrop/core/models/client/client_user.dart';
+import 'package:foodrop/core/services/database.dart';
 import 'package:provider/provider.dart';
 
 import '../../authentication/sign_in_page.dart';
@@ -16,19 +18,23 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var client_auth = Provider.of<AuthenticationService>(context);
-
+    // var client_auth = Provider.of<AuthenticationService>(context);
+    final userClient = Provider.of<UserClient>(context);
+    final auth = Provider.of<AuthenticationService>(context);
     return Scaffold(
       appBar: AppBar(
         title: Text("Home"),
         // actions: [IconButton(icon: Icon(Icons.logout), onPressed: () => client_auth.logOutUser())],
         actions: [
+          //TODO inject Datasbase class into signInpage
           CircleAvatar(
             child: IconButton(
               icon: Icon(Icons.person),
               onPressed: () => Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (context) => SignInPage(),
+                  builder: (context) => Provider<Database>(
+                      create: (_) => FirestoreDatabase(uid: userClient.uid),
+                      child: SignInPage()),
                   fullscreenDialog: true,
                 ),
               ),
@@ -38,8 +44,22 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
         ],
       ),
       body: Center(
-        child: Text("home"),
+        child: Column(children: [
+          TextButton(
+            child: Text("Pressed to Print User"),
+            onPressed: () => _printUser(context),
+          ),
+          TextButton(
+            child: Text("Pressed to logout"),
+            onPressed: () => auth.logOutUser(),
+          ),
+        ]),
       ),
     );
+  }
+
+  _printUser(BuildContext context) {
+    final user = Provider.of<UserClient>(context, listen: false);
+    print(user.uid);
   }
 }

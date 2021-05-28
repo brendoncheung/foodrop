@@ -3,5 +3,5 @@ class APIPath {
       'users/$uid/businesses/$businessId';
   static String businesses(String uid) => 'users/$uid/jobs';
 
-  static String user(String uid) => 'users/$uid';
+  static String user({String uid}) => 'users/$uid';
 }

@@ -1,24 +1,30 @@
 import 'package:flutter/foundation.dart';
 import 'package:foodrop/core/authentication/authentication_service.dart';
+import 'package:foodrop/core/services/api_path.dart';
+import 'package:foodrop/core/services/firestore_service.dart';
 
 import 'validators.dart';
 
 enum EmailSignInFormType { signIn, register }
 
 class EmailSignInChangeModel with EmailAndPasswordValidators, ChangeNotifier {
-  EmailSignInChangeModel(
-      {@required this.auth,
-      this.email = '',
-      this.password = '',
-      this.formType = EmailSignInFormType.signIn,
-      this.isLoading = false,
-      this.submitted = false,
-      this.userName = "",
-      this.firstName = "",
-      this.lastName = "",
-      this.phoneNumber = ""});
+  EmailSignInChangeModel({
+    @required this.auth,
+    this.uid = '',
+    this.email = '',
+    this.password = '',
+    this.formType = EmailSignInFormType.signIn,
+    this.isLoading = false,
+    this.submitted = false,
+    this.userName = "",
+    this.firstName = "",
+    this.lastName = "",
+    this.mobileNumber = "",
+    this.creationDate = DateTime.utc(1969, 7, 20, 20, 18, 04),
+  });
   final AuthenticationService auth;
   String email;
+  String uid;
   String password;
   EmailSignInFormType formType;
   bool isLoading;
@@ -26,7 +32,8 @@ class EmailSignInChangeModel with EmailAndPasswordValidators, ChangeNotifier {
   String firstName;
   String lastName;
   String userName;
-  String phoneNumber;
+  String mobileNumber;
+  DateTime creationDate;
 
   Future<void> submit() async {
     updateWith(submitted: true, isLoading: true);
@@ -35,6 +42,12 @@ class EmailSignInChangeModel with EmailAndPasswordValidators, ChangeNotifier {
         await auth.logInUserWithEmailAndPassword(email, password);
       } else {
         await auth.createClientWithEmailAndPassword(email, password);
+        print("This line is executed to save user info");
+        final currentuser = auth.getUser();
+        uid = currentuser.uid;
+        setUser();
+        print("upload succcessful");
+        print("uid: ${currentuser.uid}, $currentuser");
       }
     } catch (e) {
       updateWith(isLoading: false);
@@ -88,20 +101,20 @@ class EmailSignInChangeModel with EmailAndPasswordValidators, ChangeNotifier {
     );
   }
 
-  void updateFullName(String fullName) => updateWith(firstName: fullName);
+  void updateFirstName(String firstName) => updateWith(firstName: firstName);
+  void updateLastName(String lastName) => updateWith(lastName: lastName);
+  void updateUserName(String userName) => updateWith(userName: userName);
 
-  void updatePreferredName(String preferredName) =>
-      updateWith(userName: preferredName);
-
-  void updatePhoneNumber(String phoneNumber) =>
-      updateWith(phoneNumber: phoneNumber);
+  void updateMobileNumber(String mobileNumber) =>
+      updateWith(phoneNumber: mobileNumber);
 
   void updateEmail(String email) => updateWith(email: email);
 
   void updatePassword(String password) => updateWith(password: password);
 
   void updateWith(
-      {String email,
+      {String uid,
+      String email,
       String password,
       EmailSignInFormType formType,
       bool isLoading,
@@ -110,6 +123,7 @@ class EmailSignInChangeModel with EmailAndPasswordValidators, ChangeNotifier {
       String lastName,
       String userName,
       String phoneNumber}) {
+    this.uid = uid ?? this.uid;
     this.email = email ?? this.email;
     this.password = password ?? this.password;
     this.formType = formType ?? this.formType;
@@ -118,7 +132,25 @@ class EmailSignInChangeModel with EmailAndPasswordValidators, ChangeNotifier {
     this.firstName = firstName ?? this.firstName;
     this.lastName = lastName ?? this.lastName;
     this.userName = userName ?? this.userName;
-    this.phoneNumber = phoneNumber ?? this.phoneNumber;
+    this.mobileNumber = phoneNumber ?? this.mobileNumber;
     notifyListeners();
+  }
+
+  setUser() {
+    FirestoreService.instance.setData(
+      path: APIPath.user(uid: uid),
+      data: toMap(), // return a user object in Map format
+    );
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'uid': uid,
+      'email': email,
+      'firstName': firstName,
+      'lastName': lastName,
+      'userName': userName,
+      'mobileNumber': mobileNumber,
+    };
   }
 }

@@ -53,6 +53,14 @@ class UserClient {
         isEmailVerified = map['isEmailVerified'],
         isVendor = map['vendor'];
 
+  // Map<String, dynamic> toMap() {
+  //   var businessMap = business.toMap();
+  //   var uidMap = {'userID': userID};
+  //   businessMap.addAll(uidMap);
+  //   businessMap.addAll({'role': role, 'id': id, 'phoneNumber': phoneNumber});
+  //   return businessMap;
+  // }
+
   UserClient copyWith(
       {String uid,
       String firstName,

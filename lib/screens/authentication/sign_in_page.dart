@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:foodrop/core/services/database.dart';
+import 'package:provider/provider.dart';
 
 import '../../screens/authentication/widgets/sign_in_button.dart';
 import '../../screens/authentication/widgets/social_sign_in_button.dart';
@@ -34,6 +36,8 @@ class SignInPage extends StatelessWidget {
   }
 
   void _signInWithEmail(BuildContext context) {
+    // final userClient = Provider.of<UserClient>(context);
+
     Navigator.of(context).push(MaterialPageRoute(
         fullscreenDialog: true, builder: (context) => EmailSignInPage()));
   }
@@ -48,6 +52,10 @@ class SignInPage extends StatelessWidget {
 //        print(e.toString());
 //      }
 //    }
+    final db = Provider.of<Database>(context);
+    print("Build Sign In Page");
+    print(db.test());
+    print("xxxxxxxxxxxxxxx");
 
     return Scaffold(
       appBar: AppBar(

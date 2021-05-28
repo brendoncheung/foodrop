@@ -19,6 +19,10 @@ class AuthenticationService {
     return userCredential.user != null;
   }
 
+  User getUser() {
+    return _auth.currentUser;
+  }
+
   Future<Stream<UserClient>> logInUserWithEmailAndPassword(
       String email, String password) async {
     await _auth.signInWithEmailAndPassword(email: email, password: password);
