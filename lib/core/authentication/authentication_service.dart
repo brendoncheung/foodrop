@@ -1,7 +1,7 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-import 'package:foodrop/core/models/client/client_user.dart';
 import 'package:cloud_functions/cloud_functions.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:foodrop/core/models/client/client_user.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 import '../models/client/client_user.dart';
 
@@ -11,8 +11,17 @@ class AuthenticationService {
 
   void switchToVendorMode() {}
 
-  Future<bool> createClientWithEmailAndPassword(String email, String password) async {
-    var userCredential = await _auth.createUserWithEmailAndPassword(email: email, password: password);
+  Future<bool> createClientWithEmailAndPassword(
+      String email, String password) async {
+    var userCredential = await _auth.createUserWithEmailAndPassword(
+        email: email, password: password);
+    return userCredential.user != null;
+  }
+
+  Future<bool> logInUserWithEmailAndPassword(
+      String email, String password) async {
+    var userCredential = await _auth.signInWithEmailAndPassword(
+        email: email, password: password);
     return userCredential.user != null;
   }
 
@@ -23,7 +32,8 @@ class AuthenticationService {
     if (googleAccount != null) {
       var googleAuth = await googleAccount.authentication;
       if (googleAuth.idToken != null) {
-        final credential = GoogleAuthProvider.credential(idToken: googleAuth.idToken, accessToken: googleAuth.accessToken);
+        final credential = GoogleAuthProvider.credential(
+            idToken: googleAuth.idToken, accessToken: googleAuth.accessToken);
         final userCredential = await _auth.signInWithCredential(credential);
         return UserClient(
           uid: userCredential.user.uid,
@@ -39,12 +49,7 @@ class AuthenticationService {
 
   Future<UserClient> signInAnonymous() async {
     final userCredential = await _auth.signInAnonymously();
-    return UserClient(uid: userCredential.user.uid);
-  }
-
-  Future<bool> logInUserWithEmailAndPassword(String email, String password) async {
-    var userCredential = await _auth.signInWithEmailAndPassword(email: email, password: password);
-    return userCredential.user != null;
+    return UserClient(uid: userCredential.user.uid, isAnonymous: true);
   }
 
   Future<void> logOutUser() async {

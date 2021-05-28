@@ -53,7 +53,8 @@ class SignInScreenNew extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Time Tracker'),
+        title:
+            Align(alignment: Alignment.center, child: Text('Restaurant Diary')),
         elevation: 4.0,
       ),
       body: _buildContent(context),
@@ -108,22 +109,22 @@ class SignInScreenNew extends StatelessWidget {
               _signInWithEmail(context);
             },
           ),
-          SizedBox(height: 8.0),
-          Text(
-            'or',
-            style: TextStyle(fontSize: 14.0, color: Colors.black87),
-            textAlign: TextAlign.center,
-          ),
-          SizedBox(height: 8.0),
-          SignInButton(
-              text: 'Go anonymous',
-              textColor: Colors.black,
-              color: Colors.lime[300],
-              onPressed: () async {
-                final auth =
-                    Provider.of<AuthenticationService>(context, listen: false);
-                await auth.signInAnonymous().then((value) => print(value));
-              }),
+          // SizedBox(height: 8.0),
+          // Text(
+          //   'or',
+          //   style: TextStyle(fontSize: 14.0, color: Colors.black87),
+          //   textAlign: TextAlign.center,
+          // ),
+          // SizedBox(height: 8.0),
+          // SignInButton(
+          //     text: 'Go anonymous',
+          //     textColor: Colors.black,
+          //     color: Colors.lime[300],
+          //     onPressed: () async {
+          //       final auth =
+          //           Provider.of<AuthenticationService>(context, listen: false);
+          //       await auth.signInAnonymous().then((value) => print(value));
+          //     }),
         ],
       ),
     );

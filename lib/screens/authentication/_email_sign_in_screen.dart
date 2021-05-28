@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
 import '../../core/authentication/authentication_service.dart';
 import '../../screens/authentication/_sign_up_screen.dart';
 
@@ -34,7 +35,7 @@ class _EmailSignInScreenState extends State<EmailSignInScreen> {
         FocusScope.of(context).unfocus();
         var email = emailTextFieldController.text.trim();
         var password = passwordTextFieldController.text.trim();
-        await Future.delayed(Duration(seconds: 1));
+        //await Future.delayed(Duration(seconds: 1));
 
         try {
           setLoading(true);
@@ -79,10 +80,13 @@ class _EmailSignInScreenState extends State<EmailSignInScreen> {
                     obscureText: true,
                     decoration: InputDecoration(hintText: "Password"),
                   ),
-                  RaisedButton(child: Text("Log in"), onPressed: _onLogInButtonPressedHandler),
-                  RaisedButton(
+                  ElevatedButton(
+                      child: Text("Log in"),
+                      onPressed: _onLogInButtonPressedHandler),
+                  ElevatedButton(
                     child: Text("Register"),
-                    onPressed: () => Navigator.pushNamed(context, SignUpScreen.ROUTE_NAME),
+                    onPressed: () =>
+                        Navigator.pushNamed(context, SignUpScreen.ROUTE_NAME),
                   ),
                   Center(
                     child: Visibility(

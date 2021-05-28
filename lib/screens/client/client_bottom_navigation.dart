@@ -3,12 +3,10 @@ import 'package:foodrop/screens/client/favourite/client_favourite_screen.dart';
 import 'package:foodrop/screens/client/gift/client_gift_screen.dart';
 import 'package:foodrop/screens/client/home/client_home_screen.dart';
 import 'package:foodrop/screens/client/orders/client_order_screen.dart';
-import 'package:foodrop/screens/client/profile/client_profile_screen.dart';
 
 class ClientBottomNavigation extends StatefulWidget {
-  void Function(int) onTap;
-
-  ClientBottomNavigation({this.onTap});
+  // void Function(int) onTap;
+  // ClientBottomNavigation({this.onTap});
 
   @override
   _ClientBottomNavigationState createState() => _ClientBottomNavigationState();
@@ -22,7 +20,7 @@ class _ClientBottomNavigationState extends State<ClientBottomNavigation> {
     ClientFavouriteScreen(),
     ClientGiftScreen(),
     ClientOrderScreen(),
-    ClientProfileScreen(),
+    // ClientProfileScreen(),
   ];
 
   void onTapHandler(int index) {
@@ -34,6 +32,9 @@ class _ClientBottomNavigationState extends State<ClientBottomNavigation> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // appBar: AppBar(
+      //   actions: [Text("Sign In")],
+      // ),
       body: _clientBottomNavigationScreens[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
@@ -41,10 +42,12 @@ class _ClientBottomNavigationState extends State<ClientBottomNavigation> {
         currentIndex: _selectedIndex,
         items: [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
-          BottomNavigationBarItem(icon: Icon(Icons.favorite), label: "Favourite"),
-          BottomNavigationBarItem(icon: Icon(Icons.card_giftcard), label: "Gift"),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.favorite), label: "Favourite"),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.card_giftcard), label: "Gift"),
           BottomNavigationBarItem(icon: Icon(Icons.fastfood), label: "Orders"),
-          BottomNavigationBarItem(icon: Icon(Icons.account_circle), label: "Profile"),
+          // BottomNavigationBarItem(icon: Icon(Icons.account_circle), label: "Profile"),
         ],
       ),
     );
