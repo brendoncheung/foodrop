@@ -40,8 +40,8 @@ class _EmailSignInFormChangeNotifierState
   final FocusNode _fnLastName = FocusNode();
   final FocusNode _fnUserName = FocusNode();
   final FocusNode _fnMobileNumber = FocusNode();
-  final FocusNode _emailFocusNode = FocusNode();
-  final FocusNode _passwordFocusNode = FocusNode();
+  final FocusNode _fnEmail = FocusNode();
+  final FocusNode _fnPassword = FocusNode();
 
   EmailSignInChangeModel get model => widget.model;
 
@@ -57,8 +57,8 @@ class _EmailSignInFormChangeNotifierState
     _fnLastName.dispose();
     _fnUserName.dispose();
     _fnMobileNumber.dispose();
-    _emailFocusNode.dispose();
-    _passwordFocusNode.dispose();
+    _fnEmail.dispose();
+    _fnPassword.dispose();
 
     super.dispose();
   }
@@ -67,13 +67,6 @@ class _EmailSignInFormChangeNotifierState
     try {
       await widget.model.submit();
       print("signed in attempted");
-      // final db = Provider.of<Database>(context, listen: false);
-      // print("xxxxxxxxxxxxxxxxxxxx");
-      // db.test();
-      print("xxxxxxxxxxxxxxxxxxxx");
-      // print(Provider.of<UserClient>(context).uid);
-      // final auth = Provider.of<AuthenticationService>(context);
-      // final currentuser = auth.getUser();
       Navigator.of(context).pop();
       Navigator.of(context).pop();
 
@@ -87,12 +80,12 @@ class _EmailSignInFormChangeNotifierState
     }
   }
 
-  void _emailEditingComplete() {
-    final newFocus = model.emailValidator.isNotEmpty(model.email)
-        ? _passwordFocusNode
-        : _emailFocusNode;
-    FocusScope.of(context).requestFocus(newFocus);
-  }
+  // void _emailEditingComplete() {
+  //   final newFocus = model.emailValidator.isNotEmpty(model.email)
+  //       ? _passwordFocusNode
+  //       : _emailFocusNode;
+  //   FocusScope.of(context).requestFocus(newFocus);
+  // }
 
   void _toggleFormType() {
     model.toggleFormType();
@@ -105,7 +98,7 @@ class _EmailSignInFormChangeNotifierState
       controller: _tecFirstName,
       focusNode: _fnFirstName,
       decoration: InputDecoration(
-        labelText: 'Full Name',
+        labelText: 'First Name',
         hintText: 'John',
         errorText: model.nonEmptyText,
         enabled: model.isLoading == false,
@@ -114,7 +107,7 @@ class _EmailSignInFormChangeNotifierState
       // keyboardType: TextInputType,
       textInputAction: TextInputAction.next,
       onChanged: model.updateFirstName,
-      onEditingComplete: () => _emailEditingComplete(),
+      onEditingComplete: () => FocusScope.of(context).requestFocus(_fnLastName),
     );
   }
 
@@ -132,7 +125,7 @@ class _EmailSignInFormChangeNotifierState
       // keyboardType: TextInputType,
       textInputAction: TextInputAction.next,
       onChanged: model.updateLastName,
-      onEditingComplete: () => _emailEditingComplete(),
+      onEditingComplete: () => FocusScope.of(context).requestFocus(_fnUserName),
     );
   }
 
@@ -150,7 +143,8 @@ class _EmailSignInFormChangeNotifierState
       // keyboardType: TextInputType.emailAddress,
       textInputAction: TextInputAction.next,
       onChanged: model.updateUserName,
-      onEditingComplete: () => _emailEditingComplete(),
+      onEditingComplete: () =>
+          FocusScope.of(context).requestFocus(_fnMobileNumber),
     );
   }
 
@@ -168,14 +162,14 @@ class _EmailSignInFormChangeNotifierState
       keyboardType: TextInputType.number,
       textInputAction: TextInputAction.next,
       onChanged: model.updateMobileNumber,
-      onEditingComplete: () => _emailEditingComplete(),
+      onEditingComplete: () => FocusScope.of(context).requestFocus(_fnEmail),
     );
   }
 
   TextField _buildEmailTextField() {
     return TextField(
       controller: _emailController,
-      focusNode: _emailFocusNode,
+      focusNode: _fnEmail,
       decoration: InputDecoration(
         labelText: 'Email',
         hintText: 'test@test.com',
@@ -186,14 +180,14 @@ class _EmailSignInFormChangeNotifierState
       keyboardType: TextInputType.emailAddress,
       textInputAction: TextInputAction.next,
       onChanged: model.updateEmail,
-      onEditingComplete: () => _emailEditingComplete(),
+      onEditingComplete: () => FocusScope.of(context).requestFocus(_fnPassword),
     );
   }
 
   TextField _buildPasswordTextField() {
     return TextField(
       controller: _passwordController,
-      focusNode: _passwordFocusNode,
+      focusNode: _fnPassword,
       decoration: InputDecoration(
         labelText: 'Password',
         errorText: model.passwordErrorText,
@@ -220,15 +214,8 @@ class _EmailSignInFormChangeNotifierState
 
   List<Widget> _buildChildren() {
     return [
-      TextButton(onPressed: () {}, child: Text("")),
-      _buildFirstNameTextField(),
-      SizedBox(height: 8.0),
-      _buildLastNameTextField(),
-      SizedBox(height: 8.0),
-      _buildUserNameTextField(),
-      SizedBox(height: 8.0),
-      _buildMobileNumberField(),
-      SizedBox(height: 8.0),
+      if (model.formType == EmailSignInFormType.register)
+        ..._registeringFields(),
       _buildEmailTextField(),
       SizedBox(height: 8.0),
       _buildPasswordTextField(),
@@ -242,6 +229,22 @@ class _EmailSignInFormChangeNotifierState
         child: Text(model.secondaryButtonText),
         onPressed: !model.isLoading ? _toggleFormType : null,
       ),
+    ];
+  }
+
+  List<Widget> _registeringFields() {
+    return [
+      CircleAvatar(
+        child: Icon(Icons.person),
+      ),
+      _buildFirstNameTextField(),
+      SizedBox(height: 8.0),
+      _buildLastNameTextField(),
+      SizedBox(height: 8.0),
+      _buildUserNameTextField(),
+      SizedBox(height: 8.0),
+      _buildMobileNumberField(),
+      SizedBox(height: 8.0),
     ];
   }
 }

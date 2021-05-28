@@ -12,6 +12,8 @@ class AuthenticationService {
 
   void switchToVendorMode() {}
 
+  // final sampleData = {"email": "Paul", "isAnonymous": "nope"};
+
   Future<bool> createClientWithEmailAndPassword(
       String email, String password) async {
     var userCredential = await _auth.createUserWithEmailAndPassword(
@@ -20,6 +22,7 @@ class AuthenticationService {
   }
 
   User getUser() {
+    // _auth.currentUser.providerData.add(UserInfo(sampleData));
     return _auth.currentUser;
   }
 

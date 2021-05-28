@@ -24,6 +24,18 @@ class AuthenticationFlowWrapper extends StatelessWidget {
               // signInAnonymously if the user hasnt signed in yet.
               auth.signInAnonymous();
             }
+            final user = auth.getUser();
+
+            try {
+              if (user.email != null) {
+                print(
+                    "user signed in =========================> ${user.email}");
+                // print("back to AuthenticationFlowWrapper ${user.email}");
+              }
+            } catch (e) {
+              print("User is Anonymous xxxxxxxxxxxxxxxxxxxxxxx");
+            }
+
             // print("rebuild authentication flow ");
             // print("uid: ${userClient.uid}, email: ${userClient.emailAddress}");
 

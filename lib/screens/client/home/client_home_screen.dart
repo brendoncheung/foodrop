@@ -61,5 +61,9 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
   _printUser(BuildContext context) {
     final user = Provider.of<UserClient>(context, listen: false);
     print(user.uid);
+    print(user.emailAddress);
+    print(user.mobileNumber);
+    print(user.isAnonymous);
+    print(user.signedInViaEmail);
   }
 }

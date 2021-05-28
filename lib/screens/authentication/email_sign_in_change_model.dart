@@ -6,6 +6,7 @@ import 'package:foodrop/core/services/firestore_service.dart';
 import 'validators.dart';
 
 enum EmailSignInFormType { signIn, register }
+DateTime temp = DateTime.utc(1969, 7, 20, 20, 18, 04);
 
 class EmailSignInChangeModel with EmailAndPasswordValidators, ChangeNotifier {
   EmailSignInChangeModel({
@@ -20,8 +21,10 @@ class EmailSignInChangeModel with EmailAndPasswordValidators, ChangeNotifier {
     this.firstName = "",
     this.lastName = "",
     this.mobileNumber = "",
-    this.creationDate = DateTime.utc(1969, 7, 20, 20, 18, 04),
-  });
+    DateTime creationDate,
+    DateTime lastSignInDate,
+  })  : creationDate = creationDate ?? DateTime.now(),
+        lastSignInDate = lastSignInDate ?? DateTime.now();
   final AuthenticationService auth;
   String email;
   String uid;
@@ -34,20 +37,27 @@ class EmailSignInChangeModel with EmailAndPasswordValidators, ChangeNotifier {
   String userName;
   String mobileNumber;
   DateTime creationDate;
+  DateTime lastSignInDate;
 
   Future<void> submit() async {
     updateWith(submitted: true, isLoading: true);
     try {
       if (formType == EmailSignInFormType.signIn) {
         await auth.logInUserWithEmailAndPassword(email, password);
+        final currentuser = auth.getUser();
+        print(currentuser);
+        print("============");
+        print(currentuser.email);
+        print("============");
+        print(currentuser.providerData);
       } else {
         await auth.createClientWithEmailAndPassword(email, password);
-        print("This line is executed to save user info");
         final currentuser = auth.getUser();
         uid = currentuser.uid;
-        setUser();
-        print("upload succcessful");
+
         print("uid: ${currentuser.uid}, $currentuser");
+        setUser(); // write to firebase
+
       }
     } catch (e) {
       updateWith(isLoading: false);
@@ -106,7 +116,7 @@ class EmailSignInChangeModel with EmailAndPasswordValidators, ChangeNotifier {
   void updateUserName(String userName) => updateWith(userName: userName);
 
   void updateMobileNumber(String mobileNumber) =>
-      updateWith(phoneNumber: mobileNumber);
+      updateWith(mobileNumber: mobileNumber);
 
   void updateEmail(String email) => updateWith(email: email);
 
@@ -122,7 +132,7 @@ class EmailSignInChangeModel with EmailAndPasswordValidators, ChangeNotifier {
       String firstName,
       String lastName,
       String userName,
-      String phoneNumber}) {
+      String mobileNumber}) {
     this.uid = uid ?? this.uid;
     this.email = email ?? this.email;
     this.password = password ?? this.password;
@@ -132,7 +142,9 @@ class EmailSignInChangeModel with EmailAndPasswordValidators, ChangeNotifier {
     this.firstName = firstName ?? this.firstName;
     this.lastName = lastName ?? this.lastName;
     this.userName = userName ?? this.userName;
-    this.mobileNumber = phoneNumber ?? this.mobileNumber;
+    this.mobileNumber = mobileNumber ?? this.mobileNumber;
+    this.creationDate = creationDate ?? this.creationDate;
+    this.lastSignInDate = lastSignInDate ?? this.lastSignInDate;
     notifyListeners();
   }
 
@@ -151,6 +163,8 @@ class EmailSignInChangeModel with EmailAndPasswordValidators, ChangeNotifier {
       'lastName': lastName,
       'userName': userName,
       'mobileNumber': mobileNumber,
+      'creationDate': creationDate,
+      'lastSignInDate': lastSignInDate,
     };
   }
 }
