@@ -52,4 +52,40 @@ class UserClient {
         isMobileVerified = map['isMobileVerified'],
         isEmailVerified = map['isEmailVerified'],
         isVendor = map['vendor'];
+
+//   UserClient copyWith({
+//      String uid,
+//      String firstName,
+//      String lastName,
+//     // final String age;
+//      DateTime dob,
+//      bool isVendor,
+//      bool isAnonymous,
+//      bool signedInViaEmail,
+//      bool signedInviaGoogle;
+//      bool signedInViaFaceBook;
+//      String photoUrl;
+//      String username;
+//      String mobileNumber;
+//      String emailAddress;
+//      bool isMobileVerified; // verification ideally to be done every 6 month to ensure customer detail is up to date.
+//      bool isEmailVerified;
+// }){ return UserClient(
+//       this.photoUrl = photoUrl ?? this.photoUrl
+//       this.username=
+//       this.mobileNumber=
+//       this.emailAddress=
+//       this.isMobileVerified=
+//       this.isEmailVerified=
+//       this.uid=
+//       this.firstName=
+//       this.lastName=
+//       // this.age,
+//       this.dob=
+//       this.isVendor=
+//       this.isAnonymous=
+//       this.signedInViaEmail=
+//       this.signedInviaGoogle=
+//       this.signedInViaFaceBook
+//   ); }
 }

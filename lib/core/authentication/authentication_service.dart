@@ -18,11 +18,11 @@ class AuthenticationService {
     return userCredential.user != null;
   }
 
-  Future<bool> logInUserWithEmailAndPassword(
+  Future<User> logInUserWithEmailAndPassword(
       String email, String password) async {
     var userCredential = await _auth.signInWithEmailAndPassword(
         email: email, password: password);
-    return userCredential.user != null;
+    return userCredential.user;
   }
 
   Future<UserClient> signInWithGoogle() async {

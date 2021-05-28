@@ -13,7 +13,7 @@ import '_email_sign_in_screen.dart';
 //import 'package:time_tracker_flutter_course/app/widgets/sign_in_button.dart';
 //import 'package:time_tracker_flutter_course/app/widgets/social_sign_in_button.dart';
 
-class SignInScreenNew extends StatelessWidget {
+class SignInPage extends StatelessWidget {
 //  Auth auth;
 
 //  const SignInPage({Key key, this.auth}) : super(key: key);

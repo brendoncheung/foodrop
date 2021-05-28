@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:foodrop/core/authentication/authentication_service.dart';
-import 'package:foodrop/screens/client/profile/client_profile_screen.dart';
 import 'package:provider/provider.dart';
+
+import '../../authentication/sign_in_page.dart';
 
 class ClientHomeScreen extends StatefulWidget {
   const ClientHomeScreen({Key key}) : super(key: key);
@@ -28,8 +29,9 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
               icon: Icon(Icons.person),
               onPressed: () => Navigator.of(context).push(
                 MaterialPageRoute(
-                    builder: (context) => ClientProfileScreen(),
-                    fullscreenDialog: false),
+                  builder: (context) => SignInPage(),
+                  fullscreenDialog: true,
+                ),
               ),
             ),
             backgroundColor: Theme.of(context).primaryColor,

@@ -29,7 +29,6 @@ class _FoodropRootState extends State<FoodropRoot> {
 
   @override
   Widget build(BuildContext context) {
-    print("context: ${context.hashCode}");
     return MultiProvider(
       providers: [
         Provider(create: (_) => VendorMenuItemRepository()),

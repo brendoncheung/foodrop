@@ -82,6 +82,7 @@ class _ClientProfileScreenState extends State<ClientProfileScreen> {
           ListTile(
             onTap: () async {
               await auth.logOutUser();
+              Navigator.of(context).pop();
             },
             title: Text(
               "Log out",

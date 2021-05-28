@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:foodrop/core/models/client/client_user.dart';
 import 'package:provider/provider.dart';
 
 import '../../core/authentication/authentication_service.dart';
@@ -27,11 +28,10 @@ class _EmailSignInScreenState extends State<EmailSignInScreen> {
   @override
   Widget build(BuildContext context) {
     final client_auth = Provider.of<AuthenticationService>(context);
+    final currentUser = Provider.of<UserClient>(context);
 
     void _onLogInButtonPressedHandler() async {
       if (_key.currentState.validate()) {
-        // https://stackoverflow.com/questions/44991968/how-can-i-dismiss-the-on-screen-keyboard/56946311#56946311
-        // hide the keyboard
         FocusScope.of(context).unfocus();
         var email = emailTextFieldController.text.trim();
         var password = passwordTextFieldController.text.trim();
@@ -39,7 +39,11 @@ class _EmailSignInScreenState extends State<EmailSignInScreen> {
 
         try {
           setLoading(true);
-          await client_auth.logInUserWithEmailAndPassword(email, password);
+          final _user =
+              await client_auth.logInUserWithEmailAndPassword(email, password);
+          String _uid = _user.uid;
+          // currentUser.uid = _uid;
+          //TODO: update UserClient.uid
           Navigator.of(context).pop();
         } on FirebaseAuthException catch (err) {
           loginError = err.message;
