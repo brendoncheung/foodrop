@@ -1,3 +1,6 @@
+import 'package:foodrop/core/models/client/client_user.dart';
+
+import 'api_path.dart';
 import 'firestore_service.dart';
 
 abstract class Database {
@@ -7,7 +10,7 @@ abstract class Database {
   // Stream<Job> jobStream({@required String jobId});
   // Future<void> setBusiness(Relationship relationship);
   // Future<void> setUser(UserClient user);
-  String test();
+  // String test();
 }
 
 class FirestoreDatabase implements Database {
@@ -15,12 +18,12 @@ class FirestoreDatabase implements Database {
   FirestoreDatabase({this.uid});
 
   final _service = FirestoreService.instance;
-  String test() => uid;
-  // @override
-  // Future<void> setUser(UserClient user) => FirestoreService.instance.setData(
-  //       path: APIPath.user(uid: user.uid),
-  //       data: user.toMap(), // return a user object in Map format
-  //     );
+
+  @override
+  Stream<List<UserClient>> userClientStream() => _service.collectionStream(
+        path: APIPath.user(uid: uid),
+        builder: (data, documentId) => UserClient.fromMap(data),
+      );
 }
 //
 // String documentIdFromCurrentDate() => DateTime.now().toIso8601String();

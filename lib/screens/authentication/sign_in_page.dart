@@ -44,19 +44,6 @@ class SignInPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-//    final auth = Provider.of<AuthenticationService>(context, listen: false);
-//    Future<void> signInWithGoogle() async {
-//      try {
-//        await auth.signInWithGoogle().then((value) => print(value));
-//      } catch (e) {
-//        print(e.toString());
-//      }
-//    }
-    final db = Provider.of<Database>(context);
-    print("Build Sign In Page");
-    print(db.test());
-    print("xxxxxxxxxxxxxxx");
-
     return Scaffold(
       appBar: AppBar(
         title:
