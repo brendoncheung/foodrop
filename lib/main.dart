@@ -17,6 +17,8 @@ void main() async {
   await Firebase.initializeApp();
   //write something
   // from paul
+  //do something else
+
   runApp(FoodropRoot());
 }
 
