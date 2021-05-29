@@ -21,7 +21,7 @@ class AuthenticationFlowWrapper extends StatelessWidget {
         return Consumer<UserClient>(
           builder: (_, userClient, child) {
             if (userClient == null) {
-              // signInAnonymously if the user hasnt signed in yet.
+              // signInAnonymously if the user hasn't signed in yet.
               auth.signInAnonymous();
             }
             final user = auth.getUser();
