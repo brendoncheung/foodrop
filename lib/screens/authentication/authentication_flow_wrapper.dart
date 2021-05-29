@@ -30,7 +30,8 @@ class AuthenticationFlowWrapper extends StatelessWidget {
               if (user.email != null) {
                 print(
                     "user signed in =========================> ${user.email}");
-                // print("back to AuthenticationFlowWrapper ${user.email}");
+                //TODO: retrieve user info.
+                // Create UserClient instance
               }
             } catch (e) {
               print("User is Anonymous xxxxxxxxxxxxxxxxxxxxxxx");
