@@ -16,6 +16,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   //write something
+  //do something else
   runApp(FoodropRoot());
 }
 
