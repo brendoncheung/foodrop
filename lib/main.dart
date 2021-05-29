@@ -15,7 +15,7 @@ void main() async {
   // https://stackoverflow.com/questions/63873338/what-does-widgetsflutterbinding-ensureinitialized-d
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-
+  //write something
   runApp(FoodropRoot());
 }
 
