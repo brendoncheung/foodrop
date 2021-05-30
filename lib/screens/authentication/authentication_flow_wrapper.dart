@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:foodrop/core/authentication/authentication_service.dart';
 import 'package:foodrop/core/models/client/client_user.dart';
+import 'package:foodrop/core/services/database.dart';
 import 'package:foodrop/screens/client/client_bottom_navigation.dart';
 import 'package:provider/provider.dart';
 
@@ -44,7 +45,9 @@ class AuthenticationFlowWrapper extends StatelessWidget {
             // print("rebuild authentication flow ");
             // print("uid: ${userClient.uid}, email: ${userClient.emailAddress}");
 
-            return ClientBottomNavigation();
+            return Provider<Database>(
+                create: (_) => FirestoreDatabase(uid: user.uid),
+                child: ClientBottomNavigation());
           },
         );
       },

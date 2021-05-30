@@ -22,6 +22,7 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
     // var client_auth = Provider.of<AuthenticationService>(context);
     final userClient = Provider.of<UserClient>(context);
     final auth = Provider.of<AuthenticationService>(context);
+    final db = Provider.of<Database>(context);
 
     final user = auth.getUser();
     bool isUserSignedIn = false;
@@ -46,10 +47,10 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
               onPressed: () => Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (context) => Provider<Database>(
-                      create: (_) => FirestoreDatabase(uid: userClient.uid),
-                      child: isUserSignedIn
-                          ? ClientProfileScreen()
-                          : SignInPage()), // if user logged in then display a different page
+                    create: (_) => FirestoreDatabase(uid: userClient.uid),
+                    child:
+                        isUserSignedIn ? ClientProfileScreen() : SignInPage(),
+                  ), // if user logged in then display a different page
                   fullscreenDialog: true,
                 ),
               ),

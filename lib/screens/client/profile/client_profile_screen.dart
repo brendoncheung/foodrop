@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:foodrop/core/authentication/authentication_service.dart';
+import 'package:foodrop/core/models/client/client_user.dart';
+import 'package:foodrop/core/services/database.dart';
 import 'package:foodrop/screens/common_widgets/show_alert_dialog.dart';
 import 'package:provider/provider.dart';
 
 class ClientProfileScreen extends StatefulWidget {
-  const ClientProfileScreen({Key key}) : super(key: key);
+  const ClientProfileScreen({Key key, this.db}) : super(key: key);
+  final Database db;
 
   @override
   _ClientProfileScreenState createState() => _ClientProfileScreenState();
@@ -19,45 +22,46 @@ class _ClientProfileScreenState extends State<ClientProfileScreen> {
     });
   }
 
-  Future<void> _showMyDialog() async {
-    return showDialog<void>(
-      context: context,
-      barrierDismissible: false, // user must tap button!
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Not a vendor'),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: <Widget>[
-                Text('You must register to become a vendor'),
-              ],
-            ),
-          ),
-          actions: <Widget>[
-            TextButton(
-              child: Text('Register'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-            TextButton(
-              child: Text('Return'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
+  // Future<void> _showMyDialog() async {
+  //   return showDialog<void>(
+  //     context: context,
+  //     barrierDismissible: false, // user must tap button!
+  //     builder: (BuildContext context) {
+  //       return AlertDialog(
+  //         title: Text('Not a vendor'),
+  //         content: SingleChildScrollView(
+  //           child: ListBody(
+  //             children: <Widget>[
+  //               Text('You must register to become a vendor'),
+  //             ],
+  //           ),
+  //         ),
+  //         actions: <Widget>[
+  //           TextButton(
+  //             child: Text('Register'),
+  //             onPressed: () {
+  //               Navigator.of(context).pop();
+  //             },
+  //           ),
+  //           TextButton(
+  //             child: Text('Return'),
+  //             onPressed: () {
+  //               Navigator.of(context).pop();
+  //             },
+  //           ),
+  //         ],
+  //       );
+  //     },
+  //   );
+  // }
 
   // await auth.logOutUser();
   // Navigator.of(context).pop();
   @override
   Widget build(BuildContext context) {
     // var auth = Provider.of<AuthenticationService>(context);
-
+    final db = Provider.of<Database>(context);
+    final userFirebase = db.userClientStream();
     return Scaffold(
       appBar: AppBar(
         title: Text("Profile"),
@@ -68,8 +72,9 @@ class _ClientProfileScreenState extends State<ClientProfileScreen> {
           )
         ],
       ),
-      body: ListView(
-        children: [],
+      body: StreamBuilder<UserClient>(
+        stream: db.userClientStream(),
+        builder: (context, snapshot) => Text(snapshot.data.uid),
       ),
     );
   }

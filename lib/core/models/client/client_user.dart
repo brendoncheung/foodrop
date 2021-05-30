@@ -35,7 +35,7 @@ class UserClient {
       this.signedInviaGoogle,
       this.signedInViaFaceBook});
 
-  UserClient.fromMap(Map<String, dynamic> map)
+  UserClient.fromMap(Map<String, dynamic> map, String uid)
       : firstName = map['firstname'],
         uid = map['uid'],
         lastName = map['lastname'],

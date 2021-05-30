@@ -4,6 +4,7 @@ import 'api_path.dart';
 import 'firestore_service.dart';
 
 abstract class Database {
+  Stream<UserClient> userClientStream();
   // Future<void> setJob(Job job);
   // Future<void> deleteJob(Job job);
   // Stream<List<Job>> jobsStream();
@@ -20,9 +21,9 @@ class FirestoreDatabase implements Database {
   final _service = FirestoreService.instance;
 
   @override
-  Stream<List<UserClient>> userClientStream() => _service.collectionStream(
+  Stream<UserClient> userClientStream() => _service.documentStream(
         path: APIPath.user(uid: uid),
-        builder: (data, documentId) => UserClient.fromMap(data),
+        builder: (data, documentId) => UserClient.fromMap(data, uid),
       );
 }
 //
