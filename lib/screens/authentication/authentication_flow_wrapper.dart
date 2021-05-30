@@ -32,6 +32,10 @@ class AuthenticationFlowWrapper extends StatelessWidget {
                     "user signed in =========================> ${user.email}");
                 //TODO: retrieve user info.
                 // Create UserClient instance
+                // userClient.copyWith(
+                //   emailAddress: user.email,
+                //   signedInViaEmail: true,
+                // );
               }
             } catch (e) {
               print("User is Anonymous xxxxxxxxxxxxxxxxxxxxxxx");

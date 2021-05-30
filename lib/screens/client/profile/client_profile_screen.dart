@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:foodrop/core/authentication/authentication_service.dart';
+import 'package:foodrop/screens/common_widgets/show_alert_dialog.dart';
 import 'package:provider/provider.dart';
 
 class ClientProfileScreen extends StatefulWidget {
@@ -51,50 +52,47 @@ class _ClientProfileScreenState extends State<ClientProfileScreen> {
     );
   }
 
+  // await auth.logOutUser();
+  // Navigator.of(context).pop();
   @override
   Widget build(BuildContext context) {
-    var auth = Provider.of<AuthenticationService>(context);
+    // var auth = Provider.of<AuthenticationService>(context);
 
     return Scaffold(
       appBar: AppBar(
         title: Text("Profile"),
-      ),
-      body: ListView(
-        children: [
-          SwitchListTile(
-            value: isVendorMode,
-            onChanged: (value) async {
-              switchMode(value);
-              var isVendor = await auth.isUserVendor();
-              if (!isVendor && isVendorMode) {
-                _showMyDialog();
-              }
-            },
-            title: Text(
-              "Vendor mode",
-              style: Theme.of(context).textTheme.subtitle1,
-            ),
-            subtitle: Text(
-              "This will switch to vendor mode",
-              style: Theme.of(context).textTheme.caption,
-            ),
-          ),
-          ListTile(
-            onTap: () async {
-              await auth.logOutUser();
-              Navigator.of(context).pop();
-            },
-            title: Text(
-              "Log out",
-              style: Theme.of(context).textTheme.subtitle1,
-            ),
-            trailing: Icon(
-              Icons.logout,
-              color: Colors.red,
-            ),
+        actions: [
+          IconButton(
+            onPressed: _confirmSignOut,
+            icon: Icon(Icons.logout),
           )
         ],
       ),
+      body: ListView(
+        children: [],
+      ),
     );
+  }
+
+  Future<void> _confirmSignOut() async {
+    final didRequestSignOut = await showAlertDialog(
+      context,
+      title: 'Logout',
+      content: 'Are you sure that you want to logout?',
+      cancelActionText: 'Cancel',
+      defaultActionText: 'Logout',
+    );
+    if (didRequestSignOut == true) {
+      _signOut(context);
+    }
+  }
+
+  Future<void> _signOut(BuildContext context) async {
+    try {
+      final auth = Provider.of<AuthenticationService>(context, listen: false);
+      await auth.logOutUser();
+    } catch (e) {
+      print(e.toString());
+    }
   }
 }
