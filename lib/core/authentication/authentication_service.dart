@@ -8,11 +8,8 @@ import '../models/client/client_user.dart';
 
 class AuthenticationService {
   final _auth = FirebaseAuth.instance;
-  final _functions = FirebaseFunctions.instance;
 
   void switchToVendorMode() {}
-
-  // final sampleData = {"email": "Paul", "isAnonymous": "nope"};
 
   Future<bool> createClientWithEmailAndPassword(
       String email, String password) async {

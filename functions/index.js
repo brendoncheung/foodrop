@@ -1,30 +1,9 @@
-const functions = require('firebase-functions');
-const admin = require('firebase-admin');
-admin.initializeApp();
+const functions = require("firebase-functions");
 
-//! You deploy your functions using this CLI command: firebase deploy --only functions
-
-// introduction to cloud functions: https://www.youtube.com/watch?v=d9GrysWH1Lc
-// difference between http endpoint and callable https://medium.com/@topeomot/why-you-should-be-using-firebase-http-callable-functions-a96c328f0600
-
-exports.addVendorRole = functions.https.onCall((data, context) => {
-    if(context.auth.token.vendor !== true) {
-        return admin.auth().setCustomUserClaims(data.uid, {
-            vendor: true
-        })
-    } else {
-        return;
-    }
-})
-
-// for background triggers, you must return a value or a promise
-// remember the onCreate trigger happens at the very end.
-
-exports.onCreateNewUser = functions.auth.user().onCreate((user) => {
-    functions.logger.log("onCreateNewUser", user.uid);
-    return admin.auth().setCustomUserClaims(user.uid, {
-        vendor: false
-    })
-})
-
-// TODO: create function to add user to firestore
+// // Create and Deploy Your First Cloud Functions
+// // https://firebase.google.com/docs/functions/write-firebase-functions
+//
+// exports.helloWorld = functions.https.onRequest((request, response) => {
+//   functions.logger.info("Hello logs!", {structuredData: true});
+//   response.send("Hello from Firebase!");
+// });
