@@ -34,11 +34,6 @@ class _ClientBottomNavigationState extends State<ClientBottomNavigation> {
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<UserClient>(context);
-    print("build clientBottomNavigation ");
-    if (user != null) {
-      print("user email address: ${user.emailAddress}");
-    }
-
     return Scaffold(
       // appBar: AppBar(
       //   actions: [Text("Sign In")],
@@ -48,6 +43,7 @@ class _ClientBottomNavigationState extends State<ClientBottomNavigation> {
         type: BottomNavigationBarType.fixed,
         onTap: onTapHandler,
         currentIndex: _selectedIndex,
+        backgroundColor: Colors.grey[800],
         items: [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
           BottomNavigationBarItem(

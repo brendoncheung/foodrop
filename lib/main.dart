@@ -12,11 +12,14 @@ import 'package:foodrop/screens/client/theme/client_theme_data.dart';
 import 'package:foodrop/screens/error/unknown_route_screen.dart';
 import 'package:provider/provider.dart';
 
+import 'package:flutter/rendering.dart';
+
 void main() async {
   // you have to call this because firebase calls native code to configure firebase:
   // https://stackoverflow.com/questions/63873338/what-does-widgetsflutterbinding-ensureinitialized-d
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  debugPaintSizeEnabled = false;
 
   // connect authentication emulator
   // try {

@@ -17,8 +17,6 @@ class ClientHomeScreen extends StatefulWidget {
 }
 
 class _ClientHomeScreenState extends State<ClientHomeScreen> {
-  var isUserClient = false;
-
   @override
   Widget build(BuildContext context) {
     // var client_auth = Provider.of<AuthenticationService>(context);
@@ -27,50 +25,41 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
     final db = Provider.of<Database>(context);
 
     final user = auth.getUser();
-    bool isUserSignedIn = false;
 
-    try {
-      if (user.email != null) {
-        print("use is =======> ${user.email}");
-        isUserSignedIn = true;
-      }
-    } catch (e) {
-      print("user is not signed in xxxxxxxxxx");
-    }
+    final source = "https://source.unsplash.com/random/1600x900";
 
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
+      ),
       backgroundColor: Colors.black,
       appBar: AppBar(
+        elevation: 0,
+        backgroundColor: Colors.grey[800],
         title: Text("Home"),
         // actions: [IconButton(icon: Icon(Icons.logout), onPressed: () => client_auth.logOutUser())],
         actions: [
-          CircleAvatar(
-            child: IconButton(
-              icon: Icon(Icons.person),
-              onPressed: () => Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => Provider<Database>(
-                    create: (_) => FirestoreDatabase(uid: userClient.uid),
-                    child: isUserSignedIn
-                        ? ClientProfileScreen()
-                        : SignInPage(), // Database dependency injection
-                  ), // if user logged in then display a different page
-                  fullscreenDialog: true,
-                ),
-              ),
+          Padding(
+            padding: EdgeInsets.all(20.0),
+            child: GestureDetector(
+              child: Icon(Icons.search),
             ),
-            backgroundColor: Theme.of(context).primaryColor,
           )
         ],
       ),
-      body: Center(
-        child: StaggeredGridView.countBuilder(
-          crossAxisCount: 2,
-          itemCount: 10,
+      body: Container(
+        color: Colors.grey[800],
+        child: GridView.builder(
+          padding: EdgeInsets.all(7),
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            crossAxisSpacing: 7.0,
+            mainAxisSpacing: 7.0,
+          ),
           itemBuilder: (context, index) {
-            return HomeTileWidget(null, "Hello", "descroption");
+            return HomeTileWidget(mainSrc: source);
           },
-          staggeredTileBuilder: (int index) => StaggeredTile.fit(2),
+          itemCount: 10,
         ),
       ),
     );
