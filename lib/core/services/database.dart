@@ -25,6 +25,12 @@ class FirestoreDatabase implements Database {
         path: APIPath.user(uid: uid),
         builder: (data, documentId) => UserClient.fromMap(data, uid),
       );
+
+  // @override
+  // Future<void> setUser(UserClient user) => _service.setData(
+  //       path: APIPath.job(uid, job.id),
+  //       data: job.toMap(),
+  //     );
 }
 //
 // String documentIdFromCurrentDate() => DateTime.now().toIso8601String();

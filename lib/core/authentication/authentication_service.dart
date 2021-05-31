@@ -1,4 +1,3 @@
-import 'package:cloud_functions/cloud_functions.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:foodrop/core/models/client/client_user.dart';
 
@@ -74,7 +73,9 @@ class AuthenticationService {
   }
 
   Stream<UserClient> onAuthChangeStream() {
-    return _auth.authStateChanges().map(_firebaseUserToUserClient);
+    return _auth
+        .authStateChanges()
+        .map((user) => _firebaseUserToUserClient(user));
   }
 
   UserClient _firebaseUserToUserClient(User user) {

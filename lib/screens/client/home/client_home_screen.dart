@@ -26,6 +26,7 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
 
     final user = auth.getUser();
     bool isUserSignedIn = false;
+
     try {
       if (user.email != null) {
         print("use is =======> ${user.email}");
@@ -48,8 +49,9 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
                 MaterialPageRoute(
                   builder: (context) => Provider<Database>(
                     create: (_) => FirestoreDatabase(uid: userClient.uid),
-                    child:
-                        isUserSignedIn ? ClientProfileScreen() : SignInPage(),
+                    child: isUserSignedIn
+                        ? ClientProfileScreen()
+                        : SignInPage(), // Database dependency injection
                   ), // if user logged in then display a different page
                   fullscreenDialog: true,
                 ),

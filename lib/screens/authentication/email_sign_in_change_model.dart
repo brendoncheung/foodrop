@@ -44,12 +44,6 @@ class EmailSignInChangeModel with EmailAndPasswordValidators, ChangeNotifier {
     try {
       if (formType == EmailSignInFormType.signIn) {
         await auth.logInUserWithEmailAndPassword(email, password);
-        final currentuser = auth.getUser();
-        print(currentuser);
-        print("============");
-        print(currentuser.email);
-        print("============");
-        print(currentuser.providerData);
       } else {
         await auth.createClientWithEmailAndPassword(email, password);
         final currentuser = auth.getUser();
