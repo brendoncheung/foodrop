@@ -14,13 +14,13 @@ class EmailSignInFormUserProfileChangeNotifier extends StatefulWidget {
   final UserProfile model;
 
   static Widget create(BuildContext context) {
+    print("****** recreate Sign In Form ******");
     final auth = Provider.of<AuthenticationService>(context, listen: false);
     return ChangeNotifierProvider<UserProfile>(
       create: (_) => UserProfile(auth: auth),
       child: Consumer<UserProfile>(
-        builder: (_, model, __) => Provider<Database>(
-            create: (_) => FirestoreDatabase(uid: model.uid),
-            child: EmailSignInFormUserProfileChangeNotifier(model: model)),
+        builder: (_, model, __) =>
+            EmailSignInFormUserProfileChangeNotifier(model: model),
       ),
     );
   }
@@ -68,18 +68,15 @@ class _EmailSignInFormUserProfileChangeNotifier
 
   Future<void> _submit() async {
     try {
-      await widget.model.submit();
-      final auth = Provider.of<AuthenticationService>(context);
-      final db = Provider.of<Database>(context);
-      final _user = auth.getUser();
-      final _userProfile = Provider.of<UserProfile>(context);
-      _userProfile.uid = _user.uid;
-      db.setUser(_userProfile);
+      // user logged in, trigger onAuthStateChanges
+      await model.submit();
+      if (model.formType == EmailSignInFormType.register) {
+        final db = FirestoreDatabase(uid: model.uid);
+        await db.setUser(model);
+      }
       print("signed in attempted");
       Navigator.of(context).pop();
       Navigator.of(context).pop();
-
-      // print("uid: ${currentuser.uid}, $currentuser");
     } on FirebaseAuthException catch (e) {
       showExceptionAlertDialog(
         context,
@@ -89,13 +86,6 @@ class _EmailSignInFormUserProfileChangeNotifier
     }
   }
 
-  // void _emailEditingComplete() {
-  //   final newFocus = model.emailValidator.isNotEmpty(model.email)
-  //       ? _passwordFocusNode
-  //       : _emailFocusNode;
-  //   FocusScope.of(context).requestFocus(newFocus);
-  // }
-
   void _toggleFormType() {
     model.toggleFormType();
     _emailController.clear();
@@ -103,6 +93,7 @@ class _EmailSignInFormUserProfileChangeNotifier
   }
 
   TextField _buildFirstNameTextField() {
+    print(_tecFirstName.text);
     return TextField(
       controller: _tecFirstName,
       focusNode: _fnFirstName,
@@ -176,6 +167,7 @@ class _EmailSignInFormUserProfileChangeNotifier
   }
 
   TextField _buildEmailTextField() {
+    print(_emailController.text);
     return TextField(
       controller: _emailController,
       focusNode: _fnEmail,
@@ -188,7 +180,7 @@ class _EmailSignInFormUserProfileChangeNotifier
       autocorrect: false,
       keyboardType: TextInputType.emailAddress,
       textInputAction: TextInputAction.next,
-      onChanged: model.updateEmail,
+      onChanged: (email) => model.updateWith(emailAddress: email),
       onEditingComplete: () => FocusScope.of(context).requestFocus(_fnPassword),
     );
   }
@@ -204,7 +196,7 @@ class _EmailSignInFormUserProfileChangeNotifier
       ),
       obscureText: true,
       textInputAction: TextInputAction.done,
-      onChanged: model.updatePassword,
+      onChanged: (pw) => model.updateWith(emailPassword: pw),
       onEditingComplete: _submit,
     );
   }

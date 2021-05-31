@@ -7,27 +7,30 @@ enum EmailSignInFormType { signIn, register }
 class UserProfile with ChangeNotifier, EmailAndPasswordValidators {
   UserProfile({
     @required this.auth,
-    this.uid,
-    this.firstName,
-    this.lastName,
-    this.dob,
-    this.isAnonymous,
-    this.signedInViaEmail,
-    this.signedInviaGoogle,
-    this.signedInViaFaceBook,
-    this.photoUrl,
-    this.username,
-    this.mobileNumber,
-    this.emailAddress,
-    this.emailPassword,
-    this.isMobileVerified,
-    this.isEmailVerified,
-    this.formType,
-    this.isLoading,
-    this.submitted,
-    this.creationDate,
-    this.lastSignInDate,
-  });
+    this.uid = "",
+    this.firstName = "",
+    this.lastName = "",
+    DateTime dob,
+    this.isAnonymous = true,
+    this.signedInViaEmail = false,
+    this.signedInviaGoogle = false,
+    this.signedInViaFaceBook = false,
+    this.photoUrl = "",
+    this.username = "",
+    this.mobileNumber = "",
+    this.emailAddress = "",
+    this.emailPassword = "",
+    this.isMobileVerified = false,
+    this.isEmailVerified = false,
+    this.formType = EmailSignInFormType.signIn,
+    this.isLoading = false,
+    this.submitted = false,
+    DateTime creationDate,
+    DateTime lastSignInDate,
+  })  : dob = dob ?? DateTime.parse("1970-01-01"),
+        creationDate = dob ?? DateTime.now(),
+        lastSignInDate = dob ?? DateTime.now();
+
   AuthenticationService auth;
   String uid;
   String firstName;
@@ -72,16 +75,15 @@ class UserProfile with ChangeNotifier, EmailAndPasswordValidators {
     updateWith(submitted: true, isLoading: true);
     try {
       if (formType == EmailSignInFormType.signIn) {
+        print("attempt to sign user in");
         await auth.logInUserWithEmailAndPassword(emailAddress, emailPassword);
+        print(auth.getUser());
+        updateWith(uid: auth.getUser().uid);
       } else {
+        print("attempt to create user login");
         await auth.createClientWithEmailAndPassword(
             emailAddress, emailPassword);
-        // final currentuser = auth.getUser();
-        // this.uid = currentuser.uid;
-        //
-        // print("uid: ${currentuser.uid}, $currentuser");
-        // db.setUser(); // write to firebase
-
+        updateWith(uid: auth.getUser().uid);
       }
     } catch (e) {
       updateWith(isLoading: false);
@@ -143,17 +145,10 @@ class UserProfile with ChangeNotifier, EmailAndPasswordValidators {
   void updateMobileNumber(String mobileNumber) =>
       updateWith(mobileNumber: mobileNumber);
 
-  void updateEmail(String email) => updateWith(emailAddress: emailAddress);
-
-  void updatePassword(String password) =>
-      updateWith(emailPassword: emailPassword);
-
-  // setUser() {
-  //   FirestoreService.instance.setData(
-  //     path: APIPath.user(uid: uid),
-  //     data: toMap(), // return a user object in Map format
-  //   );
-  // }
+  // void updateEmail(String email) => updateWith(emailAddress: emailAddress);
+  //
+  // void updatePassword(String password) =>
+  //     updateWith(emailPassword: emailPassword);
 
   Map<String, dynamic> toMap() {
     return {
@@ -168,7 +163,7 @@ class UserProfile with ChangeNotifier, EmailAndPasswordValidators {
     };
   }
 
-  UserProfile updateWith(
+  void updateWith(
       {String uid,
       String firstName,
       String lastName,
@@ -191,28 +186,27 @@ class UserProfile with ChangeNotifier, EmailAndPasswordValidators {
       bool submitted,
       DateTime creationDate,
       DateTime lastSignInDate}) {
-    return UserProfile(
-      uid: uid ?? this.uid,
-      firstName: firstName ?? this.firstName,
-      lastName: lastName ?? this.lastName,
-      dob: dob ?? this.dob,
-      isAnonymous: isAnonymous ?? this.isAnonymous,
-      signedInViaEmail: signedInViaEmail ?? this.signedInViaEmail,
-      signedInviaGoogle: signedInviaGoogle ?? this.signedInviaGoogle,
-      signedInViaFaceBook: signedInViaFaceBook ?? this.signedInViaFaceBook,
-      photoUrl: photoUrl ?? this.photoUrl,
-      username: username ?? this.username,
-      mobileNumber: mobileNumber ?? this.mobileNumber,
-      emailAddress: emailAddress ?? this.emailAddress,
-      emailPassword: emailPassword ?? this.emailPassword,
-      isMobileVerified: isMobileVerified ?? this.isMobileVerified,
-      isEmailVerified: isEmailVerified ?? this.isEmailVerified,
-      formType: formType ?? this.formType,
-      isLoading: isLoading ?? this.isLoading,
-      submitted: submitted ?? this.submitted,
-      creationDate: creationDate ?? this.creationDate,
-      lastSignInDate: lastSignInDate ?? this.lastSignInDate,
-      // isVendor: isVendor ?? this.isVendor,
-    );
+    print("pw is ==== ${this.emailPassword}");
+    this.uid = uid ?? this.uid;
+    this.firstName = firstName ?? this.firstName;
+    this.lastName = lastName ?? this.lastName;
+    this.dob = dob ?? this.dob;
+    this.isAnonymous = isAnonymous ?? this.isAnonymous;
+    this.signedInViaEmail = signedInViaEmail ?? this.signedInViaEmail;
+    this.signedInviaGoogle = signedInviaGoogle ?? this.signedInviaGoogle;
+    this.signedInViaFaceBook = signedInViaFaceBook ?? this.signedInViaFaceBook;
+    this.photoUrl = photoUrl ?? this.photoUrl;
+    this.username = username ?? this.username;
+    this.mobileNumber = mobileNumber ?? this.mobileNumber;
+    this.emailAddress = emailAddress ?? this.emailAddress;
+    this.emailPassword = emailPassword ?? this.emailPassword;
+    this.isMobileVerified = isMobileVerified ?? this.isMobileVerified;
+    this.isEmailVerified = isEmailVerified ?? this.isEmailVerified;
+    this.formType = formType ?? this.formType;
+    this.isLoading = isLoading ?? this.isLoading;
+    this.submitted = submitted ?? this.submitted;
+    this.creationDate = creationDate ?? this.creationDate;
+    this.lastSignInDate = lastSignInDate ?? this.lastSignInDate;
+    notifyListeners();
   }
 }

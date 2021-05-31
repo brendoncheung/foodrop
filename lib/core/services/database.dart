@@ -27,8 +27,10 @@ class FirestoreDatabase implements Database {
         builder: (data, documentId) => UserProfile.fromMap(data, uid),
       );
 
-  Future<void> setUser(UserProfile user) {
-    FirestoreService.instance.setData(
+  Future<void> setUser(UserProfile user) async {
+    print("path: ${APIPath.user(uid: uid)}");
+    print("map: ${user.toMap()}");
+    await FirestoreService.instance.setData(
       path: APIPath.user(uid: uid),
       data: user.toMap(), // return a user object in Map format
     );

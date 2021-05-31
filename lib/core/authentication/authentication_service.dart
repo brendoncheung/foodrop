@@ -26,6 +26,7 @@ class AuthenticationService {
       String email, String password) async {
     await _auth.signInWithEmailAndPassword(email: email, password: password);
     return _auth.authStateChanges().map((user) => UserProfile(
+        auth: AuthenticationService(),
         uid: user.uid,
         isAnonymous: false,
         emailAddress: user.email,
@@ -56,7 +57,10 @@ class AuthenticationService {
 
   Future<UserProfile> signInAnonymous() async {
     final userCredential = await _auth.signInAnonymously();
-    return UserProfile(uid: userCredential.user.uid, isAnonymous: true);
+    return UserProfile(
+        uid: userCredential.user.uid,
+        isAnonymous: true,
+        auth: AuthenticationService());
   }
 
   Future<void> logOutUser() async {
@@ -79,7 +83,7 @@ class AuthenticationService {
   }
 
   UserProfile _firebaseUserToUserClient(User user) {
-    return UserProfile(uid: user.uid);
+    return UserProfile(uid: user.uid, auth: AuthenticationService());
   }
 
   // Future<void> signOut() async {
