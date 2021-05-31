@@ -126,7 +126,7 @@ class _ClientProfileScreenState extends State<ClientProfileScreen> {
           )
         ],
       ),
-      body: StreamBuilder<UserClient>(
+      body: StreamBuilder<UserProfile>(
         stream: db.userClientStream(),
         builder: (context, snapshot) {
           try {

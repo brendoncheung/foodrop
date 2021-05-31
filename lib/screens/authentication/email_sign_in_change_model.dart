@@ -6,7 +6,6 @@ import 'package:foodrop/core/services/firestore_service.dart';
 import 'validators.dart';
 
 enum EmailSignInFormType { signIn, register }
-DateTime temp = DateTime.utc(1969, 7, 20, 20, 18, 04);
 
 class EmailSignInChangeModel with EmailAndPasswordValidators, ChangeNotifier {
   EmailSignInChangeModel({

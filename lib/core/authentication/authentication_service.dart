@@ -22,10 +22,10 @@ class AuthenticationService {
     return _auth.currentUser;
   }
 
-  Future<Stream<UserClient>> logInUserWithEmailAndPassword(
+  Future<Stream<UserProfile>> logInUserWithEmailAndPassword(
       String email, String password) async {
     await _auth.signInWithEmailAndPassword(email: email, password: password);
-    return _auth.authStateChanges().map((user) => UserClient(
+    return _auth.authStateChanges().map((user) => UserProfile(
         uid: user.uid,
         isAnonymous: false,
         emailAddress: user.email,
@@ -54,9 +54,9 @@ class AuthenticationService {
   //   }
   // }
 
-  Future<UserClient> signInAnonymous() async {
+  Future<UserProfile> signInAnonymous() async {
     final userCredential = await _auth.signInAnonymously();
-    return UserClient(uid: userCredential.user.uid, isAnonymous: true);
+    return UserProfile(uid: userCredential.user.uid, isAnonymous: true);
   }
 
   Future<void> logOutUser() async {
@@ -72,14 +72,14 @@ class AuthenticationService {
     return result.claims["vendor"];
   }
 
-  Stream<UserClient> onAuthChangeStream() {
+  Stream<UserProfile> onAuthChangeStream() {
     return _auth
         .authStateChanges()
         .map((user) => _firebaseUserToUserClient(user));
   }
 
-  UserClient _firebaseUserToUserClient(User user) {
-    return UserClient(uid: user.uid, isVendor: false);
+  UserProfile _firebaseUserToUserClient(User user) {
+    return UserProfile(uid: user.uid);
   }
 
   // Future<void> signOut() async {
