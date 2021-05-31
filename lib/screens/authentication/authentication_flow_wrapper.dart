@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:foodrop/core/authentication/authentication_service.dart';
-import 'package:foodrop/core/models/client/client_user.dart';
+import 'package:foodrop/core/models/UserProfile/UserProfile.dart';
+import 'package:foodrop/core/services/database.dart';
 import 'package:foodrop/screens/client/client_bottom_navigation.dart';
 import 'package:provider/provider.dart';
 
@@ -24,8 +25,29 @@ class AuthenticationFlowWrapper extends StatelessWidget {
               // signInAnonymously if the user hasn't signed in yet.
               auth.signInAnonymous();
             }
+            final user = auth.getUser();
 
-            return ClientBottomNavigation();
+            try {
+              if (user.email != null) {
+                print(
+                    "user signed in =========================> ${user.email}");
+                //TODO: retrieve user info.
+                // Create UserClient instance
+                // userClient.copyWith(
+                //   emailAddress: user.email,
+                //   signedInViaEmail: true,
+                // );
+              }
+            } catch (e) {
+              print("User is Anonymous xxxxxxxxxxxxxxxxxxxxxxx");
+            }
+
+            // print("rebuild authentication flow ");
+            // print("uid: ${userClient.uid}, email: ${userClient.emailAddress}");
+
+            return Provider<Database>(
+                create: (_) => FirestoreDatabase(uid: user.uid),
+                child: ClientBottomNavigation());
           },
         );
       },

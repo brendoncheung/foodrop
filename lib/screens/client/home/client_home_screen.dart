@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:foodrop/core/authentication/authentication_service.dart';
-import 'package:foodrop/core/models/client/client_user.dart';
+import 'package:foodrop/core/models/UserProfile/UserProfile.dart';
 import 'package:foodrop/core/services/database.dart';
-import 'package:foodrop/screens/client/home/home_tile_widget.dart';
+import 'package:foodrop/screens/client/profile/client_profile_screen.dart';
 import 'package:provider/provider.dart';
 
 import '../../authentication/sign_in_page.dart';
+import './home_tile_widget.dart';
 
 class ClientHomeScreen extends StatefulWidget {
   const ClientHomeScreen({Key key}) : super(key: key);
@@ -23,6 +24,20 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
     // var client_auth = Provider.of<AuthenticationService>(context);
     final userClient = Provider.of<UserClient>(context);
     final auth = Provider.of<AuthenticationService>(context);
+    final db = Provider.of<Database>(context);
+
+    final user = auth.getUser();
+    bool isUserSignedIn = false;
+
+    try {
+      if (user.email != null) {
+        print("use is =======> ${user.email}");
+        isUserSignedIn = true;
+      }
+    } catch (e) {
+      print("user is not signed in xxxxxxxxxx");
+    }
+
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
@@ -35,8 +50,11 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
               onPressed: () => Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (context) => Provider<Database>(
-                      create: (_) => FirestoreDatabase(uid: userClient.uid),
-                      child: SignInPage()),
+                    create: (_) => FirestoreDatabase(uid: userClient.uid),
+                    child: isUserSignedIn
+                        ? ClientProfileScreen()
+                        : SignInPage(), // Database dependency injection
+                  ), // if user logged in then display a different page
                   fullscreenDialog: true,
                 ),
               ),
