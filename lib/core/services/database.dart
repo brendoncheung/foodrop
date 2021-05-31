@@ -1,4 +1,4 @@
-import 'package:foodrop/core/models/client/client_user.dart';
+import 'package:foodrop/core/models/UserProfile/UserProfile.dart';
 
 import 'api_path.dart';
 import 'firestore_service.dart';

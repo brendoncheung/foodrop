@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:foodrop/core/authentication/authentication_service.dart';
-import 'package:foodrop/core/models/client/client_user.dart';
+import 'package:foodrop/core/models/UserProfile/UserProfile.dart';
 import 'package:foodrop/core/services/database.dart';
 import 'package:foodrop/screens/client/profile/client_profile_screen.dart';
 import 'package:provider/provider.dart';

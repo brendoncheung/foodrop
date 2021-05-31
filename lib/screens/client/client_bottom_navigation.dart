@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:foodrop/core/models/client/client_user.dart';
+import 'package:foodrop/core/models/UserProfile/UserProfile.dart';
 import 'package:foodrop/screens/client/favourite/client_favourite_screen.dart';
 import 'package:foodrop/screens/client/gift/client_gift_screen.dart';
 import 'package:foodrop/screens/client/home/client_home_screen.dart';

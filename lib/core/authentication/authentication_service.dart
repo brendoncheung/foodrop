@@ -1,9 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:foodrop/core/models/client/client_user.dart';
+import 'package:foodrop/core/models/UserProfile/UserProfile.dart';
 
 // import 'package:google_sign_in/google_sign_in.dart';
 
-import '../models/client/client_user.dart';
+import '../models/UserProfile/UserProfile.dart';
 
 class AuthenticationService {
   final _auth = FirebaseAuth.instance;
