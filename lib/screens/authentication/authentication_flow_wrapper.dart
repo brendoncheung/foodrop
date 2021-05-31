@@ -12,14 +12,14 @@ class AuthenticationFlowWrapper extends StatelessWidget {
   Widget build(BuildContext context) {
     var auth = Provider.of<AuthenticationService>(context, listen: false);
     print("building AuthenticationFlowWrapper");
-    return StreamProvider<UserClient>.value(
+    return StreamProvider<UserProfile>.value(
       catchError: (context, error) {
         print(error.toString());
         return null;
       },
       value: auth.onAuthChangeStream(),
       builder: (context, child) {
-        return Consumer<UserClient>(
+        return Consumer<UserProfile>(
           builder: (_, userClient, child) {
             if (userClient == null) {
               // signInAnonymously if the user hasn't signed in yet.

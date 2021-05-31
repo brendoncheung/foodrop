@@ -20,7 +20,7 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
   @override
   Widget build(BuildContext context) {
     // var client_auth = Provider.of<AuthenticationService>(context);
-    final userClient = Provider.of<UserClient>(context);
+    final userClient = Provider.of<UserProfile>(context);
     final auth = Provider.of<AuthenticationService>(context);
     final db = Provider.of<Database>(context);
 
@@ -64,4 +64,16 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
       ),
     );
   }
+<<<<<<< HEAD
+=======
+
+  _printUser(BuildContext context) {
+    final user = Provider.of<UserProfile>(context, listen: false);
+    print(user.uid);
+    print(user.emailAddress);
+    print(user.mobileNumber);
+    print(user.isAnonymous);
+    print(user.signedInViaEmail);
+  }
+>>>>>>> 02e53423c02f9bd8f93f0f50115bc167155d4b72
 }
