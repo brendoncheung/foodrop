@@ -4,7 +4,8 @@ import 'api_path.dart';
 import 'firestore_service.dart';
 
 abstract class Database {
-  Stream<UserClient> userClientStream();
+  Stream<UserProfile> userClientStream();
+  Future<void> setUser(UserProfile user);
   // Future<void> setJob(Job job);
   // Future<void> deleteJob(Job job);
   // Stream<List<Job>> jobsStream();
@@ -21,10 +22,25 @@ class FirestoreDatabase implements Database {
   final _service = FirestoreService.instance;
 
   @override
-  Stream<UserClient> userClientStream() => _service.documentStream(
+  Stream<UserProfile> userClientStream() => _service.documentStream(
         path: APIPath.user(uid: uid),
-        builder: (data, documentId) => UserClient.fromMap(data, uid),
+        builder: (data, documentId) => UserProfile.fromMap(data, uid),
       );
+
+  Future<void> setUser(UserProfile user) async {
+    print("path: ${APIPath.user(uid: uid)}");
+    print("map: ${user.toMap()}");
+    await FirestoreService.instance.setData(
+      path: APIPath.user(uid: uid),
+      data: user.toMap(), // return a user object in Map format
+    );
+
+    //   // @override
+//   // Future<void> setJob(Job job) => _service.setData(
+//   //   path: APIPath.job(uid, job.id),
+//   //   data: job.toMap(),
+//   // );
+  }
 
   // @override
   // Future<void> setUser(UserClient user) => _service.setData(

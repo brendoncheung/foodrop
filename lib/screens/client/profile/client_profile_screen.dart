@@ -126,7 +126,7 @@ class _ClientProfileScreenState extends State<ClientProfileScreen> {
           )
         ],
       ),
-      body: StreamBuilder<UserClient>(
+      body: StreamBuilder<UserProfile>(
         stream: db.userClientStream(),
         builder: (context, snapshot) {
           try {
@@ -159,6 +159,7 @@ class _ClientProfileScreenState extends State<ClientProfileScreen> {
     try {
       final auth = Provider.of<AuthenticationService>(context, listen: false);
       await auth.logOutUser();
+      Navigator.of(context).pop();
     } catch (e) {
       print(e.toString());
     }

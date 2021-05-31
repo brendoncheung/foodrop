@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import 'email_sign_in_form_change_notifier.dart';
+import 'package:foodrop/screens/authentication/email_sign_in_form_userprofile_change_notifier.dart';
 
 class EmailSignInPage extends StatelessWidget {
   // EmailSignInPage({this.userClient});
@@ -17,7 +16,7 @@ class EmailSignInPage extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Card(
-            child: EmailSignInFormChangeNotifier.create(context),
+            child: EmailSignInFormUserProfileChangeNotifier.create(context),
           ),
         ),
       ),

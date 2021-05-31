@@ -33,7 +33,7 @@ class _ClientBottomNavigationState extends State<ClientBottomNavigation> {
 
   @override
   Widget build(BuildContext context) {
-    final user = Provider.of<UserClient>(context);
+    final user = Provider.of<UserProfile>(context);
     print("build clientBottomNavigation ");
     if (user != null) {
       print("user email address: ${user.emailAddress}");
