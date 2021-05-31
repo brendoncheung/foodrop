@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:foodrop/core/authentication/authentication_service.dart';
 import 'package:foodrop/core/models/client/client_user.dart';
 import 'package:foodrop/core/services/database.dart';
+import 'package:foodrop/screens/client/home/home_tile_widget.dart';
 import 'package:provider/provider.dart';
 
 import '../../authentication/sign_in_page.dart';
@@ -22,11 +24,11 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
     final userClient = Provider.of<UserClient>(context);
     final auth = Provider.of<AuthenticationService>(context);
     return Scaffold(
+      backgroundColor: Colors.black,
       appBar: AppBar(
         title: Text("Home"),
         // actions: [IconButton(icon: Icon(Icons.logout), onPressed: () => client_auth.logOutUser())],
         actions: [
-          //TODO inject Datasbase class into signInpage
           CircleAvatar(
             child: IconButton(
               icon: Icon(Icons.person),
@@ -44,26 +46,15 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
         ],
       ),
       body: Center(
-        child: Column(children: [
-          TextButton(
-            child: Text("Pressed to Print User"),
-            onPressed: () => _printUser(context),
-          ),
-          TextButton(
-            child: Text("Pressed to logout"),
-            onPressed: () => auth.logOutUser(),
-          ),
-        ]),
+        child: StaggeredGridView.countBuilder(
+          crossAxisCount: 2,
+          itemCount: 10,
+          itemBuilder: (context, index) {
+            return HomeTileWidget(null, "Hello", "descroption");
+          },
+          staggeredTileBuilder: (int index) => StaggeredTile.fit(2),
+        ),
       ),
     );
-  }
-
-  _printUser(BuildContext context) {
-    final user = Provider.of<UserClient>(context, listen: false);
-    print(user.uid);
-    print(user.emailAddress);
-    print(user.mobileNumber);
-    print(user.isAnonymous);
-    print(user.signedInViaEmail);
   }
 }
