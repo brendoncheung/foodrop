@@ -21,14 +21,15 @@ class HomeTileWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Expanded(
-            child: Image.network(
-              _main_image_source,
-              loadingBuilder: (context, child, loadingProgress) {
-                if (loadingProgress == null) return child;
-                return Center(child: CircularProgressIndicator());
-              },
-              fit: BoxFit.cover,
-            ),
+            child: Placeholder(),
+            // child: Image.network(
+            //   _main_image_source,
+            //   loadingBuilder: (context, child, loadingProgress) {
+            //     if (loadingProgress == null) return child;
+            //     return Center(child: CircularProgressIndicator());
+            //   },
+            //   fit: BoxFit.cover,
+            // ),
           ),
           SizedBox(
             height: 8,

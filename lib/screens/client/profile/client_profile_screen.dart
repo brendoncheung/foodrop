@@ -113,9 +113,9 @@ class _ClientProfileScreenState extends State<ClientProfileScreen> {
   // Navigator.of(context).pop();
   @override
   Widget build(BuildContext context) {
-    // var auth = Provider.of<AuthenticationService>(context);
+    var auth = Provider.of<AuthenticationService>(context);
     final db = Provider.of<Database>(context);
-    final userFirebase = db.userClientStream();
+    // final userFirebase = db.userClientStream();
     return Scaffold(
       appBar: AppBar(
         title: Text("Profile"),
@@ -127,7 +127,7 @@ class _ClientProfileScreenState extends State<ClientProfileScreen> {
         ],
       ),
       body: StreamBuilder<UserProfile>(
-        stream: db.userClientStream(),
+        stream: db.userClientStream(auth.getUser().uid),
         builder: (context, snapshot) {
           try {
             if (snapshot.hasData) {

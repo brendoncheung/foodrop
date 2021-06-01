@@ -22,19 +22,28 @@ class AuthenticationFlowWrapper extends StatelessWidget {
       builder: (context, child) {
         return Consumer<UserProfile>(
           builder: (_, userProfile, child) {
+            print("rebuilding Consumer <UserProfile>");
             // signInAnonymously if the user hasn't signed in yet.
             if (userProfile == null) {
               auth.signInAnonymous();
+              print("Consumer<UserProfile> userProfile is null");
               print("signed in anonymously${auth.getUser()}");
             }
 
             // retrieve user info from firebase if user logged in
             // user is deemed to have logged in if user has UID and email
-            _updateUserProfile(userProfile);
-            // else {
-            //
-            print("OOOOOO verified user ${auth.getUser()} OOOOOO");
-            // }
+            // _updateUserProfile(userProfile);
+            try {
+              final authUser = auth.getUser();
+              if (authUser.uid.isNotEmpty && authUser.email.isNotEmpty) {
+                print("auth.user.email is not null");
+                print("user profile email: ${userProfile.emailAddress}");
+                print("user profile phone: ${userProfile.mobileNumber}");
+                _updateUserProfile(authUser.uid);
+              }
+            } catch (e) {
+              print(e);
+            }
 
             final user = auth.getUser();
 
@@ -47,10 +56,14 @@ class AuthenticationFlowWrapper extends StatelessWidget {
     );
   }
 
-  void _updateUserProfile(UserProfile userProfile) async {
-    if (userProfile.uid.isNotEmpty && userProfile.emailAddress.isNotEmpty) {
-      final _userProfile = await FirestoreDatabase().userClientStream().first;
+  void _updateUserProfile(String uid) async {
+    try {
+      final _userProfile =
+          await FirestoreDatabase().userClientStream(uid).first;
+      print(_userProfile);
       FirebaseAuth.instance.authStateChanges().map((user) => _userProfile);
+    } catch (e) {
+      print(e);
     }
   }
 }

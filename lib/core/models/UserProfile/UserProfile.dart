@@ -66,7 +66,7 @@ class UserProfile with ChangeNotifier, EmailAndPasswordValidators {
         photoUrl = map['photoUrl'],
         username = map['username'],
         mobileNumber = map['mobileNumber'],
-        emailAddress = map['emailAddress'],
+        emailAddress = map['email'],
         emailPassword = '',
         isMobileVerified = map['isMobileVerified'],
         isEmailVerified = map['isEmailVerified'];
