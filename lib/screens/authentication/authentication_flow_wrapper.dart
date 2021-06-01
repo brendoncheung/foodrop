@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:foodrop/core/authentication/authentication_service.dart';
 import 'package:foodrop/core/models/UserProfile/UserProfile.dart';
@@ -20,30 +21,22 @@ class AuthenticationFlowWrapper extends StatelessWidget {
       value: auth.onAuthChangeStream(),
       builder: (context, child) {
         return Consumer<UserProfile>(
-          builder: (_, userClient, child) {
-            if (userClient == null) {
-              // signInAnonymously if the user hasn't signed in yet.
+          builder: (_, userProfile, child) {
+            // signInAnonymously if the user hasn't signed in yet.
+            if (userProfile == null) {
               auth.signInAnonymous();
+              print("signed in anonymously${auth.getUser()}");
             }
+
+            // retrieve user info from firebase if user logged in
+            // user is deemed to have logged in if user has UID and email
+            _updateUserProfile(userProfile);
+            // else {
+            //
+            print("OOOOOO verified user ${auth.getUser()} OOOOOO");
+            // }
+
             final user = auth.getUser();
-
-            try {
-              if (user.email != null) {
-                print(
-                    "user signed in =========================> ${user.email}");
-                //TODO: retrieve user info.
-                // Create UserClient instance
-                // userClient.copyWith(
-                //   emailAddress: user.email,
-                //   signedInViaEmail: true,
-                // );
-              }
-            } catch (e) {
-              print("User is Anonymous xxxxxxxxxxxxxxxxxxxxxxx");
-            }
-
-            // print("rebuild authentication flow ");
-            // print("uid: ${userClient.uid}, email: ${userClient.emailAddress}");
 
             return Provider<Database>(
                 create: (_) => FirestoreDatabase(uid: user.uid),
@@ -52,5 +45,12 @@ class AuthenticationFlowWrapper extends StatelessWidget {
         );
       },
     );
+  }
+
+  void _updateUserProfile(UserProfile userProfile) async {
+    if (userProfile.uid.isNotEmpty && userProfile.emailAddress.isNotEmpty) {
+      final _userProfile = await FirestoreDatabase().userClientStream().first;
+      FirebaseAuth.instance.authStateChanges().map((user) => _userProfile);
+    }
   }
 }

@@ -159,7 +159,7 @@ class _ClientProfileScreenState extends State<ClientProfileScreen> {
     try {
       final auth = Provider.of<AuthenticationService>(context, listen: false);
       await auth.logOutUser();
-      Navigator.of(context).pop();
+      // Navigator.of(context).pop();
     } catch (e) {
       print(e.toString());
     }

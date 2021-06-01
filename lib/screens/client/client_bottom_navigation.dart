@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:foodrop/core/models/UserProfile/UserProfile.dart';
+import 'package:foodrop/screens/authentication/profile_landing_screen.dart';
 import 'package:foodrop/screens/client/favourite/client_favourite_screen.dart';
 import 'package:foodrop/screens/client/gift/client_gift_screen.dart';
 import 'package:foodrop/screens/client/home/client_home_screen.dart';
 import 'package:foodrop/screens/client/orders/client_order_screen.dart';
-import 'package:provider/provider.dart';
 
 class ClientBottomNavigation extends StatefulWidget {
   // void Function(int) onTap;
@@ -22,7 +21,7 @@ class _ClientBottomNavigationState extends State<ClientBottomNavigation> {
     ClientFavouriteScreen(),
     ClientGiftScreen(),
     ClientOrderScreen(),
-    // ClientProfileScreen(),
+    ProfileLandingScreen()
   ];
 
   void onTapHandler(int index) {
@@ -33,16 +32,6 @@ class _ClientBottomNavigationState extends State<ClientBottomNavigation> {
 
   @override
   Widget build(BuildContext context) {
-<<<<<<< HEAD
-    final user = Provider.of<UserClient>(context);
-=======
-    final user = Provider.of<UserProfile>(context);
-    print("build clientBottomNavigation ");
-    if (user != null) {
-      print("user email address: ${user.emailAddress}");
-    }
-
->>>>>>> 02e53423c02f9bd8f93f0f50115bc167155d4b72
     return Scaffold(
       // appBar: AppBar(
       //   actions: [Text("Sign In")],
@@ -60,7 +49,8 @@ class _ClientBottomNavigationState extends State<ClientBottomNavigation> {
           BottomNavigationBarItem(
               icon: Icon(Icons.card_giftcard), label: "Gift"),
           BottomNavigationBarItem(icon: Icon(Icons.fastfood), label: "Orders"),
-          // BottomNavigationBarItem(icon: Icon(Icons.account_circle), label: "Profile"),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.account_circle), label: "Profile"),
         ],
       ),
     );

@@ -1,12 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:foodrop/core/authentication/authentication_service.dart';
 import 'package:foodrop/core/models/UserProfile/UserProfile.dart';
-import 'package:foodrop/core/services/database.dart';
-import 'package:foodrop/screens/client/profile/client_profile_screen.dart';
 import 'package:provider/provider.dart';
 
-import '../../authentication/sign_in_page.dart';
 import './home_tile_widget.dart';
 
 class ClientHomeScreen extends StatefulWidget {
@@ -20,14 +15,14 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
   @override
   Widget build(BuildContext context) {
     // var client_auth = Provider.of<AuthenticationService>(context);
-    final userClient = Provider.of<UserProfile>(context);
-    final auth = Provider.of<AuthenticationService>(context);
-    final db = Provider.of<Database>(context);
-
-    final user = auth.getUser();
+    // final userClient = Provider.of<UserProfile>(context);
+    // final auth = Provider.of<AuthenticationService>(context);
+    // final db = Provider.of<Database>(context);
+    //
+    // final user = auth.getUser();
 
     final source = "https://source.unsplash.com/random/1600x900";
-
+    // new AssetImage("assets/images/keyboard.jpg")
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
@@ -64,8 +59,6 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
       ),
     );
   }
-<<<<<<< HEAD
-=======
 
   _printUser(BuildContext context) {
     final user = Provider.of<UserProfile>(context, listen: false);
@@ -75,5 +68,4 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
     print(user.isAnonymous);
     print(user.signedInViaEmail);
   }
->>>>>>> 02e53423c02f9bd8f93f0f50115bc167155d4b72
 }
