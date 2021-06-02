@@ -20,16 +20,20 @@ class UserProfile with ChangeNotifier, EmailAndPasswordValidators {
     this.mobileNumber = "",
     this.emailAddress = "",
     this.emailPassword = "",
-    this.isMobileVerified = false,
-    this.isEmailVerified = false,
-    this.formType = EmailSignInFormType.signIn,
+    DateTime mobileVerificationDate,
+    DateTime emailVerificationDate,
     this.isLoading = false,
     this.submitted = false,
     DateTime creationDate,
     DateTime lastSignInDate,
+    this.formType = EmailSignInFormType.signIn,
   })  : dob = dob ?? DateTime.parse("1970-01-01"),
-        creationDate = dob ?? DateTime.now(),
-        lastSignInDate = dob ?? DateTime.now();
+        creationDate = creationDate ?? DateTime.now(),
+        mobileVerificationDate =
+            mobileVerificationDate ?? DateTime.parse("1970-01-01"),
+        emailVerificationDate =
+            emailVerificationDate ?? DateTime.parse("1970-01-01"),
+        lastSignInDate = lastSignInDate ?? DateTime.now();
 
   AuthenticationService auth;
   String uid;
@@ -45,9 +49,9 @@ class UserProfile with ChangeNotifier, EmailAndPasswordValidators {
   String mobileNumber;
   String emailAddress;
   String emailPassword;
-  bool
-      isMobileVerified; // verification ideally to be done every 6 month to ensure customer detail is up to date.
-  bool isEmailVerified;
+  DateTime
+      mobileVerificationDate; // verification ideally to be done every 6 month to ensure customer detail is up to date.
+  DateTime emailVerificationDate;
   EmailSignInFormType formType;
   bool isLoading;
   bool submitted;
@@ -56,20 +60,17 @@ class UserProfile with ChangeNotifier, EmailAndPasswordValidators {
 
   UserProfile.fromMap(Map<String, dynamic> map, String uid)
       : uid = map['uid'],
-        firstName = map['firstname'],
-        lastName = map['lastname'],
+        firstName = map['firstName'],
+        lastName = map['lastName'],
         dob = map['dob'],
         isAnonymous = map['isAnonymous'],
-        signedInViaEmail = map['signedInViaEmail'],
-        signedInviaGoogle = map['signedInviaGoogle'],
-        signedInViaFaceBook = map['signedInViaFaceBook'],
         photoUrl = map['photoUrl'],
         username = map['username'],
         mobileNumber = map['mobileNumber'],
         emailAddress = map['email'],
         emailPassword = '',
-        isMobileVerified = map['isMobileVerified'],
-        isEmailVerified = map['isEmailVerified'];
+        mobileVerificationDate = map['mobileVerificationDate'],
+        emailVerificationDate = map['emailVerificationDate'];
 
   Future<void> submit() async {
     updateWith(submitted: true, isLoading: true);
@@ -77,7 +78,8 @@ class UserProfile with ChangeNotifier, EmailAndPasswordValidators {
       if (formType == EmailSignInFormType.signIn) {
         print("attempt to sign user in");
         await auth.logInUserWithEmailAndPassword(emailAddress, emailPassword);
-        print(auth.getUser());
+        // print(auth.getUser());
+        // print(auth.getUser().email);
         updateWith(uid: auth.getUser().uid);
       } else {
         print("attempt to create user login");
@@ -160,6 +162,8 @@ class UserProfile with ChangeNotifier, EmailAndPasswordValidators {
       'mobileNumber': mobileNumber,
       'creationDate': creationDate,
       'lastSignInDate': lastSignInDate,
+      'mobileVerificationDate': mobileVerificationDate,
+      'emailVerificationDate': emailVerificationDate
     };
   }
 
@@ -178,9 +182,8 @@ class UserProfile with ChangeNotifier, EmailAndPasswordValidators {
       String mobileNumber,
       String emailAddress,
       String emailPassword,
-      bool
-          isMobileVerified, // verification ideally to be done every 6 month to ensure customer detail is up to date.
-      bool isEmailVerified,
+      DateTime mobileVerificationDate,
+      DateTime emailVerificationDate,
       EmailSignInFormType formType,
       bool isLoading,
       bool submitted,
@@ -200,8 +203,10 @@ class UserProfile with ChangeNotifier, EmailAndPasswordValidators {
     this.mobileNumber = mobileNumber ?? this.mobileNumber;
     this.emailAddress = emailAddress ?? this.emailAddress;
     this.emailPassword = emailPassword ?? this.emailPassword;
-    this.isMobileVerified = isMobileVerified ?? this.isMobileVerified;
-    this.isEmailVerified = isEmailVerified ?? this.isEmailVerified;
+    this.mobileVerificationDate =
+        mobileVerificationDate ?? this.mobileVerificationDate;
+    this.emailVerificationDate =
+        emailVerificationDate ?? this.emailVerificationDate;
     this.formType = formType ?? this.formType;
     this.isLoading = isLoading ?? this.isLoading;
     this.submitted = submitted ?? this.submitted;

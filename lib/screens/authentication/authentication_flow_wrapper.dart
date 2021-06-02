@@ -6,9 +6,11 @@ import 'package:foodrop/core/services/database.dart';
 import 'package:foodrop/screens/client/client_bottom_navigation.dart';
 import 'package:provider/provider.dart';
 
+import 'logout_await_screen.dart';
+
 class AuthenticationFlowWrapper extends StatelessWidget {
   static String ROUTE_NAME = "/authentication-wrapper";
-
+  var errorDetected = false;
   @override
   Widget build(BuildContext context) {
     var auth = Provider.of<AuthenticationService>(context, listen: false);
@@ -22,34 +24,40 @@ class AuthenticationFlowWrapper extends StatelessWidget {
       builder: (context, child) {
         return Consumer<UserProfile>(
           builder: (_, userProfile, child) {
-            print("rebuilding Consumer <UserProfile>");
-            // signInAnonymously if the user hasn't signed in yet.
-            if (userProfile == null) {
-              auth.signInAnonymous();
-              print("Consumer<UserProfile> userProfile is null");
-              print("signed in anonymously${auth.getUser()}");
-            }
-
-            // retrieve user info from firebase if user logged in
-            // user is deemed to have logged in if user has UID and email
-            // _updateUserProfile(userProfile);
+            errorDetected = false;
+            final user = auth.getUser();
             try {
-              final authUser = auth.getUser();
-              if (authUser.uid.isNotEmpty && authUser.email.isNotEmpty) {
+              print("rebuilding Consumer <UserProfile>");
+              // signInAnonymously if the user hasn't signed in yet.
+              if (userProfile == null) {
+                auth.signInAnonymous();
+                print("Consumer<UserProfile> userProfile is null");
+                print("signed in anonymously${auth.getUser()}");
+              }
+
+              if (user.uid.isNotEmpty && user.email.isNotEmpty) {
                 print("auth.user.email is not null");
                 print("user profile email: ${userProfile.emailAddress}");
                 print("user profile phone: ${userProfile.mobileNumber}");
-                _updateUserProfile(authUser.uid);
+                _updateUserProfile(user.uid);
               }
             } catch (e) {
               print(e);
             }
 
-            final user = auth.getUser();
+            try {
+              print(" Calling user.uid at AuthenticationFlowWrapper");
+              print(user.uid);
+            } catch (e) {
+              // show logoutAwaitScreen
+              errorDetected = true;
+            }
 
-            return Provider<Database>(
-                create: (_) => FirestoreDatabase(uid: user.uid),
-                child: ClientBottomNavigation());
+            return errorDetected
+                ? LogoutAwaitScreen()
+                : Provider<Database>(
+                    create: (_) => FirestoreDatabase(uid: user.uid),
+                    child: ClientBottomNavigation());
           },
         );
       },

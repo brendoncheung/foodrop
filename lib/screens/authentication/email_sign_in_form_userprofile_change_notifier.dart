@@ -10,17 +10,19 @@ import '../common_widgets/form_submit_button.dart';
 import '../common_widgets/show_exception_alert_dialog.dart';
 
 class EmailSignInFormUserProfileChangeNotifier extends StatefulWidget {
-  EmailSignInFormUserProfileChangeNotifier({@required this.model});
+  EmailSignInFormUserProfileChangeNotifier(
+      {@required this.model, this.onLoggedIn});
   final UserProfile model;
+  VoidCallback onLoggedIn;
 
-  static Widget create(BuildContext context) {
+  static Widget create(BuildContext context, VoidCallback onLoggedIn) {
     print("****** recreate Sign In Form ******");
     final auth = Provider.of<AuthenticationService>(context, listen: false);
     return ChangeNotifierProvider<UserProfile>(
       create: (_) => UserProfile(auth: auth),
       child: Consumer<UserProfile>(
-        builder: (_, model, __) =>
-            EmailSignInFormUserProfileChangeNotifier(model: model),
+        builder: (_, model, __) => EmailSignInFormUserProfileChangeNotifier(
+            model: model, onLoggedIn: onLoggedIn),
       ),
     );
   }
@@ -75,8 +77,8 @@ class _EmailSignInFormUserProfileChangeNotifier
         await db.setUser(model);
       }
       print("signed in attempted");
+      widget.onLoggedIn();
       Navigator.of(context).pop();
-      //Navigator.of(context).pop();
     } on FirebaseAuthException catch (e) {
       showExceptionAlertDialog(
         context,

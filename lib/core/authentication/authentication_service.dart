@@ -70,7 +70,7 @@ class AuthenticationService {
   Future<void> logOutUser() async {
     // final googleSignIn = GoogleSignIn();
     // await googleSignIn.signOut(); //sign out of google
-    _auth.signOut(); // sign out from firebase
+    await _auth.signOut(); // sign out from firebase
   }
 
   Future<bool> isUserVendor() async {

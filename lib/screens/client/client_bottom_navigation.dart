@@ -32,6 +32,8 @@ class _ClientBottomNavigationState extends State<ClientBottomNavigation> {
 
   @override
   Widget build(BuildContext context) {
+    // _selectedIndex = 0;
+    print("rebuild client bottom navigation!!");
     return Scaffold(
       // appBar: AppBar(
       //   actions: [Text("Sign In")],
