@@ -26,8 +26,10 @@ class AuthenticationFlowWrapper extends StatelessWidget {
           builder: (_, userProfile, child) {
             errorDetected = false;
             final user = auth.getUser();
+
             try {
               print("rebuilding Consumer <UserProfile>");
+              //print("is anonymous ${userProfile.isAnonymous}");
               // signInAnonymously if the user hasn't signed in yet.
               if (userProfile == null) {
                 auth.signInAnonymous();
@@ -40,13 +42,14 @@ class AuthenticationFlowWrapper extends StatelessWidget {
                 print("user profile email: ${userProfile.emailAddress}");
                 print("user profile phone: ${userProfile.mobileNumber}");
                 _updateUserProfile(user.uid);
+                print(userProfile.isAnonymous);
               }
             } catch (e) {
               print(e);
             }
 
             try {
-              print(" Calling user.uid at AuthenticationFlowWrapper");
+              print(" Calling authId at AuthenticationFlowWrapper");
               print(user.uid);
             } catch (e) {
               // show logoutAwaitScreen

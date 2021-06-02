@@ -123,57 +123,56 @@ class _ClientProfileScreenState extends State<ClientProfileScreen> {
     final db = Provider.of<Database>(context);
 
     final uid = auth.getUser().uid;
+    print(uid);
+
     return Scaffold(
-        appBar: AppBar(
-          title: Text("Profile"),
-          actions: [
-            IconButton(
-              onPressed: _confirmSignOut,
-              icon: Icon(Icons.logout),
-            )
-          ],
-        ),
-        body: Consumer<UserProfile>(
-          builder: (_, userProfile, __) {
-            UserProfile user;
-            db.userClientStream(uid).first.then((u) => user = u);
-            print("check user is loaded: $user");
-            return Column(
-              children: [
-                Text(userProfile.uid),
-                // Text(user.emailAddress),
-                // Text(user.firstName)
-              ],
-            );
-          },
-        )
-        // body: StreamBuilder<UserProfile>(
-        //   stream: db.userClientStream(auth.getUser().uid),
-        //   builder: (context, snapshot) {
-        //     if (snapshot.connectionState == ConnectionState.waiting) {
-        //       return CircularProgressIndicator();
-        //     }
-        //     // print("================");
-        //     // print(auth.getUser().uid);
-        //
-        //     if (snapshot.connectionState == ConnectionState.active) {
-        //       try {
-        //         if (snapshot.hasData) {
-        //           print("XXXXX Client Profile Screen XXXXX");
-        //           print(snapshot.data.toMap().toString());
-        //           return Text(snapshot.data.toMap().toString());
-        //         } else {
-        //           db.userClientStream(auth.getUser().uid);
-        //         }
-        //       } catch (e) {
-        //         print("snapshot has no data");
-        //       }
-        //     }
-        //
-        //     return Text("No data");
-        //   },
-        // ),
-        );
+      appBar: AppBar(
+        title: Text("Profile"),
+        actions: [
+          IconButton(
+            onPressed: _confirmSignOut,
+            icon: Icon(Icons.logout),
+          )
+        ],
+      ),
+      // body: Consumer<UserProfile>(
+      //   builder: (_, userProfile, __) {
+      //     UserProfile user;
+      //     db.userClientStream(uid).first.then((u) => user = u);
+      //     print("check user is loaded: $user");
+      //     return Column(
+      //       children: [
+      //         Text(userProfile.uid),
+      //         // Text(user.emailAddress),
+      //         // Text(user.firstName)
+      //       ],
+      //     );
+      //   },
+      // )
+      body: StreamBuilder<UserProfile>(
+        stream: db.userClientStream(uid),
+        builder: (context, snapshot) {
+          // print("================");
+          // print(auth.getUser().uid);
+
+          if (snapshot.connectionState == ConnectionState.active) {
+            try {
+              if (snapshot.hasData) {
+                print("XXXXX Client Profile Screen XXXXX");
+                print(snapshot.data.toMap().toString());
+                return Text(snapshot.data.toMap().toString());
+              } else {
+                db.userClientStream(auth.getUser().uid);
+              }
+            } catch (e) {
+              print("snapshot has no data");
+            }
+          }
+
+          return Text("No data");
+        },
+      ),
+    );
   }
 
   Future<void> _confirmSignOut() async {

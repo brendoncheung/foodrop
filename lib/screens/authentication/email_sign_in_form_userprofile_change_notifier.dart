@@ -169,7 +169,7 @@ class _EmailSignInFormUserProfileChangeNotifier
   }
 
   TextField _buildEmailTextField() {
-    print(_emailController.text);
+    // print(_emailController.text);
     return TextField(
       controller: _emailController,
       focusNode: _fnEmail,

@@ -68,9 +68,10 @@ class UserProfile with ChangeNotifier, EmailAndPasswordValidators {
         username = map['username'],
         mobileNumber = map['mobileNumber'],
         emailAddress = map['email'],
-        emailPassword = '',
-        mobileVerificationDate = map['mobileVerificationDate'],
-        emailVerificationDate = map['emailVerificationDate'];
+        emailPassword = '';
+  // mobileVerificationDate = map['mobileVerificationDate'],
+  // emailVerificationDate = map['emailVerificationDate'];
+  //TODO: fixx issue retrieving datetype object
 
   Future<void> submit() async {
     updateWith(submitted: true, isLoading: true);
@@ -189,7 +190,6 @@ class UserProfile with ChangeNotifier, EmailAndPasswordValidators {
       bool submitted,
       DateTime creationDate,
       DateTime lastSignInDate}) {
-    print("pw is ==== ${this.emailPassword}");
     this.uid = uid ?? this.uid;
     this.firstName = firstName ?? this.firstName;
     this.lastName = lastName ?? this.lastName;
