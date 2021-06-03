@@ -32,8 +32,13 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
         elevation: 0,
         backgroundColor: Colors.grey[800],
         title: Text("Home"),
-        // actions: [IconButton(icon: Icon(Icons.logout), onPressed: () => client_auth.logOutUser())],
         actions: [
+          // Consumer<UserProfile>(
+          //   builder: (_, userProfile, __) {
+          //     print("rebuild Client Home AppBar");
+          //     return Text("# ${userProfile.username}");
+          //   },
+          // ),
           Padding(
             padding: EdgeInsets.all(20.0),
             child: GestureDetector(

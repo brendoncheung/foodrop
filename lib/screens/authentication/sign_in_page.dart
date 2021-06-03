@@ -12,8 +12,8 @@ import 'email_sign_in_page.dart';
 //import 'package:time_tracker_flutter_course/app/widgets/social_sign_in_button.dart';
 
 class SignInPage extends StatelessWidget {
-  SignInPage({this.onLoggedIn});
-  VoidCallback onLoggedIn;
+  // SignInPage({this.onLoggedIn});
+  // VoidCallback onLoggedIn;
 //  Auth auth;
 
 //  const SignInPage({Key key, this.auth}) : super(key: key);
@@ -41,7 +41,7 @@ class SignInPage extends StatelessWidget {
     Navigator.of(context).push(MaterialPageRoute(
         fullscreenDialog: true,
         builder: (context) => EmailSignInPage(
-              onLoggedIn: onLoggedIn,
+            // onLoggedIn: onLoggedIn,
             )));
   }
 

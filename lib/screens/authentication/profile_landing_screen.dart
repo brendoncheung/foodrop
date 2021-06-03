@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:foodrop/core/authentication/authentication_service.dart';
+import 'package:foodrop/core/models/UserProfile/UserProfile.dart';
 import 'package:foodrop/screens/authentication/sign_in_page.dart';
 import 'package:foodrop/screens/client/profile/client_profile_screen.dart';
 import 'package:provider/provider.dart';
@@ -22,12 +23,29 @@ class _ProfileLandingScreenState extends State<ProfileLandingScreen> {
     _onUserStateChanges(_getCurrentUser(context));
 
     return _userLoggedIn
-        ? ClientProfileScreen(
-            onLoggedIn: () => _onLoggedIn(context),
-          )
+        ? Consumer<UserProfile>(builder: (_, userProfile, __) {
+            print(userProfile);
+            return ClientProfileScreen(
+              userFile: userProfile,
+              //onLoggedIn: () => _onLoggedIn(context),
+            );
+          })
         : SignInPage(
-            onLoggedIn: () => _onLoggedIn(context),
-          );
+            //onLoggedIn: () => _onLoggedIn(context),
+            );
+
+    // return Consumer<UserProfile>(
+    //   builder: (_, userProfile, __) {
+    //     if (userProfile != null) {
+    //       return ClientProfileScreen(
+    //         onLoggedIn: () => _onLoggedIn(context),
+    //       );
+    //     }
+    //     return SignInPage(
+    //       onLoggedIn: () => _onLoggedIn(context),
+    //     );
+    //   },
+    // );
   }
 
   User _getCurrentUser(BuildContext context) {
@@ -54,9 +72,9 @@ class _ProfileLandingScreenState extends State<ProfileLandingScreen> {
     }
   }
 
-  void _onLoggedIn(BuildContext context) {
-    print(
-        "Triggered voidcall back on sign in / logout --------------------------");
-    setState(() {});
-  }
+  // void _onLoggedIn(BuildContext context) {
+  //   print(
+  //       "Triggered voidcall back on sign in / logout --------------------------");
+  // setState(() {});
+  // }
 }

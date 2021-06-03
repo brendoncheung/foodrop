@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:foodrop/core/authentication/authentication_service.dart';
 import 'package:foodrop/screens/authentication/validators.dart';
 
-enum EmailSignInFormType { signIn, register }
+enum EmailSignInFormType { signIn, register, update }
 
 class UserProfile with ChangeNotifier, EmailAndPasswordValidators {
   UserProfile({
@@ -95,9 +95,22 @@ class UserProfile with ChangeNotifier, EmailAndPasswordValidators {
   }
 
   String get primaryButtonText {
-    return formType == EmailSignInFormType.signIn
-        ? 'Sign in'
-        : 'Create an account';
+    switch (formType) {
+      case EmailSignInFormType.signIn:
+        {
+          return 'Sign in';
+        }
+        break;
+      case EmailSignInFormType.register:
+        {
+          return 'Create an account';
+        }
+        break;
+      default:
+        {
+          return 'Update Profile';
+        }
+    }
   }
 
   String get secondaryButtonText {

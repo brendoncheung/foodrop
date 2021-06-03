@@ -29,7 +29,8 @@ class AuthenticationFlowWrapper extends StatelessWidget {
 
             try {
               print("rebuilding Consumer <UserProfile>");
-              //print("is anonymous ${userProfile.isAnonymous}");
+
+              // print("is anonymous ${userProfile.isAnonymous}");
               // signInAnonymously if the user hasn't signed in yet.
               if (userProfile == null) {
                 auth.signInAnonymous();
@@ -60,7 +61,9 @@ class AuthenticationFlowWrapper extends StatelessWidget {
                 ? LogoutAwaitScreen()
                 : Provider<Database>(
                     create: (_) => FirestoreDatabase(uid: user.uid),
-                    child: ClientBottomNavigation());
+                    child: Consumer<Database>(
+                        builder: (_, db, __) =>
+                            ClientBottomNavigation.create(context, db)));
           },
         );
       },

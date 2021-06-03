@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:foodrop/core/authentication/authentication_service.dart';
 import 'package:foodrop/core/services/database.dart';
+import 'package:foodrop/screens/common_widgets/show_alert_dialog.dart';
 import 'package:provider/provider.dart';
 
 import '../../core/models/UserProfile/UserProfile.dart';
@@ -11,18 +12,24 @@ import '../common_widgets/show_exception_alert_dialog.dart';
 
 class EmailSignInFormUserProfileChangeNotifier extends StatefulWidget {
   EmailSignInFormUserProfileChangeNotifier(
-      {@required this.model, this.onLoggedIn});
+      {@required this.model, this.userUpdateProfileModel});
   final UserProfile model;
-  VoidCallback onLoggedIn;
-
-  static Widget create(BuildContext context, VoidCallback onLoggedIn) {
-    print("****** recreate Sign In Form ******");
+  // VoidCallback onLoggedIn;
+  UserProfile userUpdateProfileModel;
+  static Widget create(
+      {BuildContext context,
+      // VoidCallback onLoggedIn,
+      UserProfile firebaseUserProfile}) {
+    print("****** create Sign In Form ******");
     final auth = Provider.of<AuthenticationService>(context, listen: false);
     return ChangeNotifierProvider<UserProfile>(
       create: (_) => UserProfile(auth: auth),
       child: Consumer<UserProfile>(
-        builder: (_, model, __) => EmailSignInFormUserProfileChangeNotifier(
-            model: model, onLoggedIn: onLoggedIn),
+        builder: (_, signInModel, __) =>
+            EmailSignInFormUserProfileChangeNotifier(
+                model: signInModel,
+                // onLoggedIn: onLoggedIn,
+                userUpdateProfileModel: firebaseUserProfile),
       ),
     );
   }
@@ -34,6 +41,50 @@ class EmailSignInFormUserProfileChangeNotifier extends StatefulWidget {
 
 class _EmailSignInFormUserProfileChangeNotifier
     extends State<EmailSignInFormUserProfileChangeNotifier> {
+  var hasExistingUserProfile = false;
+
+  @override
+  void didChangeDependencies() {
+    // TODO: implement didChangeDependencies
+    super.didChangeDependencies();
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    print("run initState");
+    try {
+      if (widget.userUpdateProfileModel != null) {
+        model.updateWith(
+          uid: widget.userUpdateProfileModel.uid,
+          firstName: widget.userUpdateProfileModel.firstName,
+          lastName: widget.userUpdateProfileModel.lastName,
+          username: widget.userUpdateProfileModel.username,
+          mobileNumber: widget.userUpdateProfileModel.mobileNumber,
+          emailAddress: widget.userUpdateProfileModel.emailAddress,
+          photoUrl: widget.userUpdateProfileModel.photoUrl,
+          formType: widget.userUpdateProfileModel.formType,
+        );
+
+        hasExistingUserProfile = true;
+        widget.userUpdateProfileModel
+            .updateWith(formType: EmailSignInFormType.update);
+        _tecFirstName.text = widget.userUpdateProfileModel.firstName ?? "";
+        _tecLastName.text = widget.userUpdateProfileModel.lastName ?? "";
+        _tecUserName.text = widget.userUpdateProfileModel.username ?? "";
+        _tecMobileNumber.text =
+            widget.userUpdateProfileModel.mobileNumber ?? "";
+        _emailController.text =
+            widget.userUpdateProfileModel.emailAddress ?? "";
+      }
+    } catch (e) {
+      print("userProfile from firebase not found");
+    }
+    super.initState();
+  }
+
+  final _ProfileSignInFormKey = GlobalKey<FormState>();
+
   final TextEditingController _tecFirstName = TextEditingController();
   final TextEditingController _tecLastName = TextEditingController();
   final TextEditingController _tecUserName = TextEditingController();
@@ -69,22 +120,44 @@ class _EmailSignInFormUserProfileChangeNotifier
   }
 
   Future<void> _submit() async {
-    try {
-      // user logged in, trigger onAuthStateChanges
-      await model.submit();
-      if (model.formType == EmailSignInFormType.register) {
-        final db = FirestoreDatabase(uid: model.uid);
-        await db.setUser(model);
+    if (hasExistingUserProfile) {
+      // RUN UPDATE PROFILE
+      try {
+        final db1 = FirestoreDatabase(uid: model.uid);
+        await db1.setUser(model);
+        showAlertDialog(context,
+            title: "User Profile",
+            content: "Update Successful",
+            defaultActionText: "OK");
+        // Navigator.of(context).pop();
+      } catch (e) {
+        showExceptionAlertDialog(
+          context,
+          title: 'Update failed',
+          exception: e,
+        );
       }
-      print("signed in attempted");
-      widget.onLoggedIn();
-      Navigator.of(context).pop();
-    } on FirebaseAuthException catch (e) {
-      showExceptionAlertDialog(
-        context,
-        title: 'Sign in failed',
-        exception: e,
-      );
+    } else {
+      try {
+        _ProfileSignInFormKey.currentState.save();
+        // print(model);
+        await model
+            .submit(); // this will sign in Or create new user then sign them in
+        // if form type is register, store user details to firebase
+        if (model.formType == EmailSignInFormType.register) {
+          final db = FirestoreDatabase(uid: model.uid);
+          await db.setUser(model);
+        }
+        // widget
+        // .onLoggedIn(); // trigger setState at ProfileLandingPage and force it to rebuild.
+        Navigator.of(context).pop();
+      } on FirebaseAuthException catch (e) {
+        showExceptionAlertDialog(
+          context,
+          title: 'Sign in failed',
+          exception: e,
+        );
+      }
     }
   }
 
@@ -94,9 +167,8 @@ class _EmailSignInFormUserProfileChangeNotifier
     _passwordController.clear();
   }
 
-  TextField _buildFirstNameTextField() {
-    print(_tecFirstName.text);
-    return TextField(
+  TextFormField _buildFirstNameTextField() {
+    return TextFormField(
       controller: _tecFirstName,
       focusNode: _fnFirstName,
       decoration: InputDecoration(
@@ -110,11 +182,12 @@ class _EmailSignInFormUserProfileChangeNotifier
       textInputAction: TextInputAction.next,
       onChanged: model.updateFirstName,
       onEditingComplete: () => FocusScope.of(context).requestFocus(_fnLastName),
+      onSaved: (text) => model.updateFirstName(text),
     );
   }
 
-  TextField _buildLastNameTextField() {
-    return TextField(
+  TextFormField _buildLastNameTextField() {
+    return TextFormField(
       controller: _tecLastName,
       focusNode: _fnLastName,
       decoration: InputDecoration(
@@ -128,11 +201,12 @@ class _EmailSignInFormUserProfileChangeNotifier
       textInputAction: TextInputAction.next,
       onChanged: model.updateLastName,
       onEditingComplete: () => FocusScope.of(context).requestFocus(_fnUserName),
+      onSaved: (text) => model.updateLastName(text),
     );
   }
 
-  TextField _buildUserNameTextField() {
-    return TextField(
+  TextFormField _buildUserNameTextField() {
+    return TextFormField(
       controller: _tecUserName,
       focusNode: _fnUserName,
       decoration: InputDecoration(
@@ -147,11 +221,12 @@ class _EmailSignInFormUserProfileChangeNotifier
       onChanged: model.updateUserName,
       onEditingComplete: () =>
           FocusScope.of(context).requestFocus(_fnMobileNumber),
+      onSaved: (text) => model.updateUserName(text),
     );
   }
 
-  TextField _buildMobileNumberField() {
-    return TextField(
+  TextFormField _buildMobileNumberField() {
+    return TextFormField(
       controller: _tecMobileNumber,
       focusNode: _fnMobileNumber,
       decoration: InputDecoration(
@@ -165,73 +240,85 @@ class _EmailSignInFormUserProfileChangeNotifier
       textInputAction: TextInputAction.next,
       onChanged: model.updateMobileNumber,
       onEditingComplete: () => FocusScope.of(context).requestFocus(_fnEmail),
+      onSaved: (text) => model.updateMobileNumber(text),
     );
   }
 
-  TextField _buildEmailTextField() {
+  TextFormField _buildEmailTextField() {
     // print(_emailController.text);
-    return TextField(
-      controller: _emailController,
-      focusNode: _fnEmail,
-      decoration: InputDecoration(
-        labelText: 'Email',
-        hintText: 'test@test.com',
-        errorText: model.emailErrorText,
-        enabled: model.isLoading == false,
-      ),
-      autocorrect: false,
-      keyboardType: TextInputType.emailAddress,
-      textInputAction: TextInputAction.next,
-      onChanged: (email) => model.updateWith(emailAddress: email),
-      onEditingComplete: () => FocusScope.of(context).requestFocus(_fnPassword),
-    );
+    return TextFormField(
+        controller: _emailController,
+        focusNode: _fnEmail,
+        decoration: InputDecoration(
+          labelText: 'Email',
+          hintText: 'test@test.com',
+          errorText: model.emailErrorText,
+          enabled: model.isLoading == false,
+        ),
+        autocorrect: false,
+        keyboardType: TextInputType.emailAddress,
+        textInputAction: TextInputAction.next,
+        onChanged: (email) => model.updateWith(emailAddress: email),
+        onEditingComplete: () =>
+            FocusScope.of(context).requestFocus(_fnPassword),
+        onSaved: (email) => model.updateWith(emailAddress: email));
   }
 
-  TextField _buildPasswordTextField() {
-    return TextField(
-      controller: _passwordController,
-      focusNode: _fnPassword,
-      decoration: InputDecoration(
-        labelText: 'Password',
-        errorText: model.passwordErrorText,
-        enabled: model.isLoading == false,
-      ),
-      obscureText: true,
-      textInputAction: TextInputAction.done,
-      onChanged: (pw) => model.updateWith(emailPassword: pw),
-      onEditingComplete: _submit,
-    );
+  TextFormField _buildPasswordTextField() {
+    return TextFormField(
+        controller: _passwordController,
+        focusNode: _fnPassword,
+        decoration: InputDecoration(
+          labelText: 'Password',
+          errorText: model.passwordErrorText,
+          enabled: model.isLoading == false,
+        ),
+        obscureText: true,
+        textInputAction: TextInputAction.done,
+        onChanged: (pw) => model.updateWith(emailPassword: pw),
+        onEditingComplete: _submit,
+        onSaved: (pw) => model.updateWith(emailPassword: pw));
   }
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(16.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        mainAxisSize: MainAxisSize.min,
-        children: _buildChildren(),
+      child: Form(
+        key: _ProfileSignInFormKey,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          mainAxisSize: MainAxisSize.min,
+          children: _buildChildren(),
+        ),
       ),
     );
   }
 
   List<Widget> _buildChildren() {
+    // print(model.formType);
     return [
-      if (model.formType == EmailSignInFormType.register)
+      if (model.formType == EmailSignInFormType.register ||
+          hasExistingUserProfile)
         ..._registeringFields(),
       _buildEmailTextField(),
-      SizedBox(height: 8.0),
-      _buildPasswordTextField(),
+      if (!hasExistingUserProfile) ..._showPassword(),
       SizedBox(height: 8.0),
       FormSubmitButton(
-        text: model.primaryButtonText,
-        onPressed: model.canSubmit ? _submit : null,
+        text:
+            hasExistingUserProfile ? "Update Profile" : model.primaryButtonText,
+        onPressed: hasExistingUserProfile
+            ? _submit
+            : model.canSubmit
+                ? _submit
+                : null,
       ),
       SizedBox(height: 8.0),
-      FlatButton(
-        child: Text(model.secondaryButtonText),
-        onPressed: !model.isLoading ? _toggleFormType : null,
-      ),
+      if (!hasExistingUserProfile)
+        TextButton(
+          child: Text(model.secondaryButtonText),
+          onPressed: !model.isLoading ? _toggleFormType : null,
+        ),
     ];
   }
 
@@ -248,6 +335,13 @@ class _EmailSignInFormUserProfileChangeNotifier
       SizedBox(height: 8.0),
       _buildMobileNumberField(),
       SizedBox(height: 8.0),
+    ];
+  }
+
+  List<Widget> _showPassword() {
+    return [
+      SizedBox(height: 8.0),
+      _buildPasswordTextField(),
     ];
   }
 }
