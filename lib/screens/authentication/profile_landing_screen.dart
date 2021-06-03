@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:foodrop/core/authentication/authentication_service.dart';
 import 'package:foodrop/core/models/UserProfile/UserProfile.dart';
 import 'package:foodrop/screens/authentication/sign_in_page.dart';
-import 'package:foodrop/screens/client/profile/client_profile_screen.dart';
+import 'package:foodrop/screens/client/profile/profile_home_screen.dart';
 import 'package:provider/provider.dart';
 
 class ProfileLandingScreen extends StatefulWidget {
@@ -23,10 +23,17 @@ class _ProfileLandingScreenState extends State<ProfileLandingScreen> {
     _onUserStateChanges(_getCurrentUser(context));
 
     return _userLoggedIn
+        // ? Consumer<UserProfile>(builder: (_, userProfile, __) {
+        //     print(userProfile);
+        //     return ClientProfileScreen(
+        //       userFile: userProfile,
+        //       //onLoggedIn: () => _onLoggedIn(context),
+        //     );
+        //   })
         ? Consumer<UserProfile>(builder: (_, userProfile, __) {
             print(userProfile);
-            return ClientProfileScreen(
-              userFile: userProfile,
+            return ProfileHomeScreen(
+              userProfile: userProfile,
               //onLoggedIn: () => _onLoggedIn(context),
             );
           })
