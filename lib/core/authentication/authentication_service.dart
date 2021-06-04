@@ -77,6 +77,7 @@ class AuthenticationService {
   }
 
   Stream<UserProfile> onAuthChangeStream() {
+    print("####### Trigger onAuthChangeStream #####");
     return _auth
         .authStateChanges()
         .map((user) => _firebaseUserToUserClient(user));
@@ -87,7 +88,7 @@ class AuthenticationService {
   }
 
   // Future<void> signOut() async {
-  //   // final googleSignIn = GoogleSignIn();
+  //   // final googleSignIn = GooggleSignIn();
   //   // await googleSignIn.signOut();
   //   // final facebookLogin = FacebookLogin();
   //   // await facebookLogin.logOut();

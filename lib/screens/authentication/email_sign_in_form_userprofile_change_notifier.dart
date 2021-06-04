@@ -76,7 +76,7 @@ class _EmailSignInFormUserProfileChangeNotifier
       }
       print("signed in attempted");
       Navigator.of(context).pop();
-      Navigator.of(context).pop();
+      //Navigator.of(context).pop();
     } on FirebaseAuthException catch (e) {
       showExceptionAlertDialog(
         context,
