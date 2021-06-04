@@ -25,16 +25,16 @@ class HomeTileWidget extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Expanded(
-              child: Image.network(
-                _item.imageurl,
-                loadingBuilder: (context, child, loadingProgress) {
-                  if (loadingProgress == null) return child;
-                  return Center(child: CircularProgressIndicator());
-                },
-                fit: BoxFit.cover,
-              ),
-            ),
+            Expanded(child: Placeholder()
+                // child: Image.network(
+                //   _item.imageurl,
+                //   loadingBuilder: (context, child, loadingProgress) {
+                //     if (loadingProgress == null) return child;
+                //     return Center(child: CircularProgressIndicator());
+                //   },
+                //   fit: BoxFit.cover,
+                // ),
+                ),
             SizedBox(height: 8),
             Padding(
               padding: EdgeInsets.symmetric(vertical: 0, horizontal: 8),
@@ -55,9 +55,14 @@ class HomeTileWidget extends StatelessWidget {
                     child: Wrap(
                       alignment: WrapAlignment.center,
                       children: [
-                        CircleAvatar(radius: 10, backgroundImage: NetworkImage(_item.avatarurl)),
+                        CircleAvatar(
+                            radius: 10,
+                            backgroundImage: NetworkImage(_item.avatarurl)),
                         SizedBox(width: 8),
-                        Text(_item.username, overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: 12, color: Colors.grey[300])),
+                        Text(_item.username,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                                fontSize: 12, color: Colors.grey[300])),
                         SizedBox(width: 8),
                       ],
                     ),
@@ -68,7 +73,10 @@ class HomeTileWidget extends StatelessWidget {
                       children: [
                         Icon(Icons.favorite, color: Colors.red, size: 16),
                         SizedBox(width: 8),
-                        Text(_item.numOfFavourites.toString(), overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: 12, color: Colors.grey[300]))
+                        Text(_item.numOfFavourites.toString(),
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                                fontSize: 12, color: Colors.grey[300]))
                       ],
                     ),
                   )
