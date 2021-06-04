@@ -33,34 +33,20 @@ class _ClientBottomNavigationState extends State<ClientBottomNavigation> {
 
   @override
   Widget build(BuildContext context) {
-<<<<<<< HEAD
-    final user = Provider.of<UserClient>(context);
-=======
-    final user = Provider.of<UserProfile>(context);
-    print("build clientBottomNavigation ");
-    if (user != null) {
-      print("user email address: ${user.emailAddress}");
-    }
-
->>>>>>> 02e53423c02f9bd8f93f0f50115bc167155d4b72
     return Scaffold(
-      // appBar: AppBar(
-      //   actions: [Text("Sign In")],
-      // ),
       body: _clientBottomNavigationScreens[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         onTap: onTapHandler,
         currentIndex: _selectedIndex,
-        backgroundColor: Colors.grey[800],
+        backgroundColor: Colors.grey[900],
+        selectedItemColor: Colors.white,
+        unselectedItemColor: Colors.grey[500],
         items: [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.favorite), label: "Favourite"),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.card_giftcard), label: "Gift"),
-          BottomNavigationBarItem(icon: Icon(Icons.fastfood), label: "Orders"),
-          // BottomNavigationBarItem(icon: Icon(Icons.account_circle), label: "Profile"),
+          BottomNavigationBarItem(icon: Icon(Icons.home_rounded, size: 35), label: ""),
+          BottomNavigationBarItem(icon: Icon(Icons.search, size: 35), label: ""),
+          BottomNavigationBarItem(icon: Icon(Icons.comment_rounded, size: 35), label: ""),
+          BottomNavigationBarItem(icon: Icon(Icons.person_rounded, size: 35), label: ""),
         ],
       ),
     );
