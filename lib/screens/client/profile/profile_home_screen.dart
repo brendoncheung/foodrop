@@ -11,6 +11,12 @@ class ProfileHomeScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text("Profile"),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.logout),
+            onPressed: () {},
+          )
+        ],
       ),
       body: Container(
         child: Column(
@@ -21,6 +27,7 @@ class ProfileHomeScreen extends StatelessWidget {
                 onTap: () => Navigator.of(context).push(MaterialPageRoute(
                     builder: (context) =>
                         EmailSignInFormUserProfileChangeNotifier.create(
+                            context: context,
                             firebaseUserProfile: userProfile)))),
             ListTile(
               title: Text("Join a business"),

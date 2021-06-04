@@ -47,9 +47,7 @@ class ClientBottomNavigation extends StatefulWidget {
               break;
             case ConnectionState.active:
               {
-                return ChangeNotifierProvider<UserProfile>(
-                    create: (context) => snapshot.data,
-                    child: ClientBottomNavigation(userProfile: snapshot.data));
+                return ChangeNotifierProvider<UserProfile>(create: (context) => snapshot.data, child: ClientBottomNavigation(userProfile: snapshot.data));
               }
               break;
             default:
@@ -67,13 +65,7 @@ class ClientBottomNavigation extends StatefulWidget {
 
 class _ClientBottomNavigationState extends State<ClientBottomNavigation> {
   var _selectedIndex = 0;
-  final _clientBottomNavigationScreens = [
-    ClientHomeScreen(),
-    ClientFavouriteScreen(),
-    ClientGiftScreen(),
-    ClientOrderScreen(),
-    ProfileLandingScreen()
-  ];
+  final _clientBottomNavigationScreens = [ClientHomeScreen(), ClientFavouriteScreen(), ClientGiftScreen(), ClientOrderScreen(), ProfileLandingScreen()];
 
   void onTapHandler(int index) {
     setState(() {
@@ -92,16 +84,15 @@ class _ClientBottomNavigationState extends State<ClientBottomNavigation> {
         type: BottomNavigationBarType.fixed,
         onTap: onTapHandler,
         currentIndex: _selectedIndex,
-        backgroundColor: Colors.grey[800],
+        backgroundColor: Colors.grey[900],
+        selectedItemColor: Colors.white,
+        unselectedItemColor: Colors.grey[500],
         items: [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.favorite), label: "Favourite"),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.card_giftcard), label: "Gift"),
-          BottomNavigationBarItem(icon: Icon(Icons.fastfood), label: "Orders"),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.account_circle), label: "Profile"),
+          BottomNavigationBarItem(icon: Icon(Icons.home_rounded, size: 35), label: ""),
+          BottomNavigationBarItem(icon: Icon(Icons.search, size: 35), label: ""),
+          BottomNavigationBarItem(icon: Icon(Icons.comment_rounded, size: 35), label: ""),
+          BottomNavigationBarItem(icon: Icon(Icons.person_rounded, size: 35), label: ""),
+          BottomNavigationBarItem(icon: Icon(Icons.account_circle), label: ""),
         ],
       ),
     );

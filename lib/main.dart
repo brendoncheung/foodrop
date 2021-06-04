@@ -1,14 +1,9 @@
 import 'dart:io' show Platform;
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:foodrop/core/authentication/authentication_service.dart';
-import 'package:foodrop/core/repositories/vendor/vendor_menu_item_repository.dart';
-import 'package:foodrop/core/services/firestore_service.dart';
 import 'package:foodrop/screens/authentication/_sign_up_screen.dart';
 import 'package:foodrop/screens/authentication/authentication_flow_wrapper.dart';
-import 'package:foodrop/screens/client/theme/client_theme_data.dart';
 import 'package:foodrop/screens/error/unknown_route_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -46,7 +41,6 @@ class _FoodropRootState extends State<FoodropRoot> {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        Provider(create: (_) => VendorMenuItemRepository()),
         Provider(create: (_) => AuthenticationService()),
       ],
       child: MaterialApp(

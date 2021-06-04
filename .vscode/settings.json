@@ -1,0 +1,5 @@
+{
+    "diffEditor.wordWrap": "off",
+    "editor.wordWrapColumn": 160,
+    "dart.lineLength": 200
+}
