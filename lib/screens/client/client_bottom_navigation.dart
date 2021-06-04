@@ -92,8 +92,16 @@ class _ClientBottomNavigationState extends State<ClientBottomNavigation> {
         type: BottomNavigationBarType.fixed,
         onTap: onTapHandler,
         currentIndex: _selectedIndex,
-        backgroundColor: Colors.grey[800],
+        backgroundColor: Colors.grey[900],
+        selectedItemColor: Colors.white,
+        unselectedItemColor: Colors.grey[500],
         items: [
+// <<<<<<< HEAD
+//           BottomNavigationBarItem(icon: Icon(Icons.home_rounded, size: 35), label: ""),
+//           BottomNavigationBarItem(icon: Icon(Icons.search, size: 35), label: ""),
+//           BottomNavigationBarItem(icon: Icon(Icons.comment_rounded, size: 35), label: ""),
+//           BottomNavigationBarItem(icon: Icon(Icons.person_rounded, size: 35), label: ""),
+// =======
           BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
           BottomNavigationBarItem(
               icon: Icon(Icons.favorite), label: "Favourite"),
@@ -102,6 +110,7 @@ class _ClientBottomNavigationState extends State<ClientBottomNavigation> {
           BottomNavigationBarItem(icon: Icon(Icons.fastfood), label: "Orders"),
           BottomNavigationBarItem(
               icon: Icon(Icons.account_circle), label: "Profile"),
+// >>>>>>> master
         ],
       ),
     );

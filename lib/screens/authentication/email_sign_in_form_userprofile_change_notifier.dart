@@ -17,9 +17,7 @@ class EmailSignInFormUserProfileChangeNotifier extends StatefulWidget {
   // VoidCallback onLoggedIn;
   UserProfile userUpdateProfileModel;
   static Widget create(
-      {BuildContext context,
-      // VoidCallback onLoggedIn,
-      UserProfile firebaseUserProfile}) {
+      {BuildContext context, UserProfile firebaseUserProfile}) {
     print("****** create Sign In Form ******");
     final auth = Provider.of<AuthenticationService>(context, listen: false);
     return ChangeNotifierProvider<UserProfile>(
@@ -28,7 +26,6 @@ class EmailSignInFormUserProfileChangeNotifier extends StatefulWidget {
         builder: (_, signInModel, __) =>
             EmailSignInFormUserProfileChangeNotifier(
                 model: signInModel,
-                // onLoggedIn: onLoggedIn,
                 userUpdateProfileModel: firebaseUserProfile),
       ),
     );
@@ -245,7 +242,6 @@ class _EmailSignInFormUserProfileChangeNotifier
   }
 
   TextFormField _buildEmailTextField() {
-    // print(_emailController.text);
     return TextFormField(
         controller: _emailController,
         focusNode: _fnEmail,
@@ -284,12 +280,14 @@ class _EmailSignInFormUserProfileChangeNotifier
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(16.0),
-      child: Form(
-        key: _ProfileSignInFormKey,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          mainAxisSize: MainAxisSize.min,
-          children: _buildChildren(),
+      child: SingleChildScrollView(
+        child: Form(
+          key: _ProfileSignInFormKey,
+          child: Column(
+            // crossAxisAlignment: CrossAxisAlignment.stretch,
+            mainAxisSize: MainAxisSize.min,
+            children: _buildChildren(),
+          ),
         ),
       ),
     );
