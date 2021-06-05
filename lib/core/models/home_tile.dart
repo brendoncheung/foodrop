@@ -4,12 +4,16 @@ class HomeTile {
   String _avatar_url;
   String _username;
   int _favourite;
+  double _price;
+  int _numSold;
 
-  HomeTile({String title, String image_url, String avatar_url, String username, int favourite})
+  HomeTile({String title, String image_url, String avatar_url, String username, int favourite, double price, int numSold})
       : _title = title,
         _image_url = image_url,
         _avatar_url = avatar_url,
         _username = username,
+        _price = price,
+        _numSold = numSold,
         _favourite = favourite;
 
   String get imageurl {
@@ -30,5 +34,9 @@ class HomeTile {
 
   String get title {
     return _title;
+  }
+
+  double get price {
+    return _price;
   }
 }

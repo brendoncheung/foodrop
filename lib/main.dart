@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:foodrop/core/authentication/authentication_service.dart';
 import 'package:foodrop/screens/authentication/_sign_up_screen.dart';
 import 'package:foodrop/screens/authentication/authentication_flow_wrapper.dart';
+import 'package:foodrop/screens/client/home/detail/home_tile_detail_screen.dart';
 import 'package:foodrop/screens/error/unknown_route_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -14,7 +15,7 @@ void main() async {
   // https://stackoverflow.com/questions/63873338/what-does-widgetsflutterbinding-ensureinitialized-d
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  debugPaintSizeEnabled = false;
+  debugPaintSizeEnabled = true;
   runApp(FoodropRoot());
 }
 
@@ -37,6 +38,7 @@ class _FoodropRootState extends State<FoodropRoot> {
         home: AuthenticationFlowWrapper(),
         routes: {
           SignUpScreen.ROUTE_NAME: (_) => SignUpScreen(),
+          HomeTileDetailScreen.ROUTE_NAME: (_) => HomeTileDetailScreen(),
         },
         onUnknownRoute: (settings) {
           return MaterialPageRoute(

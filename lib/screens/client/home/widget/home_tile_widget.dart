@@ -2,9 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:foodrop/core/models/home_tile.dart';
 
 class HomeTileWidget extends StatelessWidget {
-  HomeTile _item;
+  HomeTile _tile;
+  void Function(HomeTile) _onTileTapped;
 
-  HomeTileWidget({HomeTile item}) : _item = item;
+  HomeTileWidget({HomeTile tile, void Function(HomeTile) onTileTapped}) {
+    this._tile = tile;
+    this._onTileTapped = onTileTapped;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -12,9 +16,8 @@ class HomeTileWidget extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         ScaffoldMessenger.of(context).hideCurrentSnackBar();
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text("${_item.username} selected"),
-        ));
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("${_tile.username} selected")));
+        _onTileTapped(_tile);
       },
       child: Container(
         clipBehavior: Clip.antiAlias,
@@ -40,7 +43,7 @@ class HomeTileWidget extends StatelessWidget {
             Padding(
               padding: EdgeInsets.symmetric(vertical: 0, horizontal: 8),
               child: Text(
-                _item.title,
+                _tile.title,
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(color: Colors.white),
               ),
@@ -56,14 +59,9 @@ class HomeTileWidget extends StatelessWidget {
                     child: Wrap(
                       alignment: WrapAlignment.center,
                       children: [
-                        CircleAvatar(
-                            radius: 10,
-                            backgroundImage: NetworkImage(_item.avatarurl)),
+                        CircleAvatar(radius: 10, backgroundImage: NetworkImage(_tile.avatarurl)),
                         SizedBox(width: 8),
-                        Text(_item.username,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                                fontSize: 12, color: Colors.grey[300])),
+                        Text(_tile.username, overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: 12, color: Colors.grey[300])),
                         SizedBox(width: 8),
                       ],
                     ),
@@ -74,10 +72,7 @@ class HomeTileWidget extends StatelessWidget {
                       children: [
                         Icon(Icons.favorite, color: Colors.red, size: 16),
                         SizedBox(width: 8),
-                        Text(_item.numOfFavourites.toString(),
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                                fontSize: 12, color: Colors.grey[300]))
+                        Text(_tile.numOfFavourites.toString(), overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: 12, color: Colors.grey[300]))
                       ],
                     ),
                   )
