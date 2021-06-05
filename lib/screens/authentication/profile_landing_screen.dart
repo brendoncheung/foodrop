@@ -1,27 +1,87 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:foodrop/core/authentication/authentication_service.dart';
 import 'package:foodrop/core/models/UserProfile/UserProfile.dart';
 import 'package:foodrop/screens/authentication/sign_in_page.dart';
-import 'package:foodrop/screens/client/profile/client_profile_screen.dart';
+import 'package:foodrop/screens/client/profile/profile_home_screen.dart';
 import 'package:provider/provider.dart';
 
-class ProfileLandingScreen extends StatelessWidget {
+class ProfileLandingScreen extends StatefulWidget {
+  // ProfileLandingScreen({this.onLoggedIn});
+  // VoidCallback onLoggedIn;
+  @override
+  _ProfileLandingScreenState createState() => _ProfileLandingScreenState();
+}
+
+class _ProfileLandingScreenState extends State<ProfileLandingScreen> {
   var _userLoggedIn = false;
 
   @override
   Widget build(BuildContext context) {
-    final user = Provider.of<UserProfile>(context);
     print("build clientBottomNavigation ");
-    print("user id is: ${user.uid}");
-    if (user.emailAddress != null && user.emailAddress.isNotEmpty) {
-      try {
-        print("user email address: ${user.emailAddress}");
-        _userLoggedIn = true;
-      } catch (e) {
-        print(e);
-      }
-    } else {
-      print("xxxxx user not logged in xxxxxx");
-    }
-    return _userLoggedIn ? ClientProfileScreen() : SignInPage();
+
+    _onUserStateChanges(_getCurrentUser(context));
+
+    return _userLoggedIn
+        // ? Consumer<UserProfile>(builder: (_, userProfile, __) {
+        //     print(userProfile);
+        //     return ClientProfileScreen(
+        //       userFile: userProfile,
+        //       //onLoggedIn: () => _onLoggedIn(context),
+        //     );
+        //   })
+        ? Consumer<UserProfile>(builder: (_, userProfile, __) {
+            print(userProfile);
+            return ProfileHomeScreen(
+              userProfile: userProfile,
+              //onLoggedIn: () => _onLoggedIn(context),
+            );
+          })
+        : SignInPage(
+            //onLoggedIn: () => _onLoggedIn(context),
+            );
+
+    // return Consumer<UserProfile>(
+    //   builder: (_, userProfile, __) {
+    //     if (userProfile != null) {
+    //       return ClientProfileScreen(
+    //         onLoggedIn: () => _onLoggedIn(context),
+    //       );
+    //     }
+    //     return SignInPage(
+    //       onLoggedIn: () => _onLoggedIn(context),
+    //     );
+    //   },
+    // );
   }
+
+  User _getCurrentUser(BuildContext context) {
+    try {
+      final auth = Provider.of<AuthenticationService>(context);
+      final _user = auth.getUser();
+      return _user;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  void _onUserStateChanges(User _user) {
+    try {
+      if (_user.email != null && _user.email.isNotEmpty) {
+        setState(() {
+          _userLoggedIn = true;
+        });
+      } else {
+        print("xxxxx Profile Landing Page - user not logged in xxxxxx");
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  // void _onLoggedIn(BuildContext context) {
+  //   print(
+  //       "Triggered voidcall back on sign in / logout --------------------------");
+  // setState(() {});
+  // }
 }

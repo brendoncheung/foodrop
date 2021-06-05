@@ -25,12 +25,16 @@ class AuthenticationService {
   Future<Stream<UserProfile>> logInUserWithEmailAndPassword(
       String email, String password) async {
     await _auth.signInWithEmailAndPassword(email: email, password: password);
-    return _auth.authStateChanges().map((user) => UserProfile(
+
+    return _auth.authStateChanges().map((user) {
+      return UserProfile(
         auth: AuthenticationService(),
         uid: user.uid,
         isAnonymous: false,
         emailAddress: user.email,
-        photoUrl: user.photoURL));
+        mobileNumber: user.uid,
+      );
+    });
   }
 
   // Future<UserClient> signInWithGoogle() async {
@@ -66,7 +70,7 @@ class AuthenticationService {
   Future<void> logOutUser() async {
     // final googleSignIn = GoogleSignIn();
     // await googleSignIn.signOut(); //sign out of google
-    _auth.signOut(); // sign out from firebase
+    await _auth.signOut(); // sign out from firebase
   }
 
   Future<bool> isUserVendor() async {

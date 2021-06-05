@@ -2,12 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:foodrop/core/authentication/authentication_service.dart';
 import 'package:foodrop/core/models/UserProfile/UserProfile.dart';
 import 'package:foodrop/core/services/database.dart';
+import 'package:foodrop/screens/authentication/email_sign_in_form_userprofile_change_notifier.dart';
 import 'package:foodrop/screens/common_widgets/show_alert_dialog.dart';
 import 'package:provider/provider.dart';
 
 class ClientProfileScreen extends StatefulWidget {
-  const ClientProfileScreen({Key key, this.db}) : super(key: key);
+  const ClientProfileScreen({Key key, this.db, this.userFile})
+      : super(key: key);
   final Database db;
+  final UserProfile userFile;
 
   @override
   _ClientProfileScreenState createState() => _ClientProfileScreenState();
@@ -18,8 +21,8 @@ class _ClientProfileScreenState extends State<ClientProfileScreen> {
   final TextEditingController _tecLastName = TextEditingController();
   final TextEditingController _tecUserName = TextEditingController();
   final TextEditingController _tecMobileNumber = TextEditingController();
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _tecEmail = TextEditingController();
+  final TextEditingController _tecPassword = TextEditingController();
 
   final FocusNode _fnFirstName = FocusNode();
   final FocusNode _fnLastName = FocusNode();
@@ -36,110 +39,15 @@ class _ClientProfileScreenState extends State<ClientProfileScreen> {
     _tecLastName.dispose();
     _tecUserName.dispose();
     _tecMobileNumber.dispose();
-    _emailController.dispose();
-    _passwordController.dispose();
+    _tecEmail.dispose();
+    _tecPassword.dispose();
     _fnFirstName.dispose();
     _fnLastName.dispose();
     _fnUserName.dispose();
     _fnMobileNumber.dispose();
     _fnEmail.dispose();
     _fnPassword.dispose();
-
     super.dispose();
-  }
-
-  // final String uid;
-  // final String firstName;
-  // final String lastName;
-  // // final String age;
-  // final DateTime dob;
-  // final bool isVendor;
-  // final bool isAnonymous;
-  // final bool signedInViaEmail;
-  // final bool signedInviaGoogle;
-  // final bool signedInViaFaceBook;
-  // final String photoUrl;
-  // final String username;
-  // final String mobileNumber;
-  // final String emailAddress;
-  // final bool
-  // isMobileVerified; // verification ideally to be done every 6 month to ensure customer detail is up to date.
-  // final bool isEmailVerified;
-
-  //TODO: Text editing controller
-
-  // bool isVendorMode = false;
-  //
-  // void switchMode(bool value) {
-  //   setState(() {
-  //     isVendorMode = value;
-  //   });
-  // }
-
-  // Future<void> _showMyDialog() async {
-  //   return showDialog<void>(
-  //     context: context,
-  //     barrierDismissible: false, // user must tap button!
-  //     builder: (BuildContext context) {
-  //       return AlertDialog(
-  //         title: Text('Not a vendor'),
-  //         content: SingleChildScrollView(
-  //           child: ListBody(
-  //             children: <Widget>[
-  //               Text('You must register to become a vendor'),
-  //             ],
-  //           ),
-  //         ),
-  //         actions: <Widget>[
-  //           TextButton(
-  //             child: Text('Register'),
-  //             onPressed: () {
-  //               Navigator.of(context).pop();
-  //             },
-  //           ),
-  //           TextButton(
-  //             child: Text('Return'),
-  //             onPressed: () {
-  //               Navigator.of(context).pop();
-  //             },
-  //           ),
-  //         ],
-  //       );
-  //     },
-  //   );
-  // }
-
-  // await auth.logOutUser();
-  // Navigator.of(context).pop();
-  @override
-  Widget build(BuildContext context) {
-    // var auth = Provider.of<AuthenticationService>(context);
-    final db = Provider.of<Database>(context);
-    final userFirebase = db.userClientStream();
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Profile"),
-        actions: [
-          IconButton(
-            onPressed: _confirmSignOut,
-            icon: Icon(Icons.logout),
-          )
-        ],
-      ),
-      body: StreamBuilder<UserProfile>(
-        stream: db.userClientStream(),
-        builder: (context, snapshot) {
-          try {
-            if (snapshot.hasData) {
-              return Text(snapshot.data.uid);
-            }
-          } catch (e) {
-            print("snapshot has no data");
-          }
-          return Text("No data");
-        },
-      ),
-    );
   }
 
   Future<void> _confirmSignOut() async {
@@ -159,9 +67,89 @@ class _ClientProfileScreenState extends State<ClientProfileScreen> {
     try {
       final auth = Provider.of<AuthenticationService>(context, listen: false);
       await auth.logOutUser();
+      // widget.onLoggedIn();
       // Navigator.of(context).pop();
     } catch (e) {
       print(e.toString());
     }
+  }
+
+  Widget _buildForm(BuildContext context, UserProfile uProfile) {
+    print(uProfile);
+    return EmailSignInFormUserProfileChangeNotifier.create(
+        context: context, firebaseUserProfile: uProfile);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    print("rebuild ClientProfileScreen");
+    // print(widget.userProfile.firstName);
+    //final auth = Provider.of<AuthenticationService>(context);
+    //final db = Provider.of<Database>(context);
+    //final uid = auth.getUser().uid;
+    // print(widget.userFile);
+
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Profile"),
+        actions: [
+          IconButton(
+            onPressed: _confirmSignOut,
+            icon: Icon(Icons.logout),
+          )
+        ],
+      ),
+      body: _buildForm(context, widget.userFile),
+      // body: StreamBuilder<UserProfile>(
+      //   stream: db.userClientStream(uid),
+      //   builder: (context, snapshot) {
+      //     switch (snapshot.connectionState) {
+      //       case ConnectionState.waiting:
+      //         {
+      //           return _circularProgressIndicatorInCenter();
+      //         }
+      //         break;
+      //       case ConnectionState.active:
+      //         {
+      //           try {
+      //             if (snapshot.hasData) {
+      //               var _userProfile = snapshot.data;
+      //
+      //               print(
+      //                   "XXXXX Client Profile Screen XXXXX ${snapshot.data.toMap().toString()}");
+      //
+      //               return EmailSignInFormUserProfileChangeNotifier.create(
+      //                   context: context, firebaseUserProfile: _userProfile);
+      //             } else {
+      //               return Center(child: Container(child: Text("No Data")));
+      //             }
+      //           } catch (e) {
+      //             print(e);
+      //           }
+      //         }
+      //         break;
+      //       default:
+      //         {
+      //           return Center(child: Container(child: Text("No Data")));
+      //         }
+      //     }
+      //
+      //     return _circularProgressIndicatorInCenter();
+      //   },
+      // ),
+    );
+  }
+
+  Widget _circularProgressIndicatorInCenter() {
+    return Center(
+        child: Container(
+      child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+        Text("Loading"),
+        SizedBox(
+          height: 10,
+        ),
+        CircularProgressIndicator()
+      ]),
+    ));
   }
 }

@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:foodrop/core/services/database.dart';
-import 'package:provider/provider.dart';
 
 import '../../screens/authentication/widgets/sign_in_button.dart';
 import '../../screens/authentication/widgets/social_sign_in_button.dart';
@@ -14,6 +12,8 @@ import 'email_sign_in_page.dart';
 //import 'package:time_tracker_flutter_course/app/widgets/social_sign_in_button.dart';
 
 class SignInPage extends StatelessWidget {
+  // SignInPage({this.onLoggedIn});
+  // VoidCallback onLoggedIn;
 //  Auth auth;
 
 //  const SignInPage({Key key, this.auth}) : super(key: key);
@@ -39,7 +39,10 @@ class SignInPage extends StatelessWidget {
     // final userClient = Provider.of<UserClient>(context);
 
     Navigator.of(context).push(MaterialPageRoute(
-        fullscreenDialog: true, builder: (context) => EmailSignInPage()));
+        fullscreenDialog: true,
+        builder: (context) => EmailSignInPage(
+            // onLoggedIn: onLoggedIn,
+            )));
   }
 
   @override
