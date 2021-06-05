@@ -11,6 +11,7 @@ import 'logout_await_screen.dart';
 class AuthenticationFlowWrapper extends StatelessWidget {
   static String ROUTE_NAME = "/authentication-wrapper";
   var errorDetected = false;
+
   @override
   Widget build(BuildContext context) {
     var auth = Provider.of<AuthenticationService>(context, listen: false);
@@ -29,9 +30,8 @@ class AuthenticationFlowWrapper extends StatelessWidget {
 
             try {
               print("rebuilding Consumer <UserProfile>");
+              print(" auth.UID: ${auth.getUser().uid} xxxxxxxxx");
 
-              // print("is anonymous ${userProfile.isAnonymous}");
-              // signInAnonymously if the user hasn't signed in yet.
               if (userProfile == null) {
                 auth.signInAnonymous();
                 print("Consumer<UserProfile> userProfile is null");
