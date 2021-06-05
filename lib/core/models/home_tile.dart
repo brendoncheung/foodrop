@@ -39,4 +39,8 @@ class HomeTile {
   double get price {
     return _price;
   }
+
+  int get numSold {
+    return _numSold;
+  }
 }
