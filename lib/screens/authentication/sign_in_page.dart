@@ -49,8 +49,7 @@ class SignInPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title:
-            Align(alignment: Alignment.center, child: Text('Restaurant Diary')),
+        title: Align(alignment: Alignment.center, child: Text('Restaurant Diary')),
         elevation: 4.0,
       ),
       body: _buildContent(context),
@@ -59,6 +58,7 @@ class SignInPage extends StatelessWidget {
   }
 
   Widget _buildContent(BuildContext context) {
+    print("signed in");
     return Padding(
       padding: EdgeInsets.all(16.0),
       child: Column(
