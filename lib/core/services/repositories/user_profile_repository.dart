@@ -19,9 +19,4 @@ class UserProfileRepository {
           return UserProfile.fromMap(data, id);
         });
   }
-
-  // Stream<UserProfile> fetchUserProfile() async {
-
-  // }
-
 }

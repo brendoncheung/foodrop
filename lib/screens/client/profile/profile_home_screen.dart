@@ -1,7 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:foodrop/core/authentication/authentication_service.dart';
 import 'package:foodrop/core/models/UserProfile.dart';
 import 'package:foodrop/core/services/database.dart';
+import 'package:foodrop/core/services/repositories/user_profile_repository.dart';
 import 'package:foodrop/screens/common_widgets/show_alert_dialog.dart';
 import 'package:provider/provider.dart';
 
@@ -53,9 +55,16 @@ class ProfileHomeScreen extends StatelessWidget {
         child: Column(
           children: [
             ListTile(
-                title: Text("Update Profile"),
-                trailing: Icon(Icons.chevron_right),
-                onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => ClientProfileScreen(db: db, userFile: userProfile)))),
+              title: Text("Update Profile"),
+              trailing: Icon(Icons.chevron_right),
+              onTap: () => Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) {
+                    return ClientProfileScreen(db: db, userFile: userProfile);
+                  },
+                ),
+              ),
+            ),
             ListTile(
               title: Text("Join a business"),
               trailing: Icon(Icons.chevron_right),
