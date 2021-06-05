@@ -67,7 +67,7 @@ class _ClientProfileScreenState extends State<ClientProfileScreen> {
       final auth = Provider.of<AuthenticationService>(context, listen: false);
       await auth.logOutUser();
       // widget.onLoggedIn();
-      // Navigator.of(context).pop();
+      Navigator.of(context).pop();
     } catch (e) {
       print(e.toString());
     }
