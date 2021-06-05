@@ -15,17 +15,6 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   debugPaintSizeEnabled = false;
-
-  // connect authentication emulator
-  // try {
-  //   String host = Platform.isAndroid ? '10.0.2.2:8080' : ' :8080';
-  //   FirebaseFirestore.instance.settings =
-  //       Settings(host: host, sslEnabled: false, persistenceEnabled: false);
-  //   await FirebaseAuth.instance.useEmulator('http://localhost:9099');
-  // } catch (e) {
-  //   print("unable to connect and use emulator");
-  // }
-
   runApp(FoodropRoot());
 }
 

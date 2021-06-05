@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:foodrop/core/authentication/authentication_service.dart';
-import 'package:foodrop/core/models/UserProfile/UserProfile.dart';
+import 'package:foodrop/core/models/UserProfile.dart';
 import 'package:foodrop/core/services/database.dart';
 import 'package:foodrop/screens/client/client_bottom_navigation.dart';
 import 'package:provider/provider.dart';
@@ -59,11 +59,7 @@ class AuthenticationFlowWrapper extends StatelessWidget {
 
             return errorDetected
                 ? LogoutAwaitScreen()
-                : Provider<Database>(
-                    create: (_) => FirestoreDatabase(uid: user.uid),
-                    child: Consumer<Database>(
-                        builder: (_, db, __) =>
-                            ClientBottomNavigation.create(context, db)));
+                : Provider<Database>(create: (_) => FirestoreDatabase(uid: user.uid), child: Consumer<Database>(builder: (_, db, __) => ClientBottomNavigation.create(context, db)));
           },
         );
       },
@@ -72,8 +68,7 @@ class AuthenticationFlowWrapper extends StatelessWidget {
 
   void _updateUserProfile(String uid) async {
     try {
-      final _userProfile =
-          await FirestoreDatabase().userClientStream(uid).first;
+      final _userProfile = await FirestoreDatabase().userClientStream(uid).first;
       print(_userProfile);
       FirebaseAuth.instance.authStateChanges().map((user) => _userProfile);
     } catch (e) {

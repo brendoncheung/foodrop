@@ -6,38 +6,31 @@ import 'package:foodrop/core/services/database.dart';
 import 'package:foodrop/screens/common_widgets/show_alert_dialog.dart';
 import 'package:provider/provider.dart';
 
-import '../../core/models/UserProfile/UserProfile.dart';
+import '../../core/models/UserProfile.dart';
 import '../common_widgets/form_submit_button.dart';
 import '../common_widgets/show_exception_alert_dialog.dart';
 
 class EmailSignInFormUserProfileChangeNotifier extends StatefulWidget {
-  EmailSignInFormUserProfileChangeNotifier(
-      {@required this.model, this.userUpdateProfileModel});
+  EmailSignInFormUserProfileChangeNotifier({@required this.model, this.userUpdateProfileModel});
   final UserProfile model;
   // VoidCallback onLoggedIn;
   UserProfile userUpdateProfileModel;
-  static Widget create(
-      {BuildContext context, UserProfile firebaseUserProfile}) {
+  static Widget create({BuildContext context, UserProfile firebaseUserProfile}) {
     print("****** create Sign In Form ******");
     final auth = Provider.of<AuthenticationService>(context, listen: false);
     return ChangeNotifierProvider<UserProfile>(
       create: (_) => UserProfile(auth: auth),
       child: Consumer<UserProfile>(
-        builder: (_, signInModel, __) =>
-            EmailSignInFormUserProfileChangeNotifier(
-                model: signInModel,
-                userUpdateProfileModel: firebaseUserProfile),
+        builder: (_, signInModel, __) => EmailSignInFormUserProfileChangeNotifier(model: signInModel, userUpdateProfileModel: firebaseUserProfile),
       ),
     );
   }
 
   @override
-  _EmailSignInFormUserProfileChangeNotifier createState() =>
-      _EmailSignInFormUserProfileChangeNotifier();
+  _EmailSignInFormUserProfileChangeNotifier createState() => _EmailSignInFormUserProfileChangeNotifier();
 }
 
-class _EmailSignInFormUserProfileChangeNotifier
-    extends State<EmailSignInFormUserProfileChangeNotifier> {
+class _EmailSignInFormUserProfileChangeNotifier extends State<EmailSignInFormUserProfileChangeNotifier> {
   var hasExistingUserProfile = false;
 
   @override
@@ -64,15 +57,12 @@ class _EmailSignInFormUserProfileChangeNotifier
         );
 
         hasExistingUserProfile = true;
-        widget.userUpdateProfileModel
-            .updateWith(formType: EmailSignInFormType.update);
+        widget.userUpdateProfileModel.updateWith(formType: EmailSignInFormType.update);
         _tecFirstName.text = widget.userUpdateProfileModel.firstName ?? "";
         _tecLastName.text = widget.userUpdateProfileModel.lastName ?? "";
         _tecUserName.text = widget.userUpdateProfileModel.username ?? "";
-        _tecMobileNumber.text =
-            widget.userUpdateProfileModel.mobileNumber ?? "";
-        _emailController.text =
-            widget.userUpdateProfileModel.emailAddress ?? "";
+        _tecMobileNumber.text = widget.userUpdateProfileModel.mobileNumber ?? "";
+        _emailController.text = widget.userUpdateProfileModel.emailAddress ?? "";
       }
     } catch (e) {
       print("userProfile from firebase not found");
@@ -122,10 +112,7 @@ class _EmailSignInFormUserProfileChangeNotifier
       try {
         final db1 = FirestoreDatabase(uid: model.uid);
         await db1.setUser(model);
-        showAlertDialog(context,
-            title: "User Profile",
-            content: "Update Successful",
-            defaultActionText: "OK");
+        showAlertDialog(context, title: "User Profile", content: "Update Successful", defaultActionText: "OK");
         // Navigator.of(context).pop();
       } catch (e) {
         showExceptionAlertDialog(
@@ -138,8 +125,7 @@ class _EmailSignInFormUserProfileChangeNotifier
       try {
         _ProfileSignInFormKey.currentState.save();
         // print(model);
-        await model
-            .submit(); // this will sign in Or create new user then sign them in
+        await model.submit(); // this will sign in Or create new user then sign them in
         // if form type is register, store user details to firebase
         if (model.formType == EmailSignInFormType.register) {
           final db = FirestoreDatabase(uid: model.uid);
@@ -216,8 +202,7 @@ class _EmailSignInFormUserProfileChangeNotifier
       // keyboardType: TextInputType.emailAddress,
       textInputAction: TextInputAction.next,
       onChanged: model.updateUserName,
-      onEditingComplete: () =>
-          FocusScope.of(context).requestFocus(_fnMobileNumber),
+      onEditingComplete: () => FocusScope.of(context).requestFocus(_fnMobileNumber),
       onSaved: (text) => model.updateUserName(text),
     );
   }
@@ -255,8 +240,7 @@ class _EmailSignInFormUserProfileChangeNotifier
         keyboardType: TextInputType.emailAddress,
         textInputAction: TextInputAction.next,
         onChanged: (email) => model.updateWith(emailAddress: email),
-        onEditingComplete: () =>
-            FocusScope.of(context).requestFocus(_fnPassword),
+        onEditingComplete: () => FocusScope.of(context).requestFocus(_fnPassword),
         onSaved: (email) => model.updateWith(emailAddress: email));
   }
 
@@ -278,15 +262,17 @@ class _EmailSignInFormUserProfileChangeNotifier
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: SingleChildScrollView(
-        child: Form(
-          key: _ProfileSignInFormKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            mainAxisSize: MainAxisSize.min,
-            children: _buildChildren(),
+    return Scaffold(
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: SingleChildScrollView(
+          child: Form(
+            key: _ProfileSignInFormKey,
+            child: Column(
+              // crossAxisAlignment: CrossAxisAlignment.stretch,
+              mainAxisSize: MainAxisSize.min,
+              children: _buildChildren(),
+            ),
           ),
         ),
       ),
@@ -296,15 +282,12 @@ class _EmailSignInFormUserProfileChangeNotifier
   List<Widget> _buildChildren() {
     // print(model.formType);
     return [
-      if (model.formType == EmailSignInFormType.register ||
-          hasExistingUserProfile)
-        ..._registeringFields(),
+      if (model.formType == EmailSignInFormType.register || hasExistingUserProfile) ..._registeringFields(),
       _buildEmailTextField(),
       if (!hasExistingUserProfile) ..._showPassword(),
       SizedBox(height: 8.0),
       FormSubmitButton(
-        text:
-            hasExistingUserProfile ? "Update Profile" : model.primaryButtonText,
+        text: hasExistingUserProfile ? "Update Prgggofile" : model.primaryButtonText,
         onPressed: hasExistingUserProfile
             ? _submit
             : model.canSubmit
