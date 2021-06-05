@@ -1,4 +1,4 @@
-import 'package:foodrop/core/models/UserProfile/UserProfile.dart';
+import 'package:foodrop/core/models/UserProfile.dart';
 
 import 'api_path.dart';
 import 'firestore_service.dart';
@@ -23,7 +23,7 @@ class FirestoreDatabase implements Database {
 
   @override
   Stream<UserProfile> userClientStream(String uid) => _service.documentStream(
-        path: APIPath.user(uid: uid),
+        path: APIPath.userById(uid: uid),
         builder: (data, documentId) => UserProfile.fromMap(data, uid),
       );
 
@@ -31,7 +31,7 @@ class FirestoreDatabase implements Database {
     // print("path: ${APIPath.user(uid: uid)}");
     // print("map: ${user.toMap()}");
     await FirestoreService.instance.setData(
-      path: APIPath.user(uid: uid),
+      path: APIPath.userById(uid: uid),
       data: user.toMap(), // return a user object in Map format
     );
 

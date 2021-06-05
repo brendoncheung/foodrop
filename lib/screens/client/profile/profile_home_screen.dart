@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:foodrop/core/models/UserProfile/UserProfile.dart';
+import 'package:foodrop/core/models/UserProfile.dart';
 import 'package:foodrop/core/services/database.dart';
 import 'package:provider/provider.dart';
 
@@ -29,9 +29,7 @@ class ProfileHomeScreen extends StatelessWidget {
             ListTile(
                 title: Text("Update Profile"),
                 trailing: Icon(Icons.chevron_right),
-                onTap: () => Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) =>
-                        ClientProfileScreen(db: db, userFile: userProfile)))),
+                onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => ClientProfileScreen(db: db, userFile: userProfile)))),
             ListTile(
               title: Text("Join a business"),
               trailing: Icon(Icons.chevron_right),

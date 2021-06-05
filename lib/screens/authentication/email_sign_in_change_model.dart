@@ -59,21 +59,15 @@ class EmailSignInChangeModel with EmailAndPasswordValidators, ChangeNotifier {
   }
 
   String get primaryButtonText {
-    return formType == EmailSignInFormType.signIn
-        ? 'Sign in'
-        : 'Create an account';
+    return formType == EmailSignInFormType.signIn ? 'Sign in' : 'Create an account';
   }
 
   String get secondaryButtonText {
-    return formType == EmailSignInFormType.signIn
-        ? 'Need an account? Register'
-        : 'Have an account? Sign in';
+    return formType == EmailSignInFormType.signIn ? 'Need an account? Register' : 'Have an account? Sign in';
   }
 
   bool get canSubmit {
-    return emailValidator.isNotEmpty(email) &&
-        passwordValidator.isNotEmpty(password) &&
-        !isLoading;
+    return emailValidator.isNotEmpty(email) && passwordValidator.isNotEmpty(password) && !isLoading;
   }
 
   String get passwordErrorText {
@@ -92,9 +86,7 @@ class EmailSignInChangeModel with EmailAndPasswordValidators, ChangeNotifier {
   }
 
   void toggleFormType() {
-    final formType = this.formType == EmailSignInFormType.signIn
-        ? EmailSignInFormType.register
-        : EmailSignInFormType.signIn;
+    final formType = this.formType == EmailSignInFormType.signIn ? EmailSignInFormType.register : EmailSignInFormType.signIn;
     updateWith(
       email: '',
       password: '',
@@ -108,24 +100,13 @@ class EmailSignInChangeModel with EmailAndPasswordValidators, ChangeNotifier {
   void updateLastName(String lastName) => updateWith(lastName: lastName);
   void updateUserName(String userName) => updateWith(userName: userName);
 
-  void updateMobileNumber(String mobileNumber) =>
-      updateWith(mobileNumber: mobileNumber);
+  void updateMobileNumber(String mobileNumber) => updateWith(mobileNumber: mobileNumber);
 
   void updateEmail(String email) => updateWith(email: email);
 
   void updatePassword(String password) => updateWith(password: password);
 
-  void updateWith(
-      {String uid,
-      String email,
-      String password,
-      EmailSignInFormType formType,
-      bool isLoading,
-      bool submitted,
-      String firstName,
-      String lastName,
-      String userName,
-      String mobileNumber}) {
+  void updateWith({String uid, String email, String password, EmailSignInFormType formType, bool isLoading, bool submitted, String firstName, String lastName, String userName, String mobileNumber}) {
     this.uid = uid ?? this.uid;
     this.email = email ?? this.email;
     this.password = password ?? this.password;
@@ -143,7 +124,7 @@ class EmailSignInChangeModel with EmailAndPasswordValidators, ChangeNotifier {
 
   setUser() {
     FirestoreService.instance.setData(
-      path: APIPath.user(uid: uid),
+      path: APIPath.userById(uid: uid),
       data: toMap(), // return a user object in Map format
     );
   }

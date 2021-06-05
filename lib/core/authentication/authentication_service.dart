@@ -1,19 +1,17 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:foodrop/core/models/UserProfile/UserProfile.dart';
+import 'package:foodrop/core/models/UserProfile.dart';
 
 // import 'package:google_sign_in/google_sign_in.dart';
 
-import '../models/UserProfile/UserProfile.dart';
+import '../models/UserProfile.dart';
 
 class AuthenticationService {
   final _auth = FirebaseAuth.instance;
 
   void switchToVendorMode() {}
 
-  Future<bool> createClientWithEmailAndPassword(
-      String email, String password) async {
-    var userCredential = await _auth.createUserWithEmailAndPassword(
-        email: email, password: password);
+  Future<bool> createClientWithEmailAndPassword(String email, String password) async {
+    var userCredential = await _auth.createUserWithEmailAndPassword(email: email, password: password);
     return userCredential.user != null;
   }
 
@@ -22,8 +20,7 @@ class AuthenticationService {
     return _auth.currentUser;
   }
 
-  Future<Stream<UserProfile>> logInUserWithEmailAndPassword(
-      String email, String password) async {
+  Future<Stream<UserProfile>> logInUserWithEmailAndPassword(String email, String password) async {
     await _auth.signInWithEmailAndPassword(email: email, password: password);
 
     return _auth.authStateChanges().map((user) {
@@ -61,10 +58,7 @@ class AuthenticationService {
 
   Future<UserProfile> signInAnonymous() async {
     final userCredential = await _auth.signInAnonymously();
-    return UserProfile(
-        uid: userCredential.user.uid,
-        isAnonymous: true,
-        auth: AuthenticationService());
+    return UserProfile(uid: userCredential.user.uid, isAnonymous: true, auth: AuthenticationService());
   }
 
   Future<void> logOutUser() async {
@@ -82,9 +76,7 @@ class AuthenticationService {
 
   Stream<UserProfile> onAuthChangeStream() {
     print("####### Trigger onAuthChangeStream #####");
-    return _auth
-        .authStateChanges()
-        .map((user) => _firebaseUserToUserClient(user));
+    return _auth.authStateChanges().map((user) => _firebaseUserToUserClient(user));
   }
 
   UserProfile _firebaseUserToUserClient(User user) {
