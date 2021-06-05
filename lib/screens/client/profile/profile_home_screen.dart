@@ -1,13 +1,39 @@
 import 'package:flutter/material.dart';
+import 'package:foodrop/core/authentication/authentication_service.dart';
 import 'package:foodrop/core/models/UserProfile/UserProfile.dart';
 import 'package:foodrop/core/services/database.dart';
+import 'package:foodrop/screens/common_widgets/show_alert_dialog.dart';
 import 'package:provider/provider.dart';
 
-import 'client_profile_screen.dart';
+import 'profile_update_screen.dart';
 
 class ProfileHomeScreen extends StatelessWidget {
   ProfileHomeScreen({this.userProfile});
   final UserProfile userProfile;
+
+  Future<void> _confirmSignOut(BuildContext context) async {
+    final didRequestSignOut = await showAlertDialog(
+      context,
+      title: 'Logout',
+      content: 'Are you sure that you want to logout?',
+      cancelActionText: 'Cancel',
+      defaultActionText: 'Logout',
+    );
+    if (didRequestSignOut == true) {
+      _signOut(context);
+    }
+  }
+
+  Future<void> _signOut(BuildContext context) async {
+    try {
+      final auth = Provider.of<AuthenticationService>(context, listen: false);
+      await auth.logOutUser();
+      // widget.onLoggedIn();
+      // Navigator.of(context).pop();
+    } catch (e) {
+      print(e.toString());
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +45,7 @@ class ProfileHomeScreen extends StatelessWidget {
         actions: [
           IconButton(
             icon: Icon(Icons.logout),
-            onPressed: () {},
+            onPressed: () => _confirmSignOut(context),
           )
         ],
       ),
