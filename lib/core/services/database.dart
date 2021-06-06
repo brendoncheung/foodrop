@@ -1,5 +1,6 @@
 import 'package:foodrop/core/models/UserProfile.dart';
 import 'package:foodrop/core/models/business.dart';
+import 'package:foodrop/core/models/business_user_link.dart';
 
 import 'api_path.dart';
 import 'firestore_service.dart';
@@ -8,6 +9,7 @@ abstract class Database {
   Stream<UserProfile> userClientStream(String uid);
   Future<void> setUser(UserProfile user);
   Stream<Business> businessStream({String businessUid});
+  Stream<List<BusinessUserLink>> businessUserLinkStream({String userId});
 // Future<void> setJob(Job job);
   // Future<void> deleteJob(Job job);
   // Stream<List<Job>> jobsStream();
@@ -41,11 +43,23 @@ class FirestoreDatabase implements Database {
   }
 
   @override
-  Stream<Business> businessStream({String businessUid}) =>
+  Stream<Business> businessStream({
+    String businessUid,
+  }) =>
       _service.documentStream(
         path: APIPath.businessById(uid: businessUid),
         builder: (data, documentId) => Business.fromMap(data, businessUid),
       );
+
+  @override
+  Stream<List<BusinessUserLink>> businessUserLinkStream({String userId}) =>
+      _service.collectionStream<BusinessUserLink>(
+          path: APIPath.businessUserLink(),
+          queryBuilder: userId != null
+              ? (query) => query.where('userId', isEqualTo: userId)
+              : null,
+          builder: (data, documentID) =>
+              BusinessUserLink.fromMap(data, documentID));
 
   // @override
   // Future<void> setUser(UserClient user) => _service.setData(

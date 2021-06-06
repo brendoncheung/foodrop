@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:foodrop/core/authentication/authentication_service.dart';
 import 'package:foodrop/core/models/UserProfile.dart';
+import 'package:foodrop/core/models/business_user_link.dart';
 import 'package:foodrop/core/services/database.dart';
 import 'package:foodrop/core/services/repositories/user_profile_repository.dart';
 import 'package:foodrop/screens/client/profile/join_buisness_screen.dart';
@@ -41,32 +42,6 @@ class _ProfileHomeScreenState extends State<ProfileHomeScreen> {
     } catch (e) {
       print(e.toString());
     }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final db = Provider.of<Database>(context, listen: false);
-    // final db = FirestoreDatabase(uid: widget.userProfile.uid);
-    // final db1 = FirestoreDatabase(uid: model.uid);
-
-    print(widget.userProfile.hasBusiness);
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Profile"),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.logout),
-            onPressed: () => _confirmSignOut(context),
-          )
-        ],
-      ),
-      body: Stack(
-        children: [
-          _buildProfileBody(context, db),
-          if (widget.userProfile.hasBusiness) _vendorModeSwitch1(),
-        ],
-      ),
-    );
   }
 
   Widget _buildProfileBody(BuildContext context, Database db) {
@@ -176,5 +151,37 @@ class _ProfileHomeScreenState extends State<ProfileHomeScreen> {
     print(
         "userprofile.defaultVendorMode: ${widget.userProfile.defaultVendorMode}");
     await db.setUser(widget.userProfile);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final db = Provider.of<Database>(context, listen: false);
+
+    print(widget.userProfile.hasBusiness);
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Profile"),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.logout),
+            onPressed: () => _confirmSignOut(context),
+          )
+        ],
+      ),
+      body: Column(
+        children: [
+          Stack(
+            children: [
+              _buildProfileBody(context, db),
+              if (widget.userProfile.hasBusiness) _vendorModeSwitch1(),
+            ],
+          ),
+          StreamBuilder<List<BusinessUserLink>>(
+              stream: db.businessUserLinkStream(userId: "HoI4jOVYkFg8uRqCr0tf7trSQjv1"),
+              builder: (context, snapshot)=
+              >)
+        ],
+      ),
+    );
   }
 }
