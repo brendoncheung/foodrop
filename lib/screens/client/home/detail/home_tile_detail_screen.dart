@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:foodrop/core/models/home_tile.dart';
 import 'package:foodrop/screens/client/home/detail/widgets/price_and_like_bar.dart';
+import 'package:foodrop/screens/client/home/detail/widgets/product_detail.dart';
 import 'package:foodrop/screens/client/home/detail/widgets/product_review.dart';
 import 'package:foodrop/screens/client/home/detail/widgets/vendor_tile.dart';
 
@@ -29,7 +30,21 @@ class HomeTileDetailScreen extends StatelessWidget {
               Container(
                 clipBehavior: Clip.antiAlias,
                 decoration: BoxDecoration(borderRadius: BorderRadius.only(bottomRight: Radius.circular(20), bottomLeft: Radius.circular(20))),
-                child: Image.network(_homeTile.imageurl, fit: BoxFit.cover),
+                child: Stack(children: [
+                  Image.network(_homeTile.imageurl, fit: BoxFit.cover),
+                  Padding(
+                    padding: EdgeInsets.all(8),
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                      child: Icon(
+                        Icons.chevron_left_outlined,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ]),
               ),
               SizedBox(height: 8),
               PriceAndLikeBar(homeTile: _homeTile),
@@ -41,26 +56,7 @@ class HomeTileDetailScreen extends StatelessWidget {
               SizedBox(height: 8),
               ProductReview(),
               SizedBox(height: 8),
-              Container(
-                color: Colors.white,
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text("Product Details", style: TextStyle(fontSize: 18)),
-                      SizedBox(height: 8),
-                      Image.asset('./assets/images/food_detail/1.jpg'),
-                      SizedBox(height: 8),
-                      Image.asset('./assets/images/food_detail/2.jpg'),
-                      SizedBox(height: 8),
-                      Image.asset('./assets/images/food_detail/3.jpg'),
-                      SizedBox(height: 8),
-                      Image.asset('./assets/images/food_detail/4.jpg'),
-                    ],
-                  ),
-                ),
-              )
+              ProductDetail()
             ],
           ),
         ),
