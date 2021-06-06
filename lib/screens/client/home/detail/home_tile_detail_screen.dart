@@ -39,7 +39,28 @@ class HomeTileDetailScreen extends StatelessWidget {
               SizedBox(height: 8),
               VendorTile(homeTile: _homeTile),
               SizedBox(height: 8),
-              ProductReview()
+              ProductReview(),
+              SizedBox(height: 8),
+              Container(
+                color: Colors.white,
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text("Product Details", style: TextStyle(fontSize: 18)),
+                      SizedBox(height: 8),
+                      Image.asset('./assets/images/food_detail/1.jpg'),
+                      SizedBox(height: 8),
+                      Image.asset('./assets/images/food_detail/2.jpg'),
+                      SizedBox(height: 8),
+                      Image.asset('./assets/images/food_detail/3.jpg'),
+                      SizedBox(height: 8),
+                      Image.asset('./assets/images/food_detail/4.jpg'),
+                    ],
+                  ),
+                ),
+              )
             ],
           ),
         ),
