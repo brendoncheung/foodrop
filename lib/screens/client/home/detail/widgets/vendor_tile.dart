@@ -2,22 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:foodrop/core/models/home_tile.dart';
 
 class VendorTile extends StatelessWidget {
-  const VendorTile({
-    Key key,
-    @required HomeTile homeTile,
-  })  : _homeTile = homeTile,
-        super(key: key);
-
-  final HomeTile _homeTile;
+  final HomeTile homeTile;
+  final Function onTap;
+  VendorTile({this.homeTile, this.onTap});
 
   @override
   Widget build(BuildContext context) {
     return Container(
       color: Colors.grey[800],
       child: ListTile(
-        leading: CircleAvatar(backgroundImage: NetworkImage(_homeTile.avatarurl)),
+        onTap: onTap,
+        leading: CircleAvatar(backgroundImage: NetworkImage(homeTile.avatarurl)),
         title: Text(
-          _homeTile.username,
+          homeTile.username,
           style: TextStyle(color: Colors.white),
         ),
         subtitle: Text(

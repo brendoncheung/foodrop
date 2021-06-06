@@ -1,7 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:foodrop/core/models/home_tile.dart';
 import 'package:foodrop/screens/client/home/detail/widgets/price_and_like_bar.dart';
 import 'package:foodrop/screens/client/home/detail/widgets/product_detail.dart';
+import 'package:foodrop/screens/client/home/detail/widgets/product_image.dart';
 import 'package:foodrop/screens/client/home/detail/widgets/product_review.dart';
 import 'package:foodrop/screens/client/home/detail/widgets/vendor_tile.dart';
 
@@ -27,34 +29,27 @@ class HomeTileDetailScreen extends StatelessWidget {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              Container(
-                clipBehavior: Clip.antiAlias,
-                decoration: BoxDecoration(borderRadius: BorderRadius.only(bottomRight: Radius.circular(20), bottomLeft: Radius.circular(20))),
-                child: Stack(children: [
-                  Image.network(_homeTile.imageurl, fit: BoxFit.cover),
-                  Padding(
-                    padding: EdgeInsets.all(8),
-                    child: GestureDetector(
-                      onTap: () {
-                        Navigator.pop(context);
-                      },
-                      child: Icon(
-                        Icons.chevron_left_outlined,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                ]),
-              ),
+              ProductImage(homeTile: _homeTile),
               SizedBox(height: 8),
               PriceAndLikeBar(homeTile: _homeTile),
               Row(
                 children: [SizedBox(width: 8), Text("${_homeTile.numSold.toString()} sold", style: TextStyle(color: Colors.white, fontSize: 16))],
               ),
               SizedBox(height: 8),
-              VendorTile(homeTile: _homeTile),
+              VendorTile(
+                homeTile: _homeTile,
+                onTap: () {
+                  ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("vendor tile selected")));
+                },
+              ),
               SizedBox(height: 8),
-              ProductReview(),
+              ProductReview(
+                onTap: () {
+                  ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("product review tile selected")));
+                },
+              ),
               SizedBox(height: 8),
               ProductDetail()
             ],
