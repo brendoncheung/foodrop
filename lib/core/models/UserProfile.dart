@@ -26,6 +26,7 @@ class UserProfile with ChangeNotifier, EmailAndPasswordValidators {
     this.submitted = false,
     DateTime creationDate,
     DateTime lastSignInDate,
+    this.hasBusiness = false,
     this.formType = EmailSignInFormType.signIn,
   })  : dob = dob ?? DateTime.parse("1970-01-01"),
         creationDate = creationDate ?? DateTime.now(),
@@ -57,6 +58,7 @@ class UserProfile with ChangeNotifier, EmailAndPasswordValidators {
   bool submitted;
   DateTime creationDate;
   DateTime lastSignInDate;
+  bool hasBusiness;
 
   UserProfile.fromMap(Map<String, dynamic> map, String uid)
       : uid = map['uid'],
@@ -68,7 +70,8 @@ class UserProfile with ChangeNotifier, EmailAndPasswordValidators {
         username = map['username'],
         mobileNumber = map['mobileNumber'],
         emailAddress = map['email'],
-        emailPassword = '';
+        emailPassword = '',
+        hasBusiness = map['hasBusiness'];
   // mobileVerificationDate = map['mobileVerificationDate'],
   // emailVerificationDate = map['emailVerificationDate'];
   //TODO: fixx issue retrieving datetype object
@@ -177,32 +180,35 @@ class UserProfile with ChangeNotifier, EmailAndPasswordValidators {
       'creationDate': creationDate,
       'lastSignInDate': lastSignInDate,
       'mobileVerificationDate': mobileVerificationDate,
-      'emailVerificationDate': emailVerificationDate
+      'emailVerificationDate': emailVerificationDate,
+      'hasBusiness': hasBusiness
     };
   }
 
-  void updateWith(
-      {String uid,
-      String firstName,
-      String lastName,
-      DateTime dob,
-      // bool isVendor,
-      bool isAnonymous,
-      bool signedInViaEmail,
-      bool signedInviaGoogle,
-      bool signedInViaFaceBook,
-      String photoUrl,
-      String username,
-      String mobileNumber,
-      String emailAddress,
-      String emailPassword,
-      DateTime mobileVerificationDate,
-      DateTime emailVerificationDate,
-      EmailSignInFormType formType,
-      bool isLoading,
-      bool submitted,
-      DateTime creationDate,
-      DateTime lastSignInDate}) {
+  void updateWith({
+    String uid,
+    String firstName,
+    String lastName,
+    DateTime dob,
+    // bool isVendor,
+    bool isAnonymous,
+    bool signedInViaEmail,
+    bool signedInviaGoogle,
+    bool signedInViaFaceBook,
+    String photoUrl,
+    String username,
+    String mobileNumber,
+    String emailAddress,
+    String emailPassword,
+    DateTime mobileVerificationDate,
+    DateTime emailVerificationDate,
+    EmailSignInFormType formType,
+    bool isLoading,
+    bool submitted,
+    DateTime creationDate,
+    DateTime lastSignInDate,
+    bool hasBusiness,
+  }) {
     this.uid = uid ?? this.uid;
     this.firstName = firstName ?? this.firstName;
     this.lastName = lastName ?? this.lastName;
@@ -225,6 +231,7 @@ class UserProfile with ChangeNotifier, EmailAndPasswordValidators {
     this.submitted = submitted ?? this.submitted;
     this.creationDate = creationDate ?? this.creationDate;
     this.lastSignInDate = lastSignInDate ?? this.lastSignInDate;
+    this.hasBusiness = hasBusiness ?? this.hasBusiness;
     notifyListeners();
   }
 }
