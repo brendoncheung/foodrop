@@ -47,9 +47,7 @@ class ClientBottomNavigation extends StatefulWidget {
               break;
             case ConnectionState.active:
               {
-                return ChangeNotifierProvider<UserProfile>(
-                    create: (context) => snapshot.data,
-                    child: ClientBottomNavigation(userProfile: snapshot.data));
+                return ChangeNotifierProvider<UserProfile>(create: (context) => snapshot.data, child: ClientBottomNavigation(userProfile: snapshot.data));
               }
               break;
             default:
@@ -67,32 +65,13 @@ class ClientBottomNavigation extends StatefulWidget {
 
 class _ClientBottomNavigationState extends State<ClientBottomNavigation> {
   var _selectedIndex = 0;
-  final _clientBottomNavigationScreens = [
-    ClientHomeScreen(),
-    ClientFavouriteScreen(),
-    ClientGiftScreen(),
-    ClientOrderScreen(),
-    ProfileLandingScreen()
-  ];
+  final _clientBottomNavigationScreens = [ClientHomeScreen(), ClientFavouriteScreen(), ClientGiftScreen(), ClientOrderScreen(), ProfileLandingScreen()];
 
   void onTapHandler(int index) {
     setState(() {
       _selectedIndex = index;
     });
   }
-
-  // @override
-  // void initState() {
-  //   // TODO: implement initState
-  //   final auth = Provider.of<AuthenticationService>(context);
-  //   print(auth.getUser());
-  //   try{
-  //
-  //   }catch(e){
-  //     print(no user profile.)
-  //   }
-  //   super.initState();
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -109,14 +88,10 @@ class _ClientBottomNavigationState extends State<ClientBottomNavigation> {
         selectedItemColor: Colors.white,
         unselectedItemColor: Colors.grey[500],
         items: [
-          BottomNavigationBarItem(
-              icon: Icon(Icons.home_rounded, size: 35), label: ""),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.search, size: 35), label: ""),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.comment_rounded, size: 35), label: ""),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.person_rounded, size: 35), label: ""),
+          BottomNavigationBarItem(icon: Icon(Icons.home_rounded, size: 35), label: ""),
+          BottomNavigationBarItem(icon: Icon(Icons.search, size: 35), label: ""),
+          BottomNavigationBarItem(icon: Icon(Icons.comment_rounded, size: 35), label: ""),
+          BottomNavigationBarItem(icon: Icon(Icons.person_rounded, size: 35), label: ""),
           BottomNavigationBarItem(icon: Icon(Icons.account_circle), label: ""),
         ],
       ),

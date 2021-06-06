@@ -25,14 +25,14 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
   @override
   Widget build(BuildContext context) {
     List<HomeTile> _items = [
-      HomeTile(title: "Chicken fried", image_url: image_source, avatar_url: avatar_source(1), username: "Batman", favourite: 23, price: 4.99, numSold: 89),
-      HomeTile(title: "Smoothie", image_url: image_source, avatar_url: avatar_source(2), username: "Superman", favourite: 56, price: 12.99, numSold: 100),
-      HomeTile(title: "Spicy dumpling", image_url: image_source, avatar_url: avatar_source(3), username: "Obama", favourite: 552, price: 29.99, numSold: 900),
-      HomeTile(title: "Prime ribs", image_url: image_source, avatar_url: avatar_source(4), username: "Biden", favourite: 92, price: 24.99, numSold: 657),
-      HomeTile(title: "Thai food", image_url: image_source, avatar_url: avatar_source(5), username: "Clinton", favourite: 56, price: 7.99, numSold: 451),
-      HomeTile(title: "Korean BBQ", image_url: image_source, avatar_url: avatar_source(6), username: "Conan", favourite: 76, price: 56.99, numSold: 98),
-      HomeTile(title: "Snacks", image_url: image_source, avatar_url: avatar_source(7), username: "Brendon", favourite: 34, price: 9.99, numSold: 656),
-      HomeTile(title: "Hello", image_url: image_source, avatar_url: avatar_source(8), username: "50cent", favourite: 90, price: 5.99, numSold: 6790),
+      HomeTile(title: "Chicken fried", image_url: image_source, avatar_url: avatar_source(1), username: "Batma Donuts", favourite: 23, price: 4.99, numSold: 89),
+      HomeTile(title: "Smoothie", image_url: image_source, avatar_url: avatar_source(2), username: "Superman Sandwishes", favourite: 56, price: 12.99, numSold: 100),
+      HomeTile(title: "Spicy dumpling", image_url: image_source, avatar_url: avatar_source(3), username: "Obama Ice Cream", favourite: 552, price: 29.99, numSold: 900),
+      HomeTile(title: "Prime ribs", image_url: image_source, avatar_url: avatar_source(4), username: "Biden sushi", favourite: 92, price: 24.99, numSold: 657),
+      HomeTile(title: "Thai food", image_url: image_source, avatar_url: avatar_source(5), username: "Clinton smoothies", favourite: 56, price: 7.99, numSold: 451),
+      HomeTile(title: "Korean BBQ", image_url: image_source, avatar_url: avatar_source(6), username: "Conan salad bar", favourite: 76, price: 56.99, numSold: 98),
+      HomeTile(title: "Snacks", image_url: image_source, avatar_url: avatar_source(7), username: "Brendon mexican", favourite: 34, price: 9.99, numSold: 656),
+      HomeTile(title: "Hello", image_url: image_source, avatar_url: avatar_source(8), username: "50cent pizzaria", favourite: 90, price: 5.99, numSold: 6790),
     ];
 
     _scrollController.addListener(() {
