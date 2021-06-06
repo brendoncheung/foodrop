@@ -30,7 +30,6 @@ class AuthenticationFlowWrapper extends StatelessWidget {
 
             try {
               print("rebuilding Consumer <UserProfile>");
-              print(" auth.UID: ${auth.getUser().uid} xxxxxxxxx");
 
               if (userProfile == null) {
                 auth.signInAnonymous();
@@ -59,7 +58,13 @@ class AuthenticationFlowWrapper extends StatelessWidget {
 
             return errorDetected
                 ? LogoutAwaitScreen()
-                : Provider<Database>(create: (_) => FirestoreDatabase(uid: user.uid), child: Consumer<Database>(builder: (_, db, __) => ClientBottomNavigation.create(context, db)));
+                : Provider<Database>(
+                    create: (_) => FirestoreDatabase(uid: user.uid),
+                    child: Consumer<Database>(
+                      builder: (_, db, __) =>
+                          ClientBottomNavigation.create(context, db),
+                    ),
+                  );
           },
         );
       },
@@ -68,7 +73,8 @@ class AuthenticationFlowWrapper extends StatelessWidget {
 
   void _updateUserProfile(String uid) async {
     try {
-      final _userProfile = await FirestoreDatabase().userClientStream(uid).first;
+      final _userProfile =
+          await FirestoreDatabase().userClientStream(uid).first;
       print(_userProfile);
       FirebaseAuth.instance.authStateChanges().map((user) => _userProfile);
     } catch (e) {

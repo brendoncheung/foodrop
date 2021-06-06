@@ -81,19 +81,6 @@ class _ClientBottomNavigationState extends State<ClientBottomNavigation> {
     });
   }
 
-  // @override
-  // void initState() {
-  //   // TODO: implement initState
-  //   final auth = Provider.of<AuthenticationService>(context);
-  //   print(auth.getUser());
-  //   try{
-  //
-  //   }catch(e){
-  //     print(no user profile.)
-  //   }
-  //   super.initState();
-  // }
-
   @override
   Widget build(BuildContext context) {
     // _selectedIndex = 0;

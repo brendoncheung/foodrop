@@ -1,4 +1,5 @@
 import 'package:foodrop/core/models/UserProfile.dart';
+import 'package:foodrop/core/models/business.dart';
 
 import 'api_path.dart';
 import 'firestore_service.dart';
@@ -6,7 +7,8 @@ import 'firestore_service.dart';
 abstract class Database {
   Stream<UserProfile> userClientStream(String uid);
   Future<void> setUser(UserProfile user);
-  // Future<void> setJob(Job job);
+  Stream<Business> businessStream({String businessUid});
+// Future<void> setJob(Job job);
   // Future<void> deleteJob(Job job);
   // Stream<List<Job>> jobsStream();
   // Stream<Job> jobStream({@required String jobId});
@@ -27,6 +29,7 @@ class FirestoreDatabase implements Database {
         builder: (data, documentId) => UserProfile.fromMap(data, uid),
       );
 
+  @override
   Future<void> setUser(UserProfile user) async {
     // print("path: ${APIPath.user(uid: uid)}");
     // print("map: ${user.toMap()}");
@@ -34,13 +37,14 @@ class FirestoreDatabase implements Database {
       path: APIPath.userById(uid: uid),
       data: user.toMap(), // return a user object in Map format
     );
-
-    //   // @override
-//   // Future<void> setJob(Job job) => _service.setData(
-//   //   path: APIPath.job(uid, job.id),
-//   //   data: job.toMap(),
-//   // );
   }
+
+  @override
+  Stream<Business> businessStream({String businessUid}) =>
+      _service.documentStream(
+        path: APIPath.businessById(uid: businessUid),
+        builder: (data, documentId) => Business.fromMap(data, businessUid),
+      );
 
   // @override
   // Future<void> setUser(UserClient user) => _service.setData(

@@ -7,7 +7,8 @@ import 'package:foodrop/screens/common_widgets/show_alert_dialog.dart';
 import 'package:provider/provider.dart';
 
 class ClientProfileScreen extends StatefulWidget {
-  const ClientProfileScreen({Key key, this.db, this.userFile}) : super(key: key);
+  const ClientProfileScreen({Key key, this.db, this.userFile})
+      : super(key: key);
   final Database db;
   final UserProfile userFile;
 
@@ -75,17 +76,13 @@ class _ClientProfileScreenState extends State<ClientProfileScreen> {
 
   Widget _buildForm(BuildContext context, UserProfile uProfile) {
     print(uProfile);
-    return EmailSignInFormUserProfileChangeNotifier.create(context: context, firebaseUserProfile: uProfile);
+    return EmailSignInFormUserProfileChangeNotifier.create(
+        context: context, firebaseUserProfile: uProfile);
   }
 
   @override
   Widget build(BuildContext context) {
     print("rebuild ClientProfileScreen");
-    // print(widget.userProfile.firstName);
-    //final auth = Provider.of<AuthenticationService>(context);
-    //final db = Provider.of<Database>(context);
-    //final uid = auth.getUser().uid;
-    // print(widget.userFile);
 
     return Scaffold(
       appBar: AppBar(
@@ -98,43 +95,6 @@ class _ClientProfileScreenState extends State<ClientProfileScreen> {
         ],
       ),
       body: _buildForm(context, widget.userFile),
-      // body: StreamBuilder<UserProfile>(
-      //   stream: db.userClientStream(uid),
-      //   builder: (context, snapshot) {
-      //     switch (snapshot.connectionState) {
-      //       case ConnectionState.waiting:
-      //         {
-      //           return _circularProgressIndicatorInCenter();
-      //         }
-      //         break;
-      //       case ConnectionState.active:
-      //         {
-      //           try {
-      //             if (snapshot.hasData) {
-      //               var _userProfile = snapshot.data;
-      //
-      //               print(
-      //                   "XXXXX Client Profile Screen XXXXX ${snapshot.data.toMap().toString()}");
-      //
-      //               return EmailSignInFormUserProfileChangeNotifier.create(
-      //                   context: context, firebaseUserProfile: _userProfile);
-      //             } else {
-      //               return Center(child: Container(child: Text("No Data")));
-      //             }
-      //           } catch (e) {
-      //             print(e);
-      //           }
-      //         }
-      //         break;
-      //       default:
-      //         {
-      //           return Center(child: Container(child: Text("No Data")));
-      //         }
-      //     }
-      //
-      //     return _circularProgressIndicatorInCenter();
-      //   },
-      // ),
     );
   }
 

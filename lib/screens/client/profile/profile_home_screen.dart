@@ -4,6 +4,7 @@ import 'package:foodrop/core/authentication/authentication_service.dart';
 import 'package:foodrop/core/models/UserProfile.dart';
 import 'package:foodrop/core/services/database.dart';
 import 'package:foodrop/core/services/repositories/user_profile_repository.dart';
+import 'package:foodrop/screens/client/profile/join_buisness_screen.dart';
 import 'package:foodrop/screens/common_widgets/show_alert_dialog.dart';
 import 'package:provider/provider.dart';
 
@@ -68,6 +69,16 @@ class ProfileHomeScreen extends StatelessWidget {
             ListTile(
               title: Text("Join a business"),
               trailing: Icon(Icons.chevron_right),
+              onTap: () => Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) {
+                    return JoinBusinessScreen(
+                      db: db,
+                      userProfile: userProfile,
+                    );
+                  },
+                ),
+              ),
             ),
           ],
         ),
