@@ -17,38 +17,38 @@ class ClientProfileScreen extends StatefulWidget {
 }
 
 class _ClientProfileScreenState extends State<ClientProfileScreen> {
-  final TextEditingController _tecFirstName = TextEditingController();
-  final TextEditingController _tecLastName = TextEditingController();
-  final TextEditingController _tecUserName = TextEditingController();
-  final TextEditingController _tecMobileNumber = TextEditingController();
-  final TextEditingController _tecEmail = TextEditingController();
-  final TextEditingController _tecPassword = TextEditingController();
-
-  final FocusNode _fnFirstName = FocusNode();
-  final FocusNode _fnLastName = FocusNode();
-  final FocusNode _fnUserName = FocusNode();
-  final FocusNode _fnMobileNumber = FocusNode();
-  final FocusNode _fnEmail = FocusNode();
-  final FocusNode _fnPassword = FocusNode();
+  // final TextEditingController _tecFirstName = TextEditingController();
+  // final TextEditingController _tecLastName = TextEditingController();
+  // final TextEditingController _tecUserName = TextEditingController();
+  // final TextEditingController _tecMobileNumber = TextEditingController();
+  // final TextEditingController _tecEmail = TextEditingController();
+  // final TextEditingController _tecPassword = TextEditingController();
+  //
+  // final FocusNode _fnFirstName = FocusNode();
+  // final FocusNode _fnLastName = FocusNode();
+  // final FocusNode _fnUserName = FocusNode();
+  // final FocusNode _fnMobileNumber = FocusNode();
+  // final FocusNode _fnEmail = FocusNode();
+  // final FocusNode _fnPassword = FocusNode();
 
   // EmailSignInChangeModel get model => widget.model;
 
   @override
-  void dispose() {
-    _tecFirstName.dispose();
-    _tecLastName.dispose();
-    _tecUserName.dispose();
-    _tecMobileNumber.dispose();
-    _tecEmail.dispose();
-    _tecPassword.dispose();
-    _fnFirstName.dispose();
-    _fnLastName.dispose();
-    _fnUserName.dispose();
-    _fnMobileNumber.dispose();
-    _fnEmail.dispose();
-    _fnPassword.dispose();
-    super.dispose();
-  }
+  // void dispose() {
+  //   _tecFirstName.dispose();
+  //   _tecLastName.dispose();
+  //   _tecUserName.dispose();
+  //   _tecMobileNumber.dispose();
+  //   _tecEmail.dispose();
+  //   _tecPassword.dispose();
+  //   _fnFirstName.dispose();
+  //   _fnLastName.dispose();
+  //   _fnUserName.dispose();
+  //   _fnMobileNumber.dispose();
+  //   _fnEmail.dispose();
+  //   _fnPassword.dispose();
+  //   super.dispose();
+  // }
 
   Future<void> _confirmSignOut() async {
     final didRequestSignOut = await showAlertDialog(

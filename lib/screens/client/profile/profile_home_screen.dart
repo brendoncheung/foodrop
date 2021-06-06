@@ -10,10 +10,15 @@ import 'package:provider/provider.dart';
 
 import 'profile_update_screen.dart';
 
-class ProfileHomeScreen extends StatelessWidget {
+class ProfileHomeScreen extends StatefulWidget {
   ProfileHomeScreen({this.userProfile});
   final UserProfile userProfile;
 
+  @override
+  _ProfileHomeScreenState createState() => _ProfileHomeScreenState();
+}
+
+class _ProfileHomeScreenState extends State<ProfileHomeScreen> {
   Future<void> _confirmSignOut(BuildContext context) async {
     final didRequestSignOut = await showAlertDialog(
       context,
@@ -40,8 +45,11 @@ class ProfileHomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final db = Provider.of<Database>(context);
+    final db = Provider.of<Database>(context, listen: false);
+    // final db = FirestoreDatabase(uid: widget.userProfile.uid);
+    // final db1 = FirestoreDatabase(uid: model.uid);
 
+    print(widget.userProfile.hasBusiness);
     return Scaffold(
       appBar: AppBar(
         title: Text("Profile"),
@@ -52,37 +60,121 @@ class ProfileHomeScreen extends StatelessWidget {
           )
         ],
       ),
-      body: Container(
-        child: Column(
-          children: [
-            ListTile(
-              title: Text("Update Profile"),
-              trailing: Icon(Icons.chevron_right),
-              onTap: () => Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) {
-                    return ClientProfileScreen(db: db, userFile: userProfile);
-                  },
+      body: Stack(
+        children: [
+          _buildProfileBody(context, db),
+          if (widget.userProfile.hasBusiness) _vendorModeSwitch1(),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildProfileBody(BuildContext context, Database db) {
+    return Padding(
+      padding: EdgeInsets.only(top: 38.0),
+      child: Container(
+        // color: Colors.grey,
+        child: Padding(
+          padding: EdgeInsets.only(top: 16.0),
+          child: Column(
+            children: [
+              Divider(
+                thickness: 1.0,
+              ),
+              ListTile(
+                title: Text("Update Profile"),
+                trailing: Icon(Icons.chevron_right),
+                onTap: () => Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return ClientProfileScreen(
+                          db: db, userFile: widget.userProfile);
+                    },
+                  ),
                 ),
               ),
-            ),
-            ListTile(
-              title: Text("Join a business"),
-              trailing: Icon(Icons.chevron_right),
-              onTap: () => Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) {
-                    return JoinBusinessScreen(
-                      db: db,
-                      userProfile: userProfile,
-                    );
-                  },
+              Divider(),
+              ListTile(
+                title: Text("Join a business"),
+                trailing: Icon(Icons.chevron_right),
+                onTap: () => Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return JoinBusinessScreen(
+                        db: db,
+                        userProfile: widget.userProfile,
+                      );
+                    },
+                  ),
                 ),
               ),
-            ),
-          ],
+              Divider(),
+            ],
+          ),
         ),
       ),
     );
+  }
+
+  Widget _vendorModeSwitch1() {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 48, vertical: 18),
+      child: Container(
+        decoration: BoxDecoration(
+          border: Border.all(color: Colors.blue),
+          borderRadius: BorderRadius.circular(32),
+          color: Colors.white,
+        ),
+        child: SwitchListTile(
+          value: widget.userProfile.defaultVendorMode,
+          onChanged: (value) => _toggleVendorSwitch(context, value),
+          title: Text("Vendor Mode"),
+        ),
+      ),
+    );
+  }
+
+  Widget _vendorModeSwitch() {
+    return Padding(
+      padding: EdgeInsets.only(top: 16.0),
+      child: TextField(
+        // controller: _tecSearchField,
+        // onEditingComplete: _submit,
+        decoration: InputDecoration(
+          fillColor: Colors.lightGreen,
+          filled: true,
+          // errorText: !_tecSearchField.text.isNotEmpty && _hasSubmitted
+          //     ? "cannot be empty"
+          //     : null,
+          contentPadding: EdgeInsets.symmetric(vertical: 15.0),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(30.0),
+            borderSide: BorderSide(width: 0.8),
+          ),
+          hintText:
+              "type '1112223' to test ", //Enter companies office number // TODO: correct the hint text
+          prefixIcon: Icon(
+            Icons.search,
+            size: 30,
+          ),
+          suffixIcon: IconButton(
+            icon: Icon(Icons.clear),
+            // onPressed: () => _tecSearchField.text = "",
+          ),
+        ),
+      ),
+    );
+  }
+
+  _toggleVendorSwitch(BuildContext context, bool value) async {
+    final db = FirestoreDatabase(uid: widget.userProfile.uid);
+    //TODO: is this safe to do? Instead of using Provider, I instantiate a new Database class.
+    print("toggle $value");
+    setState(() {
+      widget.userProfile.updateWith(defaultVendorMode: value);
+    });
+    print(
+        "userprofile.defaultVendorMode: ${widget.userProfile.defaultVendorMode}");
+    await db.setUser(widget.userProfile);
   }
 }
