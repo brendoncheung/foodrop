@@ -1,17 +1,19 @@
 class BusinessUserLink {
   BusinessUserLink({
     DateTime creationDate,
-    this.userId = "",
-    this.businessId = "",
-    this.businessLegalName = "",
-    this.businessTradingName = "",
-    this.isApproved = true,
-    this.requestOustanding = false,
-    this.userFirstName = "",
-    this.userLastName = "",
-    this.userName = "",
-    this.userPhoneNumber = "",
-    this.userRole = "",
+    this.userId,
+    this.businessId,
+    this.businessLegalName,
+    this.businessTradingName,
+    this.isApproved,
+    this.requestOustanding,
+    this.userFirstName,
+    this.userLastName,
+    this.userName,
+    this.userPhoneNumber,
+    this.userRole,
+    this.documentId,
+    this.address,
   }) : creationDate = creationDate ?? DateTime.now();
   DateTime creationDate;
   String businessId;
@@ -25,6 +27,8 @@ class BusinessUserLink {
   String userName;
   String userPhoneNumber;
   String userRole;
+  String documentId;
+  String address;
 
   Map<String, dynamic> toMap() {
     return {
@@ -40,6 +44,8 @@ class BusinessUserLink {
       'userName': userName,
       'userPhoneNumber': userPhoneNumber,
       'userRole': userRole,
+      'documentId': documentId,
+      'address': address
     };
   }
 
@@ -56,5 +62,7 @@ class BusinessUserLink {
         userId = data['userId'],
         userName = data['userName'],
         userPhoneNumber = data['userPhoneNumber'],
-        userRole = data['userRole'];
+        userRole = data['userRole'],
+        documentId = linkId,
+        address = data['address'];
 }

@@ -21,6 +21,8 @@ class ProfileHomeScreen extends StatefulWidget {
 }
 
 class _ProfileHomeScreenState extends State<ProfileHomeScreen> {
+  String _selectedBusinessId = "";
+
   Future<void> _confirmSignOut(BuildContext context) async {
     final didRequestSignOut = await showAlertDialog(
       context,
@@ -154,6 +156,17 @@ class _ProfileHomeScreenState extends State<ProfileHomeScreen> {
     await db.setUser(widget.userProfile);
   }
 
+  bool _isSelected({String businessId}) {
+    return businessId == _selectedBusinessId;
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    _selectedBusinessId = widget.userProfile.defaultBusinessId ?? "";
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     final db = Provider.of<Database>(context, listen: false);
@@ -180,62 +193,88 @@ class _ProfileHomeScreenState extends State<ProfileHomeScreen> {
             ),
             if (widget.userProfile.defaultVendorMode)
               SingleChildScrollView(
-                child: Expanded(
-                  child: Padding(
-                    padding: EdgeInsets.only(top: 32, left: 12, right: 12),
-                    child: Container(
-                      // color: Colors.grey,
-                      height: 400,
-                      child: StreamBuilder<List<BusinessUserLink>>(
-                        stream: db.businessUserLinkStream(
-                            userId: "HoI4jOVYkFg8uRqCr0tf7trSQjv1"),
-                        builder: (context, snapshot) {
-                          switch (snapshot.connectionState) {
-                            case ConnectionState.waiting:
-                              {
-                                return CircularProgressIndicator();
-                              }
-                              break;
-                            case ConnectionState.active:
-                              {
-                                return AsyncSnapshotItemBuilder<
-                                    BusinessUserLink>(
-                                  snapshot: snapshot,
-                                  itemBuilder: (context, businessUserLink) {
-                                    return Card(
-                                        color: Colors.blue,
-                                        child: ListTile(
-                                          onTap: () {},
-                                          title: Text(
-                                              "${businessUserLink.businessLegalName}"),
-                                        ));
-                                  },
-                                );
-                                // if (snapshot.hasData) {
-                                //   return ListView.separated(
-                                //       itemBuilder: (context, index) {
-                                //         return Card(
-                                //             color: Colors.blue,
-                                //             child: ListTile(
-                                //               onTap: () {},
-                                //               title: Text(
-                                //                   "${snapshot.data[index].businessTradingName}"),
-                                //             ));
-                                //       },
-                                //       separatorBuilder: (context, index) =>
-                                //           Divider(height: 0.5),
-                                //       itemCount: snapshot.data.length);
-                                // }
-                                // return Text("No data");
-                              }
-                              break;
-                            default:
-                              {
-                                return CircularProgressIndicator();
-                              }
-                          }
-                        },
-                      ),
+                child: Padding(
+                  padding: EdgeInsets.only(top: 32, left: 12, right: 12),
+                  child: Container(
+                    // color: Colors.grey,
+                    height: 400,
+                    child: StreamBuilder<List<BusinessUserLink>>(
+                      stream: db.businessUserLinkStream(
+                          userId: "HoI4jOVYkFg8uRqCr0tf7trSQjv1"),
+                      builder: (context, snapshot) {
+                        switch (snapshot.connectionState) {
+                          case ConnectionState.waiting:
+                            {
+                              return CircularProgressIndicator();
+                            }
+                            break;
+                          case ConnectionState.active:
+                            {
+                              return AsyncSnapshotItemBuilder<BusinessUserLink>(
+                                snapshot: snapshot,
+                                itemBuilder: (context, businessUserLink) {
+                                  return CheckboxListTile(
+                                      title: Text(
+                                          businessUserLink.businessTradingName),
+                                      subtitle:
+                                          Text("${businessUserLink.address}"),
+                                      value: _isSelected(
+                                          businessId:
+                                              businessUserLink.businessId),
+                                      selected: _isSelected(
+                                          businessId:
+                                              businessUserLink.businessId),
+                                      selectedTileColor: Colors.black26,
+                                      onChanged: (newBool) {
+                                        setState(
+                                          () {
+                                            widget.userProfile.updateWith(
+                                                defaultBusinessId:
+                                                    businessUserLink
+                                                        .businessId);
+                                            final db = Provider.of<Database>(
+                                                context,
+                                                listen: false);
+                                            db.setUser(widget
+                                                .userProfile); // write to db
+                                            _selectedBusinessId =
+                                                businessUserLink.businessId;
+                                          },
+                                        );
+                                      });
+                                  // Card(
+                                  //   color: Colors.blue,
+                                  //   child: ListTile(
+                                  //     onTap: () {},
+                                  //     title: Text(
+                                  //         "${businessUserLink.businessLegalName}"),
+                                  //   ));
+                                },
+                              );
+                              // if (snapshot.hasData) {
+                              //   return ListView.separated(
+                              //       itemBuilder: (context, index) {
+                              //         return Card(
+                              //             color: Colors.blue,
+                              //             child: ListTile(
+                              //               onTap: () {},
+                              //               title: Text(
+                              //                   "${snapshot.data[index].businessTradingName}"),
+                              //             ));
+                              //       },
+                              //       separatorBuilder: (context, index) =>
+                              //           Divider(height: 0.5),
+                              //       itemCount: snapshot.data.length);
+                              // }
+                              // return Text("No data");
+                            }
+                            break;
+                          default:
+                            {
+                              return CircularProgressIndicator();
+                            }
+                        }
+                      },
                     ),
                   ),
                 ),

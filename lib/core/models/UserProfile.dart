@@ -29,6 +29,7 @@ class UserProfile with ChangeNotifier, EmailAndPasswordValidators {
     this.hasBusiness = false,
     this.formType = EmailSignInFormType.signIn,
     this.defaultVendorMode = false,
+    this.defaultBusinessId = "",
   })  : dob = dob ?? DateTime.parse("1970-01-01"),
         creationDate = creationDate ?? DateTime.now(),
         mobileVerificationDate =
@@ -61,6 +62,7 @@ class UserProfile with ChangeNotifier, EmailAndPasswordValidators {
   DateTime lastSignInDate;
   bool hasBusiness;
   bool defaultVendorMode;
+  String defaultBusinessId;
 
   UserProfile.fromMap(Map<String, dynamic> map, String uid)
       : uid = map['uid'],
@@ -74,7 +76,9 @@ class UserProfile with ChangeNotifier, EmailAndPasswordValidators {
         emailAddress = map['email'],
         emailPassword = '',
         hasBusiness = map['hasBusiness'],
+        defaultBusinessId = map['defaultBusinessId'],
         defaultVendorMode = map['defaultVendorMode'];
+
   // mobileVerificationDate = map['mobileVerificationDate'],
   // emailVerificationDate = map['emailVerificationDate'];
   //TODO: fixx issue retrieving datetype object
@@ -185,7 +189,8 @@ class UserProfile with ChangeNotifier, EmailAndPasswordValidators {
       'mobileVerificationDate': mobileVerificationDate,
       'emailVerificationDate': emailVerificationDate,
       'hasBusiness': hasBusiness,
-      'defaultVendorMode': defaultVendorMode
+      'defaultVendorMode': defaultVendorMode,
+      'defaultBusinessId': defaultBusinessId
     };
   }
 
@@ -213,6 +218,7 @@ class UserProfile with ChangeNotifier, EmailAndPasswordValidators {
     DateTime lastSignInDate,
     bool hasBusiness,
     bool defaultVendorMode,
+    String defaultBusinessId,
   }) {
     this.uid = uid ?? this.uid;
     this.firstName = firstName ?? this.firstName;
@@ -238,6 +244,7 @@ class UserProfile with ChangeNotifier, EmailAndPasswordValidators {
     this.lastSignInDate = lastSignInDate ?? this.lastSignInDate;
     this.hasBusiness = hasBusiness ?? this.hasBusiness;
     this.defaultVendorMode = defaultVendorMode ?? this.defaultVendorMode;
+    this.defaultBusinessId = defaultBusinessId ?? this.defaultBusinessId;
     notifyListeners();
   }
 }
