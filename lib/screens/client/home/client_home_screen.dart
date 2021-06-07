@@ -3,7 +3,7 @@ import 'package:flutter/rendering.dart';
 import 'package:foodrop/core/models/home_tile.dart';
 import 'package:foodrop/screens/client/home/detail/home_tile_detail_screen.dart';
 
-import 'widget/home_tile_widget.dart';
+import 'detail/widgets/home_tile_widget.dart';
 
 class ClientHomeScreen extends StatefulWidget {
   const ClientHomeScreen({Key key}) : super(key: key);
@@ -12,7 +12,7 @@ class ClientHomeScreen extends StatefulWidget {
   _ClientHomeScreenState createState() => _ClientHomeScreenState();
 }
 
-class _ClientHomeScreenState extends State<ClientHomeScreen> {
+class _ClientHomeScreenState extends State<ClientHomeScreen> with SingleTickerProviderStateMixin {
   final _scrollController = ScrollController();
 
   final image_source = "https://source.unsplash.com/random/1600x900";
@@ -48,17 +48,19 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
     });
 
     return Scaffold(
-      floatingActionButton: AnimatedOpacity(
-        opacity: _fabVisible ? 0 : 1.0,
-        duration: Duration(microseconds: 500),
-        curve: Curves.linear,
-        child: FloatingActionButton(
-          onPressed: () {},
-          child: Icon(
-            Icons.add,
-            color: Colors.black,
+      floatingActionButton: AnimatedContainer(
+        curve: Curves.easeIn,
+        duration: const Duration(seconds: 1),
+        child: Opacity(
+          opacity: _fabVisible ? 1 : 0,
+          child: FloatingActionButton(
+            onPressed: () {},
+            child: Icon(
+              Icons.add,
+              color: Colors.black,
+            ),
+            backgroundColor: Colors.white,
           ),
-          backgroundColor: Colors.white,
         ),
       ),
       backgroundColor: Colors.black,

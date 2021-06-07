@@ -5,6 +5,7 @@ import 'package:foodrop/screens/client/home/detail/widgets/price_and_like_bar.da
 import 'package:foodrop/screens/client/home/detail/widgets/product_detail.dart';
 import 'package:foodrop/screens/client/home/detail/widgets/product_image.dart';
 import 'package:foodrop/screens/client/home/detail/widgets/product_review.dart';
+import 'package:foodrop/screens/client/home/detail/widgets/product_suggestion.dart';
 import 'package:foodrop/screens/client/home/detail/widgets/vendor_tile.dart';
 
 class HomeTileDetailScreen extends StatelessWidget {
@@ -21,8 +22,19 @@ class HomeTileDetailScreen extends StatelessWidget {
     Size size = MediaQuery.of(context).size;
     print(_homeTile.numSold);
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.grey[900],
+        title: Text(_homeTile.title),
+        actions: [
+          IconButton(
+              icon: Icon(
+            Icons.share_rounded,
+            color: Colors.white,
+          )),
+        ],
+      ),
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.shopping_cart_rounded),
+        child: Icon(Icons.add_rounded),
       ),
       backgroundColor: Colors.grey[900],
       body: SafeArea(
@@ -51,7 +63,8 @@ class HomeTileDetailScreen extends StatelessWidget {
                 },
               ),
               SizedBox(height: 8),
-              ProductDetail()
+              ProductDetail(),
+              SizedBox(height: 8),
             ],
           ),
         ),

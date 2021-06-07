@@ -54,18 +54,10 @@ class HomeTileWidget extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Flexible(
-                    flex: 2,
-                    child: Wrap(
-                      alignment: WrapAlignment.center,
-                      children: [
-                        CircleAvatar(radius: 10, backgroundImage: NetworkImage(_tile.avatarurl)),
-                        SizedBox(width: 8),
-                        Text(_tile.username, overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: 12, color: Colors.grey[300])),
-                        SizedBox(width: 8),
-                      ],
-                    ),
-                  ),
+                  CircleAvatar(radius: 10, backgroundImage: NetworkImage(_tile.avatarurl)),
+                  SizedBox(width: 8),
+                  Text(_tile.username, overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: 12, color: Colors.grey[300])),
+                  SizedBox(width: 8),
                   Flexible(
                     flex: 1,
                     child: Wrap(
