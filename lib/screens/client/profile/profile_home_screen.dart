@@ -6,6 +6,7 @@ import 'package:foodrop/core/models/business_user_link.dart';
 import 'package:foodrop/core/services/database.dart';
 import 'package:foodrop/core/services/repositories/user_profile_repository.dart';
 import 'package:foodrop/screens/client/profile/join_buisness_screen.dart';
+import 'package:foodrop/screens/common_widgets/asyncSnapshot_Item_Builder.dart';
 import 'package:foodrop/screens/common_widgets/show_alert_dialog.dart';
 import 'package:provider/provider.dart';
 
@@ -168,19 +169,79 @@ class _ProfileHomeScreenState extends State<ProfileHomeScreen> {
           )
         ],
       ),
-      body: Column(
-        children: [
-          Stack(
-            children: [
-              _buildProfileBody(context, db),
-              if (widget.userProfile.hasBusiness) _vendorModeSwitch1(),
-            ],
-          ),
-          StreamBuilder<List<BusinessUserLink>>(
-              stream: db.businessUserLinkStream(userId: "HoI4jOVYkFg8uRqCr0tf7trSQjv1"),
-              builder: (context, snapshot)=
-              >)
-        ],
+      body: Container(
+        child: Column(
+          children: [
+            Stack(
+              children: [
+                _buildProfileBody(context, db),
+                if (widget.userProfile.hasBusiness) _vendorModeSwitch1(),
+              ],
+            ),
+            if (widget.userProfile.defaultVendorMode)
+              SingleChildScrollView(
+                child: Expanded(
+                  child: Padding(
+                    padding: EdgeInsets.only(top: 32, left: 12, right: 12),
+                    child: Container(
+                      // color: Colors.grey,
+                      height: 400,
+                      child: StreamBuilder<List<BusinessUserLink>>(
+                        stream: db.businessUserLinkStream(
+                            userId: "HoI4jOVYkFg8uRqCr0tf7trSQjv1"),
+                        builder: (context, snapshot) {
+                          switch (snapshot.connectionState) {
+                            case ConnectionState.waiting:
+                              {
+                                return CircularProgressIndicator();
+                              }
+                              break;
+                            case ConnectionState.active:
+                              {
+                                return AsyncSnapshotItemBuilder<
+                                    BusinessUserLink>(
+                                  snapshot: snapshot,
+                                  itemBuilder: (context, businessUserLink) {
+                                    return Card(
+                                        color: Colors.blue,
+                                        child: ListTile(
+                                          onTap: () {},
+                                          title: Text(
+                                              "${businessUserLink.businessLegalName}"),
+                                        ));
+                                  },
+                                );
+                                // if (snapshot.hasData) {
+                                //   return ListView.separated(
+                                //       itemBuilder: (context, index) {
+                                //         return Card(
+                                //             color: Colors.blue,
+                                //             child: ListTile(
+                                //               onTap: () {},
+                                //               title: Text(
+                                //                   "${snapshot.data[index].businessTradingName}"),
+                                //             ));
+                                //       },
+                                //       separatorBuilder: (context, index) =>
+                                //           Divider(height: 0.5),
+                                //       itemCount: snapshot.data.length);
+                                // }
+                                // return Text("No data");
+                              }
+                              break;
+                            default:
+                              {
+                                return CircularProgressIndicator();
+                              }
+                          }
+                        },
+                      ),
+                    ),
+                  ),
+                ),
+              )
+          ],
+        ),
       ),
     );
   }

@@ -44,7 +44,8 @@ class BusinessUserLink {
   }
 
   BusinessUserLink.fromMap(Map<String, dynamic> data, String linkId)
-      : creationDate = data['creationDate'],
+      :
+        // creationDate = data['creationDate'],
         businessId = data['businessId'],
         businessLegalName = data['businessLegalName'],
         businessTradingName = data['businessTradingName'],

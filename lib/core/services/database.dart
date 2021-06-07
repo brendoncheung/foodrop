@@ -58,8 +58,10 @@ class FirestoreDatabase implements Database {
           queryBuilder: userId != null
               ? (query) => query.where('userId', isEqualTo: userId)
               : null,
-          builder: (data, documentID) =>
-              BusinessUserLink.fromMap(data, documentID));
+          builder: (data, documentID) {
+            print(documentID);
+            return BusinessUserLink.fromMap(data, documentID);
+          });
 
   // @override
   // Future<void> setUser(UserClient user) => _service.setData(

@@ -5,6 +5,7 @@ import 'package:foodrop/core/services/database.dart';
 import 'package:foodrop/screens/authentication/profile_landing_screen.dart';
 import 'package:foodrop/screens/business/business_home_screen.dart';
 import 'package:foodrop/screens/business/menu_screen.dart';
+import 'package:foodrop/screens/business/promo/promo_page.dart';
 import 'package:foodrop/screens/business/promotion_screen.dart';
 import 'package:foodrop/screens/business/reward_screen.dart';
 import 'package:foodrop/screens/client/favourite/client_favourite_screen.dart';
@@ -81,7 +82,7 @@ class _ClientBottomNavigationState extends State<ClientBottomNavigation> {
   final _businessBottomNavigationScreens = [
     BusinessHomeScreen(),
     MenuScreen(),
-    PromotionScreen(),
+    PromoPage(),
     RewardScreen(),
     ProfileLandingScreen()
   ];
