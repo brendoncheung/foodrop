@@ -6,7 +6,6 @@ import 'package:foodrop/screens/authentication/profile_landing_screen.dart';
 import 'package:foodrop/screens/business/business_home_screen.dart';
 import 'package:foodrop/screens/business/menu_screen.dart';
 import 'package:foodrop/screens/business/promo/promo_page.dart';
-import 'package:foodrop/screens/business/promotion_screen.dart';
 import 'package:foodrop/screens/business/reward_screen.dart';
 import 'package:foodrop/screens/client/favourite/client_favourite_screen.dart';
 import 'package:foodrop/screens/client/gift/client_gift_screen.dart';
@@ -52,9 +51,13 @@ class ClientBottomNavigation extends StatefulWidget {
               break;
             case ConnectionState.active:
               {
-                return ChangeNotifierProvider<UserProfile>(
-                    create: (context) => snapshot.data,
-                    child: ClientBottomNavigation(userProfile: snapshot.data));
+                return MultiProvider(providers: [
+                  ChangeNotifierProvider<UserProfile>(
+                      create: (context) => snapshot.data),
+                ], child: ClientBottomNavigation(userProfile: snapshot.data));
+                // return ChangeNotifierProvider<UserProfile>(
+                //     create: (context) => snapshot.data,
+                //     child: ClientBottomNavigation(userProfile: snapshot.data));
               }
               break;
             default:

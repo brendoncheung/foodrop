@@ -1,10 +1,8 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:foodrop/core/authentication/authentication_service.dart';
 import 'package:foodrop/core/models/UserProfile.dart';
 import 'package:foodrop/core/models/business_user_link.dart';
 import 'package:foodrop/core/services/database.dart';
-import 'package:foodrop/core/services/repositories/user_profile_repository.dart';
 import 'package:foodrop/screens/client/profile/join_buisness_screen.dart';
 import 'package:foodrop/screens/common_widgets/asyncSnapshot_Item_Builder.dart';
 import 'package:foodrop/screens/common_widgets/show_alert_dialog.dart';
@@ -197,7 +195,7 @@ class _ProfileHomeScreenState extends State<ProfileHomeScreen> {
                   padding: EdgeInsets.only(top: 32, left: 12, right: 12),
                   child: Container(
                     // color: Colors.grey,
-                    height: 400,
+                    height: 250,
                     child: StreamBuilder<List<BusinessUserLink>>(
                       stream: db.businessUserLinkStream(
                           userId: "HoI4jOVYkFg8uRqCr0tf7trSQjv1"),
@@ -205,7 +203,7 @@ class _ProfileHomeScreenState extends State<ProfileHomeScreen> {
                         switch (snapshot.connectionState) {
                           case ConnectionState.waiting:
                             {
-                              return CircularProgressIndicator();
+                              return Center(child: CircularProgressIndicator());
                             }
                             break;
                           case ConnectionState.active:
