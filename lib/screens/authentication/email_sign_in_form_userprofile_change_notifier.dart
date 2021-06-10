@@ -1,9 +1,12 @@
+import 'dart:io';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:foodrop/core/authentication/authentication_service.dart';
 import 'package:foodrop/core/services/database.dart';
 import 'package:foodrop/screens/common_widgets/show_alert_dialog.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 import '../../core/models/UserProfile.dart';
@@ -321,10 +324,35 @@ class _EmailSignInFormUserProfileChangeNotifier
     ];
   }
 
+  File _pickedImage;
+  final picker = ImagePicker();
+
+  Future<void> _pickImage() async {
+    final pickedImage = await picker.getImage(source: ImageSource.gallery);
+    if (pickedImage != null) {
+      setState(() {
+        _pickedImage = File(pickedImage.path);
+      });
+    } else {
+      print("No image selected");
+    }
+  }
+
   List<Widget> _registeringFields() {
     return [
-      CircleAvatar(
-        child: Icon(Icons.person),
+      _pickedImage == null
+          ? CircleAvatar(
+              child: Icon(Icons.person),
+              maxRadius: 40,
+            )
+          : CircleAvatar(
+              backgroundImage: FileImage(_pickedImage),
+              maxRadius: 40,
+            ),
+      TextButton.icon(
+        onPressed: _pickImage,
+        icon: Icon(Icons.album),
+        label: Text("take photo"),
       ),
       _buildFirstNameTextField(),
       SizedBox(height: 8.0),
