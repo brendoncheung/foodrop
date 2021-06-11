@@ -328,7 +328,7 @@ class _EmailSignInFormUserProfileChangeNotifier
   final picker = ImagePicker();
 
   Future<void> _pickImage() async {
-    final pickedImage = await picker.getImage(source: ImageSource.gallery);
+    final pickedImage = await picker.getImage(source: ImageSource.camera);
     if (pickedImage != null) {
       setState(() {
         _pickedImage = File(pickedImage.path);
