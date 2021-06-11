@@ -1,6 +1,11 @@
+import 'dart:io';
+
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/material.dart';
 import 'package:foodrop/core/models/UserProfile.dart';
 import 'package:foodrop/core/models/business.dart';
 import 'package:foodrop/core/models/business_user_link.dart';
+import 'package:foodrop/core/models/items_category.dart';
 
 import 'api_path.dart';
 import 'firestore_service.dart';
@@ -10,6 +15,9 @@ abstract class Database {
   Future<void> setUser(UserProfile user);
   Stream<Business> businessStream({String businessUid});
   Stream<List<BusinessUserLink>> businessUserLinkStream({String userId});
+  Future<void> setImage({File pickedImage, String userId});
+  Stream<List<ItemsCategory>> itemsCategoryStream(
+      {@required String businessId});
 // Future<void> setJob(Job job);
   // Future<void> deleteJob(Job job);
   // Stream<List<Job>> jobsStream();
@@ -35,11 +43,22 @@ class FirestoreDatabase implements Database {
   Future<void> setUser(UserProfile user) async {
     // print("path: ${APIPath.user(uid: uid)}");
     // print("map: ${user.toMap()}");
-    print("uid is: $uid");
+    // print("uid is: $uid");
     await FirestoreService.instance.setData(
       path: APIPath.userById(uid: uid),
       data: user.toMap(), // return a user object in Map format
     );
+  }
+
+  Future<String> setImage({File pickedImage, String userId}) async {
+    final ref = FirebaseStorage.instance
+        .ref()
+        .child('user_image')
+        .child(userId + '.jpg');
+    await ref.putFile(pickedImage).whenComplete;
+    final stringUrl = ref.getDownloadURL();
+    print(stringUrl);
+    return stringUrl;
   }
 
   @override
@@ -63,11 +82,18 @@ class FirestoreDatabase implements Database {
             return BusinessUserLink.fromMap(data, documentID);
           });
 
-  // @override
-  // Future<void> setUser(UserClient user) => _service.setData(
-  //       path: APIPath.job(uid, job.id),
-  //       data: job.toMap(),
-  //     );
+  @override
+  Stream<List<ItemsCategory>> itemsCategoryStream(
+          {@required String businessId}) =>
+      _service.collectionStream<ItemsCategory>(
+          path: APIPath.businessCategories(businessId: businessId),
+          // queryBuilder: userId != null
+          //     ? (query) => query.where('userId', isEqualTo: userId)
+          //     : null,
+          builder: (data, documentID) {
+            print(documentID);
+            return ItemsCategory.fromMap(data, documentID);
+          });
 }
 //
 // String documentIdFromCurrentDate() => DateTime.now().toIso8601String();

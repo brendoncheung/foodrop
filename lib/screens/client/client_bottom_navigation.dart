@@ -100,6 +100,7 @@ class _ClientBottomNavigationState extends State<ClientBottomNavigation> {
   Widget build(BuildContext context) {
     // _selectedIndex = 0;
     print("rebuild client bottom navigation!!");
+    // print(widget.userProfile);
     final _userProfile = Provider.of<UserProfile>(context);
 
     return _userProfile == null

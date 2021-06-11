@@ -135,6 +135,7 @@ class _ProfileHomeScreenState extends State<ProfileHomeScreen> {
           ),
           suffixIcon: IconButton(
             icon: Icon(Icons.clear),
+            onPressed: () {},
             // onPressed: () => _tecSearchField.text = "",
           ),
         ),
@@ -198,7 +199,7 @@ class _ProfileHomeScreenState extends State<ProfileHomeScreen> {
                     height: 250,
                     child: StreamBuilder<List<BusinessUserLink>>(
                       stream: db.businessUserLinkStream(
-                          userId: "HoI4jOVYkFg8uRqCr0tf7trSQjv1"),
+                          userId: widget.userProfile.uid),
                       builder: (context, snapshot) {
                         switch (snapshot.connectionState) {
                           case ConnectionState.waiting:
