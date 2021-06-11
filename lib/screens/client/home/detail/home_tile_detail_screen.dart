@@ -63,6 +63,35 @@ class HomeTileDetailScreen extends StatelessWidget {
                 },
               ),
               SizedBox(height: 8),
+              Container(
+                color: Colors.grey[800],
+                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                child: SizedBox(
+                  width: double.infinity,
+                  height: 48,
+                  child: Row(
+                    children: [
+                      Align(
+                        alignment: Alignment.topLeft,
+                        child: Text(
+                          "Product Reviews (5)",
+                          style: TextStyle(fontSize: 18, color: Colors.white),
+                        ),
+                      ),
+                      Expanded(
+                        child: Align(
+                          alignment: Alignment.centerRight,
+                          child: Icon(
+                            Icons.chevron_right_outlined,
+                            color: Colors.white,
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              ),
+              SizedBox(height: 8),
               ProductDetail(),
               SizedBox(height: 8),
             ],
