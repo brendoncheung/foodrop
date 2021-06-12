@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:foodrop/core/models/UserProfile.dart';
 import 'package:foodrop/core/models/business.dart';
+import 'package:foodrop/core/models/items_category.dart';
 import 'package:foodrop/core/services/database.dart';
+import 'package:foodrop/screens/common_widgets/asyncSnapshot_Item_Builder.dart';
 import 'package:provider/provider.dart';
 
 class BusinessHomeScreen extends StatelessWidget {
@@ -21,6 +23,7 @@ class BusinessHomeScreen extends StatelessWidget {
                 appBar: AppBar(
                   title: Text(snapshot.data.tradingName),
                 ),
+                body: _buildChips(context, snapshot.data),
               );
             }
           }
@@ -36,5 +39,70 @@ class BusinessHomeScreen extends StatelessWidget {
             ),
           );
         });
+  }
+
+  _buildChips(BuildContext context, Business businessData) {
+    final _db = Provider.of<Database>(context);
+    return StreamBuilder(
+        stream: _db.itemsCategoryStream(businessId: businessData.uid),
+        builder: (context, snapshot) {
+          switch (snapshot.connectionState) {
+            case ConnectionState.waiting:
+              {
+                return Center(child: CircularProgressIndicator());
+              }
+              break;
+            case ConnectionState.active:
+              {
+                return Column(
+                  children: [
+                    Container(
+                      color: Colors.green,
+                      child: Wrap(
+                        children: [
+                          Container(
+                            height: 100,
+                            color: Colors.grey,
+                            child: AsyncSnapshotItemBuilder<ItemsCategory>(
+                                snapshot: snapshot,
+                                withDivider: false,
+                                scrollDirection: Axis.horizontal,
+                                itemBuilder: (context, category) {
+                                  // print(category);
+                                  return Padding(
+                                    padding: EdgeInsets.all(10),
+                                    child: ActionChip(
+                                      shadowColor: Colors.black,
+                                      label: Text(category.name),
+                                      onPressed: () {},
+                                    ),
+                                  );
+                                }),
+                          )
+                        ],
+                      ),
+                    ),
+                    Expanded(
+                        child: Container(
+                      color: Colors.deepOrange,
+                    ))
+                  ],
+                );
+              }
+
+              break;
+            default:
+              return Center(child: CircularProgressIndicator());
+          }
+        });
+    // return Chip(
+    //   labelPadding: EdgeInsets.all(4),
+    //   avatar: CircleAvatar(
+    //     child: Text("AZ"),
+    //     backgroundColor: Colors.white.withOpacity(0.8),
+    //   ),
+    //   label: Text('Chip'),
+    //   backgroundColor: Colors.red,
+    // );
   }
 }

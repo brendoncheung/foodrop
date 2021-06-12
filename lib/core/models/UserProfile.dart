@@ -190,7 +190,8 @@ class UserProfile with ChangeNotifier, EmailAndPasswordValidators {
       'emailVerificationDate': emailVerificationDate,
       'hasBusiness': hasBusiness,
       'defaultVendorMode': defaultVendorMode,
-      'defaultBusinessId': defaultBusinessId
+      'defaultBusinessId': defaultBusinessId,
+      'photoUrl': photoUrl
     };
   }
 

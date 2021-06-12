@@ -53,6 +53,7 @@ class AuthenticationFlowWrapper extends StatelessWidget {
               print(user.uid);
             } catch (e) {
               // show logoutAwaitScreen
+              print("no user id");
               errorDetected = true;
             }
 

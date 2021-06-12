@@ -25,12 +25,11 @@ class EmailSignInFormUserProfileChangeNotifier extends StatefulWidget {
     final auth = Provider.of<AuthenticationService>(context, listen: false);
     return ChangeNotifierProvider<UserProfile>(
       create: (_) => UserProfile(auth: auth),
-      child: Consumer<UserProfile>(
-        builder: (_, signInModel, __) =>
-            EmailSignInFormUserProfileChangeNotifier(
-                model: signInModel,
-                userUpdateProfileModel: firebaseUserProfile),
-      ),
+      child: Consumer<UserProfile>(builder: (_, signInModel, __) {
+        //print(firebaseUserProfile);
+        return EmailSignInFormUserProfileChangeNotifier(
+            model: signInModel, userUpdateProfileModel: firebaseUserProfile);
+      }),
     );
   }
 
@@ -56,15 +55,15 @@ class _EmailSignInFormUserProfileChangeNotifier
     try {
       if (widget.userUpdateProfileModel != null) {
         model.updateWith(
-          uid: widget.userUpdateProfileModel.uid,
-          firstName: widget.userUpdateProfileModel.firstName,
-          lastName: widget.userUpdateProfileModel.lastName,
-          username: widget.userUpdateProfileModel.username,
-          mobileNumber: widget.userUpdateProfileModel.mobileNumber,
-          emailAddress: widget.userUpdateProfileModel.emailAddress,
-          photoUrl: widget.userUpdateProfileModel.photoUrl,
-          formType: widget.userUpdateProfileModel.formType,
-        );
+            uid: widget.userUpdateProfileModel.uid,
+            firstName: widget.userUpdateProfileModel.firstName,
+            lastName: widget.userUpdateProfileModel.lastName,
+            username: widget.userUpdateProfileModel.username,
+            mobileNumber: widget.userUpdateProfileModel.mobileNumber,
+            emailAddress: widget.userUpdateProfileModel.emailAddress,
+            photoUrl: widget.userUpdateProfileModel.photoUrl,
+            formType: widget.userUpdateProfileModel.formType,
+            hasBusiness: widget.userUpdateProfileModel.hasBusiness);
 
         hasExistingUserProfile = true;
         widget.userUpdateProfileModel
@@ -101,6 +100,9 @@ class _EmailSignInFormUserProfileChangeNotifier
 
   UserProfile get model => widget.model;
 
+  File _pickedImage;
+  final picker = ImagePicker();
+
   @override
   void dispose() {
     _tecFirstName.dispose();
@@ -124,6 +126,12 @@ class _EmailSignInFormUserProfileChangeNotifier
       // RUN UPDATE PROFILE
       try {
         final db1 = FirestoreDatabase(uid: model.uid);
+        if (_pickedImage != null) {
+          final urlString =
+              await db1.setImage(pickedImage: _pickedImage, userId: model.uid);
+          model.updateWith(photoUrl: urlString);
+        }
+        // print(model);
         await db1.setUser(model);
         showAlertDialog(context,
             title: "User Profile",
@@ -281,6 +289,7 @@ class _EmailSignInFormUserProfileChangeNotifier
 
   @override
   Widget build(BuildContext context) {
+    print(widget.userUpdateProfileModel);
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -324,11 +333,14 @@ class _EmailSignInFormUserProfileChangeNotifier
     ];
   }
 
-  File _pickedImage;
-  final picker = ImagePicker();
-
   Future<void> _pickImage() async {
-    final pickedImage = await picker.getImage(source: ImageSource.camera);
+
+    final pickedImage = await picker.getImage(
+      source: ImageSource.gallery,
+      imageQuality: 50,
+      maxWidth: 150,
+    );
+
     if (pickedImage != null) {
       setState(() {
         _pickedImage = File(pickedImage.path);
