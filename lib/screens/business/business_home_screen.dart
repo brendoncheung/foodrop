@@ -70,8 +70,10 @@ class BusinessHomeScreen extends StatelessWidget {
                                 itemBuilder: (context, category) {
                                   // print(category);
                                   return Padding(
+                                    key: Key(category.hashCode.toString()),
                                     padding: EdgeInsets.all(10),
                                     child: ActionChip(
+                                      key: Key(category.hashCode.toString()),
                                       shadowColor: Colors.black,
                                       label: Text(category.name),
                                       onPressed: () {},
