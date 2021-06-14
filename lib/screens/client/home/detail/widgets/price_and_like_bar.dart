@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:foodrop/core/models/home_tile.dart';
+import 'package:foodrop/core/models/menu.dart';
 
 class PriceAndLikeBar extends StatelessWidget {
   const PriceAndLikeBar({
     Key key,
-    @required HomeTile homeTile,
+    @required Menu homeTile,
   })  : _homeTile = homeTile,
         super(key: key);
 
-  final HomeTile _homeTile;
+  final Menu _homeTile;
 
   @override
   Widget build(BuildContext context) {

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:foodrop/core/models/home_tile.dart';
+import 'package:foodrop/core/models/menu.dart';
 
 class VendorTile extends StatelessWidget {
-  final HomeTile homeTile;
+  final Menu homeTile;
   final Function onTap;
   VendorTile({this.homeTile, this.onTap});
 

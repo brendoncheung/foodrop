@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:foodrop/core/models/home_tile.dart';
+import 'package:foodrop/core/models/menu.dart';
 
 class HomeTileWidget extends StatelessWidget {
-  HomeTile _tile;
-  void Function(HomeTile) _onTileTapped;
+  Menu _tile;
+  void Function(Menu) _onTileTapped;
 
-  HomeTileWidget({HomeTile tile, void Function(HomeTile) onTileTapped}) {
+  HomeTileWidget({Menu tile, void Function(Menu) onTileTapped}) {
     this._tile = tile;
     this._onTileTapped = onTileTapped;
   }

@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:foodrop/core/models/home_tile.dart';
+import 'package:foodrop/core/models/menu.dart';
 import 'package:foodrop/screens/client/home/detail/widgets/price_and_like_bar.dart';
 import 'package:foodrop/screens/client/home/detail/widgets/product_detail.dart';
 import 'package:foodrop/screens/client/home/detail/widgets/product_image.dart';
@@ -11,9 +11,9 @@ import 'package:foodrop/screens/client/home/detail/widgets/vendor_tile.dart';
 class HomeTileDetailScreen extends StatelessWidget {
   static const String ROUTE_NAME = "home/detail";
 
-  HomeTile _homeTile;
+  Menu _homeTile;
 
-  HomeTileDetailScreen({HomeTile homeTile}) {
+  HomeTileDetailScreen({Menu homeTile}) {
     this._homeTile = homeTile;
   }
 
@@ -74,7 +74,7 @@ class HomeTileDetailScreen extends StatelessWidget {
                       Align(
                         alignment: Alignment.topLeft,
                         child: Text(
-                          "Product Reviews (5)",
+                          "Product Suggestion (5)",
                           style: TextStyle(fontSize: 18, color: Colors.white),
                         ),
                       ),
