@@ -18,6 +18,7 @@ abstract class Database {
   Future<void> setImage({File pickedImage, String userId});
   Stream<List<ItemsCategory>> itemsCategoryStream(
       {@required String businessId});
+  Future<void> setCategory({ItemsCategory category});
 // Future<void> setJob(Job job);
   // Future<void> deleteJob(Job job);
   // Stream<List<Job>> jobsStream();
@@ -41,12 +42,18 @@ class FirestoreDatabase implements Database {
 
   @override
   Future<void> setUser(UserProfile user) async {
-    // print("path: ${APIPath.user(uid: uid)}");
-    // print("map: ${user.toMap()}");
-    // print("uid is: $uid");
     await FirestoreService.instance.setData(
       path: APIPath.userById(uid: uid),
       data: user.toMap(), // return a user object in Map format
+    );
+  }
+
+  @override
+  Future<void> setCategory({ItemsCategory category}) async {
+    await FirestoreService.instance.setData(
+      path: APIPath.businessCategory(
+          businessId: category.businessId, docId: category.docId),
+      data: category.toMap(), // return a user object in Map format
     );
   }
 
@@ -86,11 +93,12 @@ class FirestoreDatabase implements Database {
   Stream<List<ItemsCategory>> itemsCategoryStream(
           {@required String businessId}) =>
       _service.collectionStream<ItemsCategory>(
-          path: APIPath.businessCategories(businessId: businessId),
-          builder: (data, documentID) {
-            print(data);
-            return ItemsCategory.fromMap(data, documentID);
-          });
+        path: APIPath.businessCategories(businessId: businessId),
+        builder: (data, documentID) {
+          return ItemsCategory.fromMap(data, documentID);
+        },
+        sort: (lhs, rhs) => lhs.index.compareTo(rhs.index),
+      );
 }
 //
 // String documentIdFromCurrentDate() => DateTime.now().toIso8601String();

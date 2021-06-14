@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:foodrop/core/services/database.dart';
 import 'package:foodrop/screens/business/menu/edit_category_modal_form.dart';
 
 import 'empty_content.dart';
@@ -11,12 +12,16 @@ class AsyncSnapshotItemBuilder<T> extends StatefulWidget {
       {this.snapshot,
       this.itemBuilder,
       this.withDivider = true,
+      this.businessId,
+      this.db,
       this.scrollDirection = Axis.vertical});
 
   final AsyncSnapshot snapshot;
   final ItemWidgetBuilder<T> itemBuilder;
   final bool withDivider;
   final Axis scrollDirection;
+  final String businessId;
+  final Database db;
 
   @override
   _AsyncSnapshotItemBuilderState<T> createState() =>
@@ -57,7 +62,9 @@ class _AsyncSnapshotItemBuilderState<T>
     } else {
       // return ReorderableListView.builder(
       //     onReorder: (int oldIndex, int newIndex) {
-      //       setState(() {});
+      //       setState(() {
+      //         print("oldIndex: $oldIndex, newIndex: $newIndex");
+      //       });
       //     },
       //     scrollDirection: widget.scrollDirection,
       //     itemBuilder: (context, index) {
@@ -67,16 +74,55 @@ class _AsyncSnapshotItemBuilderState<T>
       //       return widget.itemBuilder(context, items[index]);
       //     },
       //     itemCount: items.length);
+
       return ListView.builder(
           scrollDirection: widget.scrollDirection,
           itemBuilder: (context, index) {
             print(": $index");
             if (index == 0) {
-              return EditCategoryModalForm(items: items);
+              return Padding(
+                padding: EdgeInsets.all(10),
+                child: ActionChip(
+                  shadowColor: Colors.black,
+                  label: Text("Add"),
+                  avatar: Icon(Icons.add),
+                  backgroundColor: Colors.amber,
+                  // onPressed: () => EditCategoryModalForm(items: items),
+                  onPressed: () => showModalBottomSheet(
+                      isScrollControlled: true,
+                      context: context,
+                      builder: (context) {
+                        return EditCategoryModalForm(
+                          businessId: widget.businessId,
+                          db: widget.db,
+                        );
+                      }),
+                ),
+              );
+              // return EditCategoryModalForm(items: items);
             }
             return widget.itemBuilder(context, items[index - 1]);
           },
           itemCount: items.length + 1);
+
+      // Widget _buildAddNewCategoryWidget(BuildContext context) {
+      // return Padding(
+      //   padding: EdgeInsets.all(10),
+      //   child: ActionChip(
+      //     shadowColor: Colors.black,
+      //     label: Text("Add"),
+      //     avatar: Icon(Icons.add),
+      //     backgroundColor: Colors.amber,
+      //     onPressed: () => showModalBottomSheet(
+      //         isScrollControlled: true,
+      //         context: context,
+      //         builder: (context) {
+      //           return _buildCategoryModalForm(context);
+      //         }),
+      //   ),
+      // );
+      // }
+
     }
   }
 }

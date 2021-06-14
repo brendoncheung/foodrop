@@ -39,6 +39,7 @@ class FirestoreService {
       if (sort != null) {
         result.sort(sort);
       }
+
       return result;
     });
   }

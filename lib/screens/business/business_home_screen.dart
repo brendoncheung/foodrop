@@ -6,6 +6,8 @@ import 'package:foodrop/core/services/database.dart';
 import 'package:foodrop/screens/common_widgets/asyncSnapshot_Item_Builder.dart';
 import 'package:provider/provider.dart';
 
+import 'menu/edit_category_modal_form.dart';
+
 class BusinessHomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -19,11 +21,14 @@ class BusinessHomeScreen extends StatelessWidget {
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.active) {
             if (snapshot.hasData) {
-              return Scaffold(
-                appBar: AppBar(
-                  title: Text(snapshot.data.tradingName),
+              return Provider<Business>(
+                create: (context) => snapshot.data,
+                child: Scaffold(
+                  appBar: AppBar(
+                    title: Text(snapshot.data.tradingName),
+                  ),
+                  body: _buildChips(context, snapshot.data),
                 ),
-                body: _buildChips(context, snapshot.data),
               );
             }
           }
@@ -56,33 +61,47 @@ class BusinessHomeScreen extends StatelessWidget {
               {
                 return Column(
                   children: [
-                    Container(
-                      color: Colors.green,
-                      child: Wrap(
-                        children: [
-                          Container(
-                            height: 100,
-                            color: Colors.grey,
-                            child: AsyncSnapshotItemBuilder<ItemsCategory>(
-                                snapshot: snapshot,
-                                withDivider: false,
-                                scrollDirection: Axis.horizontal,
-                                itemBuilder: (context, category) {
-                                  // print(category);
-                                  return Padding(
+                    Wrap(
+                      children: [
+                        Container(
+                          height: 100,
+                          color: Colors.grey,
+                          child: AsyncSnapshotItemBuilder<ItemsCategory>(
+                              businessId: businessData.uid,
+                              snapshot: snapshot,
+                              withDivider: false,
+                              db: _db,
+                              scrollDirection: Axis.horizontal,
+                              itemBuilder: (context, category) {
+                                return InkWell(
+                                  onDoubleTap: () => showModalBottomSheet(
+                                      isScrollControlled: true,
+                                      context: context,
+                                      builder: (context) {
+                                        return EditCategoryModalForm(
+                                          item: category,
+                                        );
+                                      }),
+                                  child: Padding(
                                     key: Key(category.hashCode.toString()),
                                     padding: EdgeInsets.all(10),
                                     child: ActionChip(
                                       key: Key(category.hashCode.toString()),
                                       shadowColor: Colors.black,
                                       label: Text(category.name),
-                                      onPressed: () {},
+                                      avatar: Text(
+                                        category.index.toString(),
+                                      ),
+                                      onPressed: () {
+                                        //TODO: animated listcontroller
+                                        print("scrolled to the right position");
+                                      },
                                     ),
-                                  );
-                                }),
-                          )
-                        ],
-                      ),
+                                  ),
+                                );
+                              }),
+                        )
+                      ],
                     ),
                     Expanded(
                         child: Container(
