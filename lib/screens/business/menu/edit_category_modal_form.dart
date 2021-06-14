@@ -3,10 +3,10 @@ import 'package:foodrop/core/models/items_category.dart';
 import 'package:foodrop/core/services/database.dart';
 
 class EditCategoryModalForm extends StatefulWidget {
-  EditCategoryModalForm({this.item, this.businessId, this.db});
+  EditCategoryModalForm({this.item, this.db});
 
   ItemsCategory item;
-  String businessId;
+  // String businessId;
   Database db;
 
   @override
@@ -20,12 +20,21 @@ class _EditCategoryModalFormState extends State<EditCategoryModalForm> {
   final FocusNode _fnName = FocusNode();
   final FocusNode _fnIndex = FocusNode();
   ItemsCategory category;
-
+  // if (widget.item == null) {
+  // category = ItemsCategory(businessId: widget.businessId);
+  // // _isActive = category.isActive;
+  // }
   @override
   void initState() {
     if (widget.item != null) {
       _tecName.text = widget.item.name;
       _tecIndex.text = widget.item.index.toString();
+    }
+
+    if (widget.item != null) {
+      category = widget.item;
+      // category.businessId = widget.businessId;
+      // _isActive = category.isActive;
     }
 
     // TODO: implement initState
@@ -46,9 +55,6 @@ class _EditCategoryModalFormState extends State<EditCategoryModalForm> {
 
   @override
   Widget build(BuildContext context) {
-    // final _business = Provider.of<Business>(context, listen: false);
-    category = ItemsCategory(businessId: widget.businessId);
-    // return _buildCategoryModalForm(context);
     return SingleChildScrollView(
       child: Container(
         color: Colors.amber,
@@ -65,6 +71,15 @@ class _EditCategoryModalFormState extends State<EditCategoryModalForm> {
                       icon: Icon(Icons.cancel),
                       onPressed: Navigator.of(context).pop,
                     )),
+                SwitchListTile(
+                    dense: true,
+                    value: category.isActive,
+                    onChanged: (value) {
+                      print(value);
+                      setState(() {
+                        category.isActive = value;
+                      });
+                    }),
                 Form(
                   key: _categoryModalFormKey,
                   child: Column(
@@ -110,10 +125,24 @@ class _EditCategoryModalFormState extends State<EditCategoryModalForm> {
   }
 
   _onSubmit(BuildContext context) {
-    // final _db = FirestoreDatabase(uid: model.uid);
-    // final _db = Provider.of<Database>(context, listen: false);
-    _categoryModalFormKey.currentState.save();
-    widget.db.setCategory(category: category);
+    try {
+      _categoryModalFormKey.currentState.save();
+      widget.db.setCategory(category: category);
+      Navigator.of(context).pop();
+      // Scaffold.of(context).showSnackBar(
+      //   SnackBar(
+      //     content: Text("Updated Successfully"),
+      //   ),
+      // );
+    } catch (e) {
+      print(e);
+      Navigator.of(context).pop();
+      // Scaffold.of(context).showSnackBar(
+      //   SnackBar(
+      //     content: Text("Problem Encountererd"),
+      //   ),
+      // );
+    }
   }
 
   // Widget _buildAddNewCategoryWidget(BuildContext context) {

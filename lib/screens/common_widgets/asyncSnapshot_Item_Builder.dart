@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:foodrop/core/models/items_category.dart';
 import 'package:foodrop/core/services/database.dart';
 import 'package:foodrop/screens/business/menu/edit_category_modal_form.dart';
 
@@ -93,7 +94,8 @@ class _AsyncSnapshotItemBuilderState<T>
                       context: context,
                       builder: (context) {
                         return EditCategoryModalForm(
-                          businessId: widget.businessId,
+                          item: ItemsCategory(businessId: widget.businessId),
+                          // businessId: widget.businessId,
                           db: widget.db,
                         );
                       }),

@@ -78,8 +78,11 @@ class BusinessHomeScreen extends StatelessWidget {
                                       isScrollControlled: true,
                                       context: context,
                                       builder: (context) {
+                                        category.businessId = businessData.uid;
                                         return EditCategoryModalForm(
                                           item: category,
+                                          db: _db,
+                                          // businessId: businessData.uid,
                                         );
                                       }),
                                   child: Padding(
