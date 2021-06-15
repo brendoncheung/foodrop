@@ -4,6 +4,7 @@ import 'package:foodrop/core/models/business.dart';
 import 'package:foodrop/core/models/item.dart';
 import 'package:foodrop/core/models/items_category.dart';
 import 'package:foodrop/core/services/database.dart';
+import 'package:foodrop/screens/business/item_screen.dart';
 import 'package:foodrop/screens/common_widgets/asyncSnapshot_Item_Builder.dart';
 import 'package:provider/provider.dart';
 
@@ -47,9 +48,9 @@ class BusinessHomeScreen extends StatelessWidget {
         });
   }
 
-  _buildMenu(BuildContext context, Business businessData) {
+  Widget _buildMenu(BuildContext context, Business businessData) {
     final _db = Provider.of<Database>(context);
-    return StreamBuilder(
+    return StreamBuilder<List<ItemsCategory>>(
         stream: _db.itemsCategoryStream(businessId: businessData.uid),
         builder: (context, snapshot) {
           switch (snapshot.connectionState) {
@@ -112,7 +113,6 @@ class BusinessHomeScreen extends StatelessWidget {
                   ],
                 );
               }
-
               break;
             default:
               return Center(child: CircularProgressIndicator());
@@ -147,60 +147,21 @@ class BusinessHomeScreen extends StatelessWidget {
                   snapshot: snapshot,
                   itemBuilder: (context, item) {
                     return Card(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(16)),
                       child: ListTile(
+                        // tileColor: Colors.green,
                         title: Text(item.name),
                         subtitle: Text("${item.categoryName}"),
-                        // value: _isSelected(
-                        //     businessId:
-                        //     businessUserLink.businessId),
-                        // selected: _isSelected(
-                        //     businessId:
-                        //     businessUserLink.businessId),
                         selectedTileColor: Colors.black26,
-                        // onChanged: (newBool) {
-                        //   setState(
-                        //         () {
-                        //       widget.userProfile.updateWith(
-                        //           defaultBusinessId:
-                        //           businessUserLink
-                        //               .businessId);
-                        //       final db = Provider.of<Database>(
-                        //           context,
-                        //           listen: false);
-                        //       db.setUser(widget
-                        //           .userProfile); // write to db
-                        //       _selectedBusinessId =
-                        //           businessUserLink.businessId;
-                        //     },
-                        //   );
-                        // },
+                        onTap: () => Navigator.of(context).push(
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    ItemScreen(db: _db, item: item))),
                       ),
                     );
-                    // Card(
-                    //   color: Colors.blue,
-                    //   child: ListTile(
-                    //     onTap: () {},
-                    //     title: Text(
-                    //         "${businessUserLink.businessLegalName}"),
-                    //   ));
                   },
                 );
-                // if (snapshot.hasData) {
-                //   return ListView.separated(
-                //       itemBuilder: (context, index) {
-                //         return Card(
-                //             color: Colors.blue,
-                //             child: ListTile(
-                //               onTap: () {},
-                //               title: Text(
-                //                   "${snapshot.data[index].businessTradingName}"),
-                //             ));
-                //       },
-                //       separatorBuilder: (context, index) =>
-                //           Divider(height: 0.5),
-                //       itemCount: snapshot.data.length);
-                // }
-                // return Text("No data");
               }
               break;
             default:
