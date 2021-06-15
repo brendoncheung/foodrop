@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:foodrop/core/models/UserProfile.dart';
 import 'package:foodrop/core/models/business.dart';
 import 'package:foodrop/core/models/business_user_link.dart';
+import 'package:foodrop/core/models/item.dart';
 import 'package:foodrop/core/models/items_category.dart';
 
 import 'api_path.dart';
@@ -19,6 +20,8 @@ abstract class Database {
   Stream<List<ItemsCategory>> itemsCategoryStream(
       {@required String businessId});
   Future<void> setCategory({ItemsCategory category});
+  Stream<List<Item>> itemsStream({@required String businessId});
+
 // Future<void> setJob(Job job);
   // Future<void> deleteJob(Job job);
   // Stream<List<Job>> jobsStream();
@@ -98,6 +101,16 @@ class FirestoreDatabase implements Database {
           return ItemsCategory.fromMap(data, documentID);
         },
         sort: (lhs, rhs) => lhs.index.compareTo(rhs.index),
+      );
+
+  @override
+  Stream<List<Item>> itemsStream({@required String businessId}) =>
+      _service.collectionStream<Item>(
+        path: APIPath.businessItems(businessId: businessId),
+        builder: (data, documentID) {
+          return Item.fromMap(data, documentID);
+        },
+        // sort: (lhs, rhs) => lhs.index.compareTo(rhs.index),
       );
 }
 //

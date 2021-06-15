@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:foodrop/core/models/UserProfile.dart';
 import 'package:foodrop/core/models/business.dart';
+import 'package:foodrop/core/models/item.dart';
 import 'package:foodrop/core/models/items_category.dart';
 import 'package:foodrop/core/services/database.dart';
 import 'package:foodrop/screens/common_widgets/asyncSnapshot_Item_Builder.dart';
@@ -27,7 +28,7 @@ class BusinessHomeScreen extends StatelessWidget {
                   appBar: AppBar(
                     title: Text(snapshot.data.tradingName),
                   ),
-                  body: _buildChips(context, snapshot.data),
+                  body: _buildMenu(context, snapshot.data),
                 ),
               );
             }
@@ -46,7 +47,7 @@ class BusinessHomeScreen extends StatelessWidget {
         });
   }
 
-  _buildChips(BuildContext context, Business businessData) {
+  _buildMenu(BuildContext context, Business businessData) {
     final _db = Provider.of<Database>(context);
     return StreamBuilder(
         stream: _db.itemsCategoryStream(businessId: businessData.uid),
@@ -65,7 +66,7 @@ class BusinessHomeScreen extends StatelessWidget {
                       children: [
                         Container(
                           height: 100,
-                          color: Colors.grey,
+                          // color: Colors.grey,
                           child: AsyncSnapshotItemBuilder<ItemsCategory>(
                               businessId: businessData.uid,
                               snapshot: snapshot,
@@ -107,9 +108,7 @@ class BusinessHomeScreen extends StatelessWidget {
                       ],
                     ),
                     Expanded(
-                        child: Container(
-                      color: Colors.deepOrange,
-                    ))
+                        child: _buildBodyToShowItems(_db, businessData.uid))
                   ],
                 );
               }
@@ -128,5 +127,89 @@ class BusinessHomeScreen extends StatelessWidget {
     //   label: Text('Chip'),
     //   backgroundColor: Colors.red,
     // );
+  }
+
+  Container _buildBodyToShowItems(Database _db, String businessId) {
+    return Container(
+      color: Colors.deepOrange,
+      child: StreamBuilder<List<Item>>(
+        stream: _db.itemsStream(businessId: businessId),
+        builder: (context, snapshot) {
+          switch (snapshot.connectionState) {
+            case ConnectionState.waiting:
+              {
+                return Center(child: CircularProgressIndicator());
+              }
+              break;
+            case ConnectionState.active:
+              {
+                return AsyncSnapshotItemBuilder<Item>(
+                  snapshot: snapshot,
+                  itemBuilder: (context, item) {
+                    return Card(
+                      child: ListTile(
+                        title: Text(item.name),
+                        subtitle: Text("${item.categoryName}"),
+                        // value: _isSelected(
+                        //     businessId:
+                        //     businessUserLink.businessId),
+                        // selected: _isSelected(
+                        //     businessId:
+                        //     businessUserLink.businessId),
+                        selectedTileColor: Colors.black26,
+                        // onChanged: (newBool) {
+                        //   setState(
+                        //         () {
+                        //       widget.userProfile.updateWith(
+                        //           defaultBusinessId:
+                        //           businessUserLink
+                        //               .businessId);
+                        //       final db = Provider.of<Database>(
+                        //           context,
+                        //           listen: false);
+                        //       db.setUser(widget
+                        //           .userProfile); // write to db
+                        //       _selectedBusinessId =
+                        //           businessUserLink.businessId;
+                        //     },
+                        //   );
+                        // },
+                      ),
+                    );
+                    // Card(
+                    //   color: Colors.blue,
+                    //   child: ListTile(
+                    //     onTap: () {},
+                    //     title: Text(
+                    //         "${businessUserLink.businessLegalName}"),
+                    //   ));
+                  },
+                );
+                // if (snapshot.hasData) {
+                //   return ListView.separated(
+                //       itemBuilder: (context, index) {
+                //         return Card(
+                //             color: Colors.blue,
+                //             child: ListTile(
+                //               onTap: () {},
+                //               title: Text(
+                //                   "${snapshot.data[index].businessTradingName}"),
+                //             ));
+                //       },
+                //       separatorBuilder: (context, index) =>
+                //           Divider(height: 0.5),
+                //       itemCount: snapshot.data.length);
+                // }
+                // return Text("No data");
+              }
+              break;
+            default:
+              {
+                return CircularProgressIndicator();
+              }
+          }
+        },
+      ),
+    );
   }
 }
