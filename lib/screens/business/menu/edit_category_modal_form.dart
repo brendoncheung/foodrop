@@ -55,69 +55,114 @@ class _EditCategoryModalFormState extends State<EditCategoryModalForm> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Container(
-        color: Colors.amber,
-        child: Padding(
-          padding: EdgeInsets.all(16),
-          child: Container(
-            color: Colors.amber,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Align(
-                    alignment: Alignment.topRight,
-                    child: IconButton(
-                      icon: Icon(Icons.cancel),
-                      onPressed: Navigator.of(context).pop,
-                    )),
-                SwitchListTile(
-                    dense: true,
-                    value: category.isActive,
-                    onChanged: (value) {
-                      print(value);
-                      setState(() {
-                        category.isActive = value;
-                      });
-                    }),
-                Form(
-                  key: _categoryModalFormKey,
-                  child: Column(
-                    children: [
-                      TextFormField(
-                        controller: _tecName,
-                        decoration: InputDecoration(labelText: "category name"),
-                        onSaved: (text) => category.name = text,
-                      ),
-                      TextFormField(
-                        controller: _tecIndex,
-                        decoration: InputDecoration(labelText: "index"),
-                        onSaved: (text) => category.index = int.tryParse(text),
-                      ),
-                    ],
+    final size = MediaQuery.of(context).size;
+    return Container(
+      color: Colors.amber,
+      child: Padding(
+        padding: EdgeInsets.all(16),
+        child: Container(
+          color: Colors.amber,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Align(
+                  alignment: Alignment.topRight,
+                  child: IconButton(
+                    icon: Icon(Icons.cancel),
+                    onPressed: Navigator.of(context).pop,
+                  )),
+              Row(
+                children: [
+                  // TextButton(child: Text(category.name)),
+                  // Text(category.name),
+                  Container(
+                    color: Colors.grey,
+                    child: SizedBox(
+                      width: size.width * 0.9,
+                      // height: 200,
+                      child: SwitchListTile(
+                          dense: true,
+                          value: category.isActive,
+                          onChanged: (value) {
+                            print(value);
+                            setState(() {
+                              category.isActive = value;
+                            });
+                          }),
+                    ),
+                  ),
+                ],
+              ),
+              Form(
+                key: _categoryModalFormKey,
+                child: Container(
+                  height: 250,
+                  child: Flexible(
+                    child: Column(
+                      children: [
+                        SizedBox(
+                          width: size.width * 0.9,
+                          child: Row(
+                            children: [
+                              Expanded(
+                                // width: 100,
+                                child: TextFormField(
+                                  controller: _tecName,
+                                  decoration: InputDecoration(
+                                      labelText: "category name"),
+                                  onSaved: (text) => category.name = text,
+                                ),
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              SizedBox(
+                                width: 100,
+                                child: TextFormField(
+                                  controller: _tecIndex,
+                                  decoration:
+                                      InputDecoration(labelText: "index"),
+                                  onSaved: (text) =>
+                                      category.index = int.tryParse(text),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        SwitchListTile(
+                            dense: true,
+                            value: category.isActive,
+                            onChanged: (value) {
+                              print(value);
+                              setState(() {
+                                category.isActive = value;
+                              });
+                            }),
+                      ],
+                    ),
                   ),
                 ),
+              ),
 
-                ElevatedButton(
-                    onPressed: () => _onSubmit(context), child: Text("Submit")),
-                // ReorderableListView(children: children, onReorder: onReorder)
-                // ReorderableListView.builder(
-                //   scrollDirection: Axis.vertical,
-                //   shrinkWrap: true,
-                //   itemCount: widget.items.length,
-                //   onReorder: (int newIndex, int oldIndex) => setState(() {}),
-                //   itemBuilder: (context, index) {
-                //     ItemsCategory item = widget.items[index];
-                //     return ListTile(
-                //       key: Key(
-                //         item.index.toString(),
-                //       ),
-                //       title: Text(item.name),
-                //     );
-                //   },
-                // )
-              ],
-            ),
+              ElevatedButton(
+                  onPressed: () => _onSubmit(context), child: Text("Submit")),
+              // ReorderableListView(children: children, onReorder: onReorder)
+              // ReorderableListView.builder(
+              //   scrollDirection: Axis.vertical,
+              //   shrinkWrap: true,
+              //   itemCount: widget.items.length,
+              //   onReorder: (int newIndex, int oldIndex) => setState(() {}),
+              //   itemBuilder: (context, index) {
+              //     ItemsCategory item = widget.items[index];
+              //     return ListTile(
+              //       key: Key(
+              //         item.index.toString(),
+              //       ),
+              //       title: Text(item.name),
+              //     );
+              //   },
+              // )
+            ],
           ),
         ),
       ),

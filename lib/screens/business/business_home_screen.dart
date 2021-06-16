@@ -131,7 +131,7 @@ class BusinessHomeScreen extends StatelessWidget {
 
   Container _buildBodyToShowItems(Database _db, String businessId) {
     return Container(
-      color: Colors.deepOrange,
+      // color: Colors.deepOrange,
       child: StreamBuilder<List<Item>>(
         stream: _db.itemsStream(businessId: businessId),
         builder: (context, snapshot) {
@@ -147,6 +147,7 @@ class BusinessHomeScreen extends StatelessWidget {
                   snapshot: snapshot,
                   itemBuilder: (context, item) {
                     return Card(
+                      elevation: 2,
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(16)),
                       child: ListTile(
