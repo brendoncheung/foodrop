@@ -1,13 +1,12 @@
-import 'dart:io' show Platform;
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:foodrop/core/authentication/authentication_service.dart';
 import 'package:foodrop/screens/authentication/_sign_up_screen.dart';
 import 'package:foodrop/screens/authentication/authentication_flow_wrapper.dart';
+import 'package:foodrop/screens/client/home/detail/home_tile_detail_screen.dart';
 import 'package:foodrop/screens/error/unknown_route_screen.dart';
 import 'package:provider/provider.dart';
-
-import 'package:flutter/rendering.dart';
 
 void main() async {
   // you have to call this because firebase calls native code to configure firebase:
@@ -24,7 +23,7 @@ class FoodropRoot extends StatefulWidget {
 }
 
 class _FoodropRootState extends State<FoodropRoot> {
-  var isVendorMode = true;
+  // var isVendorMode = true;
 
   @override
   Widget build(BuildContext context) {
@@ -37,6 +36,7 @@ class _FoodropRootState extends State<FoodropRoot> {
         home: AuthenticationFlowWrapper(),
         routes: {
           SignUpScreen.ROUTE_NAME: (_) => SignUpScreen(),
+          HomeTileDetailScreen.ROUTE_NAME: (_) => HomeTileDetailScreen(),
         },
         onUnknownRoute: (settings) {
           return MaterialPageRoute(

@@ -58,6 +58,7 @@ class ClientBottomNavigation extends StatefulWidget {
                 // return ChangeNotifierProvider<UserProfile>(
                 //     create: (context) => snapshot.data,
                 //     child: ClientBottomNavigation(userProfile: snapshot.data));
+
               }
               break;
             default:
@@ -75,6 +76,7 @@ class ClientBottomNavigation extends StatefulWidget {
 
 class _ClientBottomNavigationState extends State<ClientBottomNavigation> {
   var _selectedIndex = 0;
+
   final _clientBottomNavigationScreens = [
     ClientHomeScreen(),
     ClientFavouriteScreen(),
@@ -100,7 +102,7 @@ class _ClientBottomNavigationState extends State<ClientBottomNavigation> {
   Widget build(BuildContext context) {
     // _selectedIndex = 0;
     print("rebuild client bottom navigation!!");
-    // print(widget.userProfile);
+
     final _userProfile = Provider.of<UserProfile>(context);
 
     return _userProfile == null

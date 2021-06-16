@@ -71,28 +71,28 @@ class _EditCategoryModalFormState extends State<EditCategoryModalForm> {
                     icon: Icon(Icons.cancel),
                     onPressed: Navigator.of(context).pop,
                   )),
-              Row(
-                children: [
-                  // TextButton(child: Text(category.name)),
-                  // Text(category.name),
-                  Container(
-                    color: Colors.grey,
-                    child: SizedBox(
-                      width: size.width * 0.9,
-                      // height: 200,
-                      child: SwitchListTile(
-                          dense: true,
-                          value: category.isActive,
-                          onChanged: (value) {
-                            print(value);
-                            setState(() {
-                              category.isActive = value;
-                            });
-                          }),
-                    ),
-                  ),
-                ],
-              ),
+              // Row(
+              //   children: [
+              //     // TextButton(child: Text(category.name)),
+              //     // Text(category.name),
+              //     Container(
+              //       color: Colors.grey,
+              //       child: SizedBox(
+              //         width: size.width * 0.9,
+              //         // height: 200,
+              //         child: SwitchListTile(
+              //             dense: true,
+              //             value: category.isActive,
+              //             onChanged: (value) {
+              //               print(value);
+              //               setState(() {
+              //                 category.isActive = value;
+              //               });
+              //             }),
+              //       ),
+              //     ),
+              //   ],
+              // ),
               Form(
                 key: _categoryModalFormKey,
                 child: Container(
@@ -100,44 +100,56 @@ class _EditCategoryModalFormState extends State<EditCategoryModalForm> {
                   child: Flexible(
                     child: Column(
                       children: [
-                        SizedBox(
-                          width: size.width * 0.9,
-                          child: Row(
-                            children: [
-                              Expanded(
-                                // width: 100,
-                                child: TextFormField(
-                                  controller: _tecName,
-                                  decoration: InputDecoration(
-                                      labelText: "category name"),
-                                  onSaved: (text) => category.name = text,
-                                ),
+                        Row(
+                          children: [
+                            Expanded(
+                              // width: 100,
+                              child: TextFormField(
+                                controller: _tecName,
+                                decoration:
+                                    InputDecoration(labelText: "category name"),
+                                onSaved: (text) => category.name = text,
                               ),
-                              SizedBox(
-                                width: 10,
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            SizedBox(
+                              width: 80,
+                              child: TextFormField(
+                                controller: _tecIndex,
+                                decoration: InputDecoration(labelText: "index"),
+                                onSaved: (text) =>
+                                    category.index = int.tryParse(text),
                               ),
-                              SizedBox(
+                            ),
+                            Container(
+                              // color: Colors.grey,
+                              child: SizedBox(
                                 width: 100,
-                                child: TextFormField(
-                                  controller: _tecIndex,
-                                  decoration:
-                                      InputDecoration(labelText: "index"),
-                                  onSaved: (text) =>
-                                      category.index = int.tryParse(text),
-                                ),
+                                // height: 200,
+                                child: SwitchListTile(
+                                    dense: true,
+                                    value: category.isActive,
+                                    onChanged: (value) {
+                                      print(value);
+                                      setState(() {
+                                        category.isActive = value;
+                                      });
+                                    }),
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
-                        SwitchListTile(
-                            dense: true,
-                            value: category.isActive,
-                            onChanged: (value) {
-                              print(value);
-                              setState(() {
-                                category.isActive = value;
-                              });
-                            }),
+                        // SwitchListTile(
+                        //     dense: true,
+                        //     value: category.isActive,
+                        //     onChanged: (value) {
+                        //       print(value);
+                        //       setState(() {
+                        //         category.isActive = value;
+                        //       });
+                        //     }),
                       ],
                     ),
                   ),
