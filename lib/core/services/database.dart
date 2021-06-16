@@ -20,7 +20,9 @@ abstract class Database {
   Stream<List<ItemsCategory>> itemsCategoryStream(
       {@required String businessId});
   Future<void> setCategory({ItemsCategory category});
-  Stream<List<Item>> itemsStream({@required String businessId});
+  Stream<List<Item>> businessItemsStreambyBusinessId(
+      {@required String businessId});
+  Stream<List<Item>> itemsStream();
 
 // Future<void> setJob(Job job);
   // Future<void> deleteJob(Job job);
@@ -104,9 +106,18 @@ class FirestoreDatabase implements Database {
       );
 
   @override
-  Stream<List<Item>> itemsStream({@required String businessId}) =>
+  Stream<List<Item>> businessItemsStreambyBusinessId(
+          {@required String businessId}) =>
       _service.collectionStream<Item>(
         path: APIPath.businessItems(businessId: businessId),
+        builder: (data, documentID) {
+          return Item.fromMap(data, documentID);
+        },
+        // sort: (lhs, rhs) => lhs.index.compareTo(rhs.index),
+      );
+
+  Stream<List<Item>> itemsStream() => _service.collectionStream<Item>(
+        path: APIPath.items(),
         builder: (data, documentID) {
           return Item.fromMap(data, documentID);
         },

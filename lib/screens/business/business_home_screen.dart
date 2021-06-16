@@ -136,7 +136,7 @@ class BusinessHomeScreen extends StatelessWidget {
     return Container(
       // color: Colors.deepOrange,
       child: StreamBuilder<List<Item>>(
-        stream: _db.itemsStream(businessId: businessId),
+        stream: _db.businessItemsStreambyBusinessId(businessId: businessId),
         builder: (context, snapshot) {
           switch (snapshot.connectionState) {
             case ConnectionState.waiting:

@@ -8,4 +8,5 @@ class APIPath {
       'businesses/$businessId/category/$docId';
   static String businessItems({String businessId}) =>
       'businesses/$businessId/items';
+  static String items() => 'items';
 }

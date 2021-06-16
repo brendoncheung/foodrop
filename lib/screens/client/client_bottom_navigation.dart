@@ -13,6 +13,8 @@ import 'package:foodrop/screens/client/home/client_home_screen.dart';
 import 'package:foodrop/screens/client/orders/client_order_screen.dart';
 import 'package:provider/provider.dart';
 
+import 'home/client_home_screen_v2.dart';
+
 class ClientBottomNavigation extends StatefulWidget {
   // void Function(int) onTap;
   // ClientBottomNavigation({this.onTap});
@@ -78,7 +80,7 @@ class _ClientBottomNavigationState extends State<ClientBottomNavigation> {
   var _selectedIndex = 0;
 
   final _clientBottomNavigationScreens = [
-    ClientHomeScreen(),
+    ClientHomeScreenV2(),
     ClientFavouriteScreen(),
     ClientGiftScreen(),
     ClientOrderScreen(),
