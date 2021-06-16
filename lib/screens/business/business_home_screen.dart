@@ -66,7 +66,7 @@ class BusinessHomeScreen extends StatelessWidget {
                     Wrap(
                       children: [
                         Container(
-                          height: 100,
+                          height: 50,
                           // color: Colors.grey,
                           child: AsyncSnapshotItemBuilder<ItemsCategory>(
                               businessId: businessData.uid,
@@ -107,6 +107,9 @@ class BusinessHomeScreen extends StatelessWidget {
                               }),
                         )
                       ],
+                    ),
+                    Divider(
+                      thickness: 2,
                     ),
                     Expanded(
                         child: _buildBodyToShowItems(_db, businessData.uid))

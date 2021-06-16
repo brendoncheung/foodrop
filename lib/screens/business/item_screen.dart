@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:foodrop/core/models/business.dart';
 import 'package:foodrop/core/models/item.dart';
-import 'package:foodrop/core/models/items_category.dart';
 import 'package:foodrop/core/services/database.dart';
-import 'package:provider/provider.dart';
 
 class ItemScreen extends StatefulWidget {
   ItemScreen({this.db, this.item});
@@ -55,7 +52,7 @@ class _ItemScreenState extends State<ItemScreen> {
                           onPressed: () => Navigator.of(context).pop(),
                           icon: Icon(
                             Icons.chevron_left,
-                            size: 32,
+                            size: 48,
                           )),
                     ],
                   ),
