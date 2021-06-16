@@ -96,66 +96,66 @@ class _EditCategoryModalFormState extends State<EditCategoryModalForm> {
               Form(
                 key: _categoryModalFormKey,
                 child: Container(
-                  height: 250,
-                  child: Flexible(
-                    child: Column(
-                      children: [
-                        Row(
-                          children: [
-                            Expanded(
-                              // width: 100,
-                              child: TextFormField(
-                                controller: _tecName,
-                                decoration:
-                                    InputDecoration(labelText: "category name"),
-                                onSaved: (text) => category.name = text,
-                              ),
+                  // height: 150,
+                  child: Column(
+                    children: [
+                      Row(
+                        children: [
+                          Expanded(
+                            // width: 100,
+                            child: TextFormField(
+                              controller: _tecName,
+                              decoration:
+                                  InputDecoration(labelText: "category name"),
+                              onSaved: (text) => category.name = text,
                             ),
-                            SizedBox(
-                              width: 10,
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          SizedBox(
+                            width: 80,
+                            child: TextFormField(
+                              controller: _tecIndex,
+                              decoration: InputDecoration(labelText: "index"),
+                              onSaved: (text) =>
+                                  category.index = int.tryParse(text),
                             ),
-                            SizedBox(
-                              width: 80,
-                              child: TextFormField(
-                                controller: _tecIndex,
-                                decoration: InputDecoration(labelText: "index"),
-                                onSaved: (text) =>
-                                    category.index = int.tryParse(text),
-                              ),
+                          ),
+                          Container(
+                            // color: Colors.grey,
+                            child: SizedBox(
+                              width: 100,
+                              // height: 200,
+                              child: SwitchListTile(
+                                  dense: true,
+                                  value: category.isActive,
+                                  onChanged: (value) {
+                                    print(value);
+                                    setState(() {
+                                      category.isActive = value;
+                                    });
+                                  }),
                             ),
-                            Container(
-                              // color: Colors.grey,
-                              child: SizedBox(
-                                width: 100,
-                                // height: 200,
-                                child: SwitchListTile(
-                                    dense: true,
-                                    value: category.isActive,
-                                    onChanged: (value) {
-                                      print(value);
-                                      setState(() {
-                                        category.isActive = value;
-                                      });
-                                    }),
-                              ),
-                            ),
-                          ],
-                        ),
-                        // SwitchListTile(
-                        //     dense: true,
-                        //     value: category.isActive,
-                        //     onChanged: (value) {
-                        //       print(value);
-                        //       setState(() {
-                        //         category.isActive = value;
-                        //       });
-                        //     }),
-                      ],
-                    ),
+                          ),
+                        ],
+                      ),
+                      // SwitchListTile(
+                      //     dense: true,
+                      //     value: category.isActive,
+                      //     onChanged: (value) {
+                      //       print(value);
+                      //       setState(() {
+                      //         category.isActive = value;
+                      //       });
+                      //     }),
+                    ],
                   ),
                 ),
               ),
-
+              SizedBox(
+                height: 16,
+              ),
               ElevatedButton(
                   onPressed: () => _onSubmit(context), child: Text("Submit")),
               // ReorderableListView(children: children, onReorder: onReorder)
