@@ -11,9 +11,8 @@ class MenuRepository {
 
   Stream<List<Menu>> get meals {
     var snapshot = _store.collection('menu').snapshots();
-
     return snapshot.map((event) {
-      event.docs.map((e) => Menu.fromMap(e.data())).toList();
+      return event.docs.map((e) => Menu.fromMap(e.data())).toList();
     });
   }
 }

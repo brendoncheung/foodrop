@@ -1,54 +1,82 @@
 class Menu {
   String _title;
+
   String _image_url;
   String _avatar_url;
-  String _username;
+  String _business_id;
+  String _business_name;
+  String _description;
+  String _lastUpdated;
+  String _creationDate;
   int _favourite;
-  double _price;
   int _numSold;
-  List<String> _comment_id;
+  double _price;
+  List<String> _review_id;
 
-  Menu({String title, String image_url, String avatar_url, String username, int favourite, double price, int numSold, List<String> comment_id})
-      : _title = title,
-        _image_url = image_url,
-        _avatar_url = avatar_url,
-        _username = username,
-        _price = price,
-        _numSold = numSold,
-        _comment_id = comment_id,
-        _favourite = favourite;
-
-  Menu.fromMap(Map<String, dynamic> map) {}
-
-  String get imageurl {
-    return _image_url;
+  Menu.fromMap(Map<String, dynamic> map) {
+    map['title'] = _title;
+    map['image_url'] = _image_url;
+    map['avatar_url'] = _avatar_url;
+    map['business_id'] = _business_id;
+    map['business_name'] = _business_name;
+    map['description'] = _description;
+    map['lastUpdated'] = _lastUpdated;
+    map['creationDate'] = _creationDate;
+    map['favorites'] = _favourite;
+    map['sold'] = _numSold;
+    map['price'] = _price;
+    map['reviews'] = _review_id;
   }
 
-  List<String> get comment_id {
-    return _comment_id;
-  }
+  String get title => this._title;
 
-  String get avatarurl {
-    return _avatar_url;
-  }
+  set title(String value) => this._title = value;
+  get image_url => this._image_url;
 
-  String get username {
-    return _username;
-  }
+  set image_url(value) => this._image_url = value;
 
-  int get numOfFavourites {
-    return _favourite;
-  }
+  get avatar_url => this._avatar_url;
 
-  String get title {
-    return _title;
-  }
+  set avatar_url(value) => this._avatar_url = value;
 
-  double get price {
-    return _price;
-  }
+  get business_id => this._business_id;
 
-  int get numSold {
-    return _numSold;
+  set business_id(value) => this._business_id = value;
+
+  get business_name => this._business_name;
+
+  set business_name(value) => this._business_name = value;
+
+  get description => this._description;
+
+  set description(value) => this._description = value;
+
+  get lastUpdated => this._lastUpdated;
+
+  set lastUpdated(value) => this._lastUpdated = value;
+
+  get creationDate => this._creationDate;
+
+  set creationDate(value) => this._creationDate = value;
+
+  get favourite => this._favourite;
+
+  set favourite(value) => this._favourite = value;
+
+  get numSold => this._numSold;
+
+  set numSold(value) => this._numSold = value;
+
+  get price => this._price;
+
+  set price(value) => this._price = value;
+
+  get review_id => this._review_id;
+
+  set review_id(value) => this._review_id = value;
+
+  @override
+  String toString() {
+    return 'Menu(_title: $_title, _image_url: $_image_url, _avatar_url: $_avatar_url, _business_id: $_business_id, _business_name: $_business_name, _description: $_description, _lastUpdated: $_lastUpdated, _creationDate: $_creationDate, _favourite: $_favourite, _numSold: $_numSold, _price: $_price, _review_id: $_review_id)';
   }
 }

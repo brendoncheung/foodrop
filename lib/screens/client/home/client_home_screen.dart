@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:foodrop/core/models/menu.dart';
 import 'package:foodrop/core/services/firestore_service.dart';
-import 'package:foodrop/core/services/repositories/meal_tile_repository.dart';
+import 'package:foodrop/core/services/repositories/menu_repository.dart';
 import 'package:foodrop/screens/client/home/detail/home_tile_detail_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -67,12 +67,13 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> with SingleTickerPr
       ),
       body: StreamBuilder(
         stream: mealRepository.meals,
-        builder: (context, snapshot) {
+        builder: (_, AsyncSnapshot<List<Menu>> snapshot) {
           if (!snapshot.hasData) {
             return CircularProgressIndicator();
           }
-          print("ehlklo");
-          print(snapshot.data);
+          List<Menu> menus = snapshot.data;
+          print(menus);
+          return Text("hello");
         },
       ),
     );

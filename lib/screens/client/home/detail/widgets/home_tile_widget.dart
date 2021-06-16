@@ -15,7 +15,7 @@ class HomeTileWidget extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         ScaffoldMessenger.of(context).hideCurrentSnackBar();
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("${_tile.username} selected")));
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("${_tile.business_name} selected")));
         _onTileTapped(_tile);
       },
       child: Container(
@@ -31,7 +31,7 @@ class HomeTileWidget extends StatelessWidget {
               child: FittedBox(
                 fit: BoxFit.cover,
                 child: Image.network(
-                  _tile.imageurl,
+                  _tile.image_url,
                   loadingBuilder: (context, child, loadingProgress) {
                     if (loadingProgress == null) return child;
                     return Center(child: CircularProgressIndicator());
@@ -55,13 +55,13 @@ class HomeTileWidget extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  CircleAvatar(radius: 10, backgroundImage: NetworkImage(_tile.avatarurl)),
+                  CircleAvatar(radius: 10, backgroundImage: NetworkImage(_tile.avatar_url)),
                   SizedBox(width: 8),
-                  Text(_tile.username, overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: 12, color: Colors.grey[300])),
+                  Text(_tile.business_name, overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: 12, color: Colors.grey[300])),
                   SizedBox(width: 8),
                   Icon(Icons.favorite, color: Colors.red, size: 16),
                   SizedBox(width: 8),
-                  Text(_tile.numOfFavourites.toString(), overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: 12, color: Colors.grey[300]))
+                  Text(_tile.favourite.toString(), overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: 12, color: Colors.grey[300]))
                 ],
               ),
             ),

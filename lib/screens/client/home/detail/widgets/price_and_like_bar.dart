@@ -35,7 +35,7 @@ class PriceAndLikeBar extends StatelessWidget {
                 SizedBox(
                   width: 8,
                 ),
-                Text(_homeTile.numOfFavourites.toString(), style: TextStyle(fontSize: 16, color: Colors.white)),
+                Text(_homeTile.favourite.toString(), style: TextStyle(fontSize: 16, color: Colors.white)),
               ],
             ),
           ),

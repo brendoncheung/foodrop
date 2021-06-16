@@ -12,9 +12,9 @@ class VendorTile extends StatelessWidget {
       color: Colors.grey[800],
       child: ListTile(
         onTap: onTap,
-        leading: CircleAvatar(backgroundImage: NetworkImage(homeTile.avatarurl)),
+        leading: CircleAvatar(backgroundImage: NetworkImage(homeTile.avatar_url)),
         title: Text(
-          homeTile.username,
+          homeTile.business_name,
           style: TextStyle(color: Colors.white),
         ),
         subtitle: Text(

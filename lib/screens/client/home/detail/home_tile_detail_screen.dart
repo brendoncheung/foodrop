@@ -11,20 +11,20 @@ import 'package:foodrop/screens/client/home/detail/widgets/vendor_tile.dart';
 class HomeTileDetailScreen extends StatelessWidget {
   static const String ROUTE_NAME = "home/detail";
 
-  Menu _homeTile;
+  Menu menu;
 
   HomeTileDetailScreen({Menu homeTile}) {
-    this._homeTile = homeTile;
+    this.menu = homeTile;
   }
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    print(_homeTile.numSold);
+    print(menu.numSold);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.grey[900],
-        title: Text(_homeTile.title),
+        title: Text(menu.title),
         actions: [
           IconButton(
               icon: Icon(
@@ -41,15 +41,15 @@ class HomeTileDetailScreen extends StatelessWidget {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              ProductImage(homeTile: _homeTile),
+              ProductImage(homeTile: menu),
               SizedBox(height: 8),
-              PriceAndLikeBar(homeTile: _homeTile),
+              PriceAndLikeBar(homeTile: menu),
               Row(
-                children: [SizedBox(width: 8), Text("${_homeTile.numSold.toString()} sold", style: TextStyle(color: Colors.white, fontSize: 16))],
+                children: [SizedBox(width: 8), Text("${menu.numSold.toString()} sold", style: TextStyle(color: Colors.white, fontSize: 16))],
               ),
               SizedBox(height: 8),
               VendorTile(
-                homeTile: _homeTile,
+                homeTile: menu,
                 onTap: () {
                   ScaffoldMessenger.of(context).hideCurrentSnackBar();
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("vendor tile selected")));
