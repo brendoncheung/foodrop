@@ -133,6 +133,7 @@ class _EmailSignInFormUserProfileChangeNotifier
         }
         // print(model);
         await db1.setUser(model);
+
         showAlertDialog(context,
             title: "User Profile",
             content: "Update Successful",
@@ -334,7 +335,6 @@ class _EmailSignInFormUserProfileChangeNotifier
   }
 
   Future<void> _pickImage() async {
-
     final pickedImage = await picker.getImage(
       source: ImageSource.gallery,
       imageQuality: 50,
