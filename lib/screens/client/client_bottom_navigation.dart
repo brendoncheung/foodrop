@@ -3,11 +3,17 @@ import 'package:foodrop/core/authentication/authentication_service.dart';
 import 'package:foodrop/core/models/UserProfile.dart';
 import 'package:foodrop/core/services/database.dart';
 import 'package:foodrop/screens/authentication/profile_landing_screen.dart';
+import 'package:foodrop/screens/business/business_home_screen.dart';
+import 'package:foodrop/screens/business/menu_screen.dart';
+import 'package:foodrop/screens/business/promo/promo_page.dart';
+import 'package:foodrop/screens/business/reward_screen.dart';
 import 'package:foodrop/screens/client/favourite/client_favourite_screen.dart';
 import 'package:foodrop/screens/client/gift/client_gift_screen.dart';
 import 'package:foodrop/screens/client/home/client_home_screen.dart';
 import 'package:foodrop/screens/client/orders/client_order_screen.dart';
 import 'package:provider/provider.dart';
+
+import 'home/client_home_screen_v2.dart';
 
 class ClientBottomNavigation extends StatefulWidget {
   // void Function(int) onTap;
@@ -47,9 +53,14 @@ class ClientBottomNavigation extends StatefulWidget {
               break;
             case ConnectionState.active:
               {
-                return ChangeNotifierProvider<UserProfile>(
-                    create: (context) => snapshot.data,
-                    child: ClientBottomNavigation(userProfile: snapshot.data));
+                return MultiProvider(providers: [
+                  ChangeNotifierProvider<UserProfile>(
+                      create: (context) => snapshot.data),
+                ], child: ClientBottomNavigation(userProfile: snapshot.data));
+                // return ChangeNotifierProvider<UserProfile>(
+                //     create: (context) => snapshot.data,
+                //     child: ClientBottomNavigation(userProfile: snapshot.data));
+
               }
               break;
             default:
@@ -67,11 +78,19 @@ class ClientBottomNavigation extends StatefulWidget {
 
 class _ClientBottomNavigationState extends State<ClientBottomNavigation> {
   var _selectedIndex = 0;
+
   final _clientBottomNavigationScreens = [
-    ClientHomeScreen(),
+    ClientHomeScreenV2(),
     ClientFavouriteScreen(),
     ClientGiftScreen(),
     ClientOrderScreen(),
+    ProfileLandingScreen()
+  ];
+  final _businessBottomNavigationScreens = [
+    BusinessHomeScreen(),
+    MenuScreen(),
+    PromoPage(),
+    RewardScreen(),
     ProfileLandingScreen()
   ];
 
@@ -85,28 +104,64 @@ class _ClientBottomNavigationState extends State<ClientBottomNavigation> {
   Widget build(BuildContext context) {
     // _selectedIndex = 0;
     print("rebuild client bottom navigation!!");
-    // print(widget.userProfile.firstName);
-    return Scaffold(
-      body: _clientBottomNavigationScreens[_selectedIndex],
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        onTap: onTapHandler,
-        currentIndex: _selectedIndex,
-        backgroundColor: Colors.grey[900],
-        selectedItemColor: Colors.white,
-        unselectedItemColor: Colors.grey[500],
-        items: [
-          BottomNavigationBarItem(
-              icon: Icon(Icons.home_rounded, size: 35), label: ""),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.search, size: 35), label: ""),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.comment_rounded, size: 35), label: ""),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.person_rounded, size: 35), label: ""),
-          BottomNavigationBarItem(icon: Icon(Icons.account_circle), label: ""),
-        ],
-      ),
+
+    final _userProfile = Provider.of<UserProfile>(context);
+
+    return _userProfile == null
+        ? Scaffold(
+            body: _clientBottomNavigationScreens[_selectedIndex],
+            bottomNavigationBar: _buildUserBottomNavigationBar(),
+          )
+        : Scaffold(
+            body: _userProfile.defaultVendorMode
+                ? _businessBottomNavigationScreens[_selectedIndex]
+                : _clientBottomNavigationScreens[_selectedIndex],
+            bottomNavigationBar: _userProfile.defaultVendorMode
+                ? _buildBusinessUserBottomNavigationBar()
+                : _buildUserBottomNavigationBar(),
+          );
+  }
+
+  BottomNavigationBar _buildUserBottomNavigationBar() {
+    return BottomNavigationBar(
+      type: BottomNavigationBarType.fixed,
+      onTap: onTapHandler,
+      currentIndex: _selectedIndex,
+      backgroundColor: Colors.grey[900],
+      selectedItemColor: Colors.white,
+      unselectedItemColor: Colors.grey[500],
+      items: [
+        BottomNavigationBarItem(
+            icon: Icon(Icons.home_rounded, size: 35), label: ""),
+        BottomNavigationBarItem(icon: Icon(Icons.search, size: 35), label: ""),
+        BottomNavigationBarItem(
+            icon: Icon(Icons.comment_rounded, size: 35), label: ""),
+        BottomNavigationBarItem(
+            icon: Icon(Icons.person_rounded, size: 35), label: ""),
+        BottomNavigationBarItem(icon: Icon(Icons.account_circle), label: ""),
+      ],
+    );
+  }
+
+  BottomNavigationBar _buildBusinessUserBottomNavigationBar() {
+    return BottomNavigationBar(
+      type: BottomNavigationBarType.fixed,
+      onTap: onTapHandler,
+      currentIndex: _selectedIndex,
+      backgroundColor: Colors.grey[900],
+      selectedItemColor: Colors.white,
+      unselectedItemColor: Colors.grey[500],
+      items: [
+        BottomNavigationBarItem(
+            icon: Icon(Icons.business_rounded, size: 35), label: ""),
+        BottomNavigationBarItem(
+            icon: Icon(Icons.menu_book_rounded, size: 35), label: ""),
+        BottomNavigationBarItem(
+            icon: Icon(Icons.event_rounded, size: 35), label: ""),
+        BottomNavigationBarItem(
+            icon: Icon(Icons.card_giftcard_rounded, size: 35), label: ""),
+        BottomNavigationBarItem(icon: Icon(Icons.account_circle), label: ""),
+      ],
     );
   }
 }

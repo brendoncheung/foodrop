@@ -1,5 +1,12 @@
+import 'dart:io';
+
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/material.dart';
 import 'package:foodrop/core/models/UserProfile.dart';
 import 'package:foodrop/core/models/business.dart';
+import 'package:foodrop/core/models/business_user_link.dart';
+import 'package:foodrop/core/models/item.dart';
+import 'package:foodrop/core/models/items_category.dart';
 
 import 'api_path.dart';
 import 'firestore_service.dart';
@@ -8,6 +15,15 @@ abstract class Database {
   Stream<UserProfile> userClientStream(String uid);
   Future<void> setUser(UserProfile user);
   Stream<Business> businessStream({String businessUid});
+  Stream<List<BusinessUserLink>> businessUserLinkStream({String userId});
+  Future<void> setImage({File pickedImage, String userId});
+  Stream<List<ItemsCategory>> itemsCategoryStream(
+      {@required String businessId});
+  Future<void> setCategory({ItemsCategory category});
+  Stream<List<Item>> businessItemsStreambyBusinessId(
+      {@required String businessId});
+  Stream<List<Item>> itemsStream();
+
 // Future<void> setJob(Job job);
   // Future<void> deleteJob(Job job);
   // Stream<List<Job>> jobsStream();
@@ -31,8 +47,6 @@ class FirestoreDatabase implements Database {
 
   @override
   Future<void> setUser(UserProfile user) async {
-    // print("path: ${APIPath.user(uid: uid)}");
-    // print("map: ${user.toMap()}");
     await FirestoreService.instance.setData(
       path: APIPath.userById(uid: uid),
       data: user.toMap(), // return a user object in Map format
@@ -40,17 +54,75 @@ class FirestoreDatabase implements Database {
   }
 
   @override
-  Stream<Business> businessStream({String businessUid}) =>
+  Future<void> setCategory({ItemsCategory category}) async {
+    await FirestoreService.instance.setData(
+      path: APIPath.businessCategory(
+          businessId: category.businessId, docId: category.docId),
+      data: category.toMap(), // return a user object in Map format
+    );
+  }
+
+  Future<String> setImage({File pickedImage, String userId}) async {
+    final ref = FirebaseStorage.instance
+        .ref()
+        .child('user_image')
+        .child(userId + '.jpg');
+    await ref.putFile(pickedImage).whenComplete;
+    final stringUrl = ref.getDownloadURL();
+    print(stringUrl);
+    return stringUrl;
+  }
+
+  @override
+  Stream<Business> businessStream({
+    String businessUid,
+  }) =>
       _service.documentStream(
         path: APIPath.businessById(uid: businessUid),
         builder: (data, documentId) => Business.fromMap(data, businessUid),
       );
 
-  // @override
-  // Future<void> setUser(UserClient user) => _service.setData(
-  //       path: APIPath.job(uid, job.id),
-  //       data: job.toMap(),
-  //     );
+  @override
+  Stream<List<BusinessUserLink>> businessUserLinkStream({String userId}) =>
+      _service.collectionStream<BusinessUserLink>(
+          path: APIPath.businessUserLink(),
+          queryBuilder: userId != null
+              ? (query) => query.where('userId', isEqualTo: userId)
+              : null,
+          builder: (data, documentID) {
+            print(documentID);
+            return BusinessUserLink.fromMap(data, documentID);
+          });
+
+  @override
+  Stream<List<ItemsCategory>> itemsCategoryStream(
+          {@required String businessId}) =>
+      _service.collectionStream<ItemsCategory>(
+        path: APIPath.businessCategories(businessId: businessId),
+        builder: (data, documentID) {
+          return ItemsCategory.fromMap(data, documentID);
+        },
+        sort: (lhs, rhs) => lhs.index.compareTo(rhs.index),
+      );
+
+  @override
+  Stream<List<Item>> businessItemsStreambyBusinessId(
+          {@required String businessId}) =>
+      _service.collectionStream<Item>(
+        path: APIPath.businessItems(businessId: businessId),
+        builder: (data, documentID) {
+          return Item.fromMap(data, documentID);
+        },
+        // sort: (lhs, rhs) => lhs.index.compareTo(rhs.index),
+      );
+
+  Stream<List<Item>> itemsStream() => _service.collectionStream<Item>(
+        path: APIPath.items(),
+        builder: (data, documentID) {
+          return Item.fromMap(data, documentID);
+        },
+        // sort: (lhs, rhs) => lhs.index.compareTo(rhs.index),
+      );
 }
 //
 // String documentIdFromCurrentDate() => DateTime.now().toIso8601String();

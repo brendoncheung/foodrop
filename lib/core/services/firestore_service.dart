@@ -32,10 +32,14 @@ class FirestoreService {
     }
     final snapshots = query.snapshots();
     return snapshots.map((snapshot) {
-      final result = snapshot.docs.map((snapshot) => builder(snapshot.data(), snapshot.id)).where((value) => value != null).toList();
+      final result = snapshot.docs
+          .map((snapshot) => builder(snapshot.data(), snapshot.id))
+          .where((value) => value != null)
+          .toList();
       if (sort != null) {
         result.sort(sort);
       }
+
       return result;
     });
   }

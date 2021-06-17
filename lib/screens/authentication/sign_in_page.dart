@@ -4,13 +4,6 @@ import '../../screens/authentication/widgets/sign_in_button.dart';
 import '../../screens/authentication/widgets/social_sign_in_button.dart';
 import 'email_sign_in_page.dart';
 
-//import 'package:firebase_auth/firebase_auth.dart';
-//import 'package:flutter/material.dart';
-//import 'package:time_tracker_flutter_course/app/screens/email_sign_in.dart';
-//import 'package:time_tracker_flutter_course/app/services/auth.dart';
-//import 'package:time_tracker_flutter_course/app/widgets/sign_in_button.dart';
-//import 'package:time_tracker_flutter_course/app/widgets/social_sign_in_button.dart';
-
 class SignInPage extends StatelessWidget {
   // SignInPage({this.onLoggedIn});
   // VoidCallback onLoggedIn;
