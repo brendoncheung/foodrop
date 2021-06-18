@@ -4,11 +4,13 @@ import 'package:foodrop/core/models/business.dart';
 import 'package:foodrop/core/models/item.dart';
 import 'package:foodrop/core/models/items_category.dart';
 import 'package:foodrop/core/services/database.dart';
-import 'package:foodrop/screens/business/item_screen.dart';
 import 'package:foodrop/screens/common_widgets/asyncSnapshot_Item_Builder.dart';
 import 'package:provider/provider.dart';
 
+import 'file:///C:/Users/paul.chen/StudioProjects/foodrop/lib/screens/business/menu/item_screen.dart';
+
 import 'menu/edit_category_modal_form.dart';
+import 'menu/edit_item_screen.dart';
 
 class BusinessHomeScreen extends StatelessWidget {
   @override
@@ -26,6 +28,14 @@ class BusinessHomeScreen extends StatelessWidget {
               return Provider<Business>(
                 create: (context) => snapshot.data,
                 child: Scaffold(
+                  floatingActionButton: FloatingActionButton(
+                    child: Icon(Icons.add),
+                    onPressed: () => Navigator.of(context).push(
+                      MaterialPageRoute(
+                          builder: (context) => EditItemScreen(),
+                          fullscreenDialog: true),
+                    ),
+                  ),
                   appBar: AppBar(
                     title: Text(snapshot.data.tradingName),
                   ),
@@ -91,6 +101,9 @@ class BusinessHomeScreen extends StatelessWidget {
                                     key: Key(category.hashCode.toString()),
                                     padding: EdgeInsets.all(10),
                                     child: ActionChip(
+                                      backgroundColor: category.isActive
+                                          ? Colors.amber
+                                          : null,
                                       key: Key(category.hashCode.toString()),
                                       shadowColor: Colors.black,
                                       label: Text(category.name),
@@ -112,7 +125,10 @@ class BusinessHomeScreen extends StatelessWidget {
                       thickness: 2,
                     ),
                     Expanded(
-                        child: _buildBodyToShowItems(_db, businessData.uid))
+                        child: _buildBodyToShowItems(
+                            db: _db,
+                            businessId: businessData.uid,
+                            categoriesList: snapshot.data))
                   ],
                 );
               }
@@ -132,11 +148,12 @@ class BusinessHomeScreen extends StatelessWidget {
     // );
   }
 
-  Container _buildBodyToShowItems(Database _db, String businessId) {
+  Container _buildBodyToShowItems(
+      {Database db, String businessId, List<ItemsCategory> categoriesList}) {
     return Container(
       // color: Colors.deepOrange,
       child: StreamBuilder<List<Item>>(
-        stream: _db.businessItemsStreambyBusinessId(businessId: businessId),
+        stream: db.businessItemsStreambyBusinessId(businessId: businessId),
         builder: (context, snapshot) {
           switch (snapshot.connectionState) {
             case ConnectionState.waiting:
@@ -160,8 +177,10 @@ class BusinessHomeScreen extends StatelessWidget {
                         selectedTileColor: Colors.black26,
                         onTap: () => Navigator.of(context).push(
                             MaterialPageRoute(
-                                builder: (context) =>
-                                    ItemScreen(db: _db, item: item))),
+                                builder: (context) => ItemScreen(
+                                    db: db,
+                                    item: item,
+                                    categories: categoriesList))),
                       ),
                     );
                   },

@@ -23,6 +23,7 @@ abstract class Database {
   Stream<List<Item>> businessItemsStreambyBusinessId(
       {@required String businessId});
   Stream<List<Item>> itemsStream();
+  Future<void> setItem({Item item});
 
 // Future<void> setJob(Job job);
   // Future<void> deleteJob(Job job);
@@ -123,6 +124,24 @@ class FirestoreDatabase implements Database {
         },
         // sort: (lhs, rhs) => lhs.index.compareTo(rhs.index),
       );
+
+  @override
+  Future<void> setItem({Item item}) async {
+    // save item to root collection
+    await FirestoreService.instance.setData(
+      path: APIPath.itemByDocId(docId: item.docId),
+      data: item.toMap(), // return a user object in Map format
+    );
+
+    // save item to subcollection of business
+    await FirestoreService.instance.setData(
+      path: APIPath.itemByBusinessIdAndDocId(
+        businessId: item.businessId,
+        itemId: item.docId,
+      ),
+      data: item.toMap(), // return a user object in Map format
+    );
+  }
 }
 //
 // String documentIdFromCurrentDate() => DateTime.now().toIso8601String();

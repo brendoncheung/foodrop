@@ -9,4 +9,7 @@ class APIPath {
   static String businessItems({String businessId}) =>
       'businesses/$businessId/items';
   static String items() => 'items';
+  static String itemByDocId({String docId}) => 'items/$docId';
+  static String itemByBusinessIdAndDocId({String businessId, String itemId}) =>
+      'businesses/$businessId/items/$itemId';
 }
