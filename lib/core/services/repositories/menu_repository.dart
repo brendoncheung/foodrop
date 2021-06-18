@@ -2,22 +2,29 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:foodrop/core/models/menu.dart';
 
-class MenuRepository {
+class ItemRepository {
   FirebaseFirestore _store;
 
-  MenuRepository(FirebaseFirestore store) {
+  ItemRepository(FirebaseFirestore store) {
     this._store = store;
   }
 
-  Stream<List<Menu>> get meals {
+  Stream<List<Item>> get itemsLive {
     var snapshot = _store.collection('menu').snapshots();
     return snapshot.map((event) {
-      return event.docs.map((e) => Menu.fromMap(e.data())).toList();
+      return event.docs.map((e) => Item.fromMap(e.data())).toList();
     });
   }
+
+  Future<Item> getItemById(String id) {
+    return _store.collection('menu').doc(id).get().then((value) {
+      var item = Item.fromMap(value.data());
+      print(item);
+      return Item.fromMap(value.data());
+    });
+  }
+
+  Future<bool> updateItem(Item menu) {}
+
+  Future<bool> deleteItemById(String id) {}
 }
-    // var snapshot = fs.collection('restaurants').doc(vendorId).collection('menus').snapshots();
-    // return snapshot.map<List<VendorMenuItem>>((event) {
-    //   return event.docs.map((e) {
-    //     return VendorMenuItem.fromMap(e.data());
-    //   }).toList();

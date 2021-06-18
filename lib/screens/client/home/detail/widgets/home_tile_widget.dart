@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:foodrop/core/models/menu.dart';
 
 class HomeTileWidget extends StatelessWidget {
-  Menu _tile;
-  void Function(Menu) _onTileTapped;
+  Item _tile;
+  void Function(Item) _onTileTapped;
 
-  HomeTileWidget({Menu tile, void Function(Menu) onTileTapped}) {
+  HomeTileWidget({Item tile, void Function(Item) onTileTapped}) {
     this._tile = tile;
     this._onTileTapped = onTileTapped;
   }

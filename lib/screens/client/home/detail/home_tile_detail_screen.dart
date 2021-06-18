@@ -11,9 +11,9 @@ import 'package:foodrop/screens/client/home/detail/widgets/vendor_tile.dart';
 class HomeTileDetailScreen extends StatelessWidget {
   static const String ROUTE_NAME = "home/detail";
 
-  Menu menu;
+  Item menu;
 
-  HomeTileDetailScreen({Menu homeTile}) {
+  HomeTileDetailScreen({Item homeTile}) {
     this.menu = homeTile;
   }
 

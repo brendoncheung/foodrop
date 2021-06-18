@@ -4,11 +4,11 @@ import 'package:foodrop/core/models/menu.dart';
 class PriceAndLikeBar extends StatelessWidget {
   const PriceAndLikeBar({
     Key key,
-    @required Menu homeTile,
+    @required Item homeTile,
   })  : _homeTile = homeTile,
         super(key: key);
 
-  final Menu _homeTile;
+  final Item _homeTile;
 
   @override
   Widget build(BuildContext context) {

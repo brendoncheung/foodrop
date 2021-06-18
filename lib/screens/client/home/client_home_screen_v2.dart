@@ -1,7 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:foodrop/core/models/item.dart';
 import 'package:foodrop/core/services/database.dart';
+import 'package:foodrop/core/services/repositories/menu_repository.dart';
 import 'package:foodrop/screens/common_widgets/asyncSnapshot_Item_Builder.dart';
 import 'package:provider/provider.dart';
 
@@ -27,13 +29,11 @@ class _ClientHomeScreenV2State extends State<ClientHomeScreenV2> {
     bool _fabVisible = true;
 
     _scrollController.addListener(() {
-      if (_scrollController.position.userScrollDirection ==
-          ScrollDirection.forward) {
+      if (_scrollController.position.userScrollDirection == ScrollDirection.forward) {
         setState(() {
           _fabVisible = false;
         });
-      } else if (_scrollController.position.userScrollDirection ==
-          ScrollDirection.reverse) {
+      } else if (_scrollController.position.userScrollDirection == ScrollDirection.reverse) {
         setState(() {
           _fabVisible = true;
         });
@@ -80,8 +80,7 @@ class _ClientHomeScreenV2State extends State<ClientHomeScreenV2> {
                   itemBuilder: (context, item) {
                     return Card(
                       elevation: 2,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(16)),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
                       child: ListTile(
                           // tileColor: Colors.green,
                           title: Text(item.name),

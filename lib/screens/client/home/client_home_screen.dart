@@ -19,7 +19,7 @@ class ClientHomeScreen extends StatefulWidget {
 class _ClientHomeScreenState extends State<ClientHomeScreen> with SingleTickerProviderStateMixin {
   final _scrollController = ScrollController();
 
-  final mealRepository = MenuRepository(FirebaseFirestore.instance);
+  final mealRepository = ItemRepository(FirebaseFirestore.instance);
 
   final image_source = "https://source.unsplash.com/random/1600x900";
   String Function(int i) avatar_source = (i) {
@@ -66,12 +66,12 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> with SingleTickerPr
         ],
       ),
       body: StreamBuilder(
-        stream: mealRepository.meals,
-        builder: (_, AsyncSnapshot<List<Menu>> snapshot) {
+        stream: mealRepository.itemsLive,
+        builder: (_, AsyncSnapshot<List<Item>> snapshot) {
           if (!snapshot.hasData) {
             return CircularProgressIndicator();
           }
-          List<Menu> menus = snapshot.data;
+          List<Item> menus = snapshot.data;
           print(menus);
           return Text("hello");
         },

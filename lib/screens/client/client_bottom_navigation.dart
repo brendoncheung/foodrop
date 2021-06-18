@@ -54,8 +54,7 @@ class ClientBottomNavigation extends StatefulWidget {
             case ConnectionState.active:
               {
                 return MultiProvider(providers: [
-                  ChangeNotifierProvider<UserProfile>(
-                      create: (context) => snapshot.data),
+                  ChangeNotifierProvider<UserProfile>(create: (context) => snapshot.data),
                 ], child: ClientBottomNavigation(userProfile: snapshot.data));
                 // return ChangeNotifierProvider<UserProfile>(
                 //     create: (context) => snapshot.data,
@@ -79,20 +78,8 @@ class ClientBottomNavigation extends StatefulWidget {
 class _ClientBottomNavigationState extends State<ClientBottomNavigation> {
   var _selectedIndex = 0;
 
-  final _clientBottomNavigationScreens = [
-    ClientHomeScreenV2(),
-    ClientFavouriteScreen(),
-    ClientGiftScreen(),
-    ClientOrderScreen(),
-    ProfileLandingScreen()
-  ];
-  final _businessBottomNavigationScreens = [
-    BusinessHomeScreen(),
-    MenuScreen(),
-    PromoPage(),
-    RewardScreen(),
-    ProfileLandingScreen()
-  ];
+  final _clientBottomNavigationScreens = [ClientHomeScreenV2(), ClientFavouriteScreen(), ClientGiftScreen(), ClientOrderScreen(), ProfileLandingScreen()];
+  final _businessBottomNavigationScreens = [BusinessHomeScreen(), MenuScreen(), PromoPage(), RewardScreen(), ProfileLandingScreen()];
 
   void onTapHandler(int index) {
     setState(() {
@@ -113,12 +100,8 @@ class _ClientBottomNavigationState extends State<ClientBottomNavigation> {
             bottomNavigationBar: _buildUserBottomNavigationBar(),
           )
         : Scaffold(
-            body: _userProfile.defaultVendorMode
-                ? _businessBottomNavigationScreens[_selectedIndex]
-                : _clientBottomNavigationScreens[_selectedIndex],
-            bottomNavigationBar: _userProfile.defaultVendorMode
-                ? _buildBusinessUserBottomNavigationBar()
-                : _buildUserBottomNavigationBar(),
+            body: _userProfile.defaultVendorMode ? _businessBottomNavigationScreens[_selectedIndex] : _clientBottomNavigationScreens[_selectedIndex],
+            bottomNavigationBar: _userProfile.defaultVendorMode ? _buildBusinessUserBottomNavigationBar() : _buildUserBottomNavigationBar(),
           );
   }
 
@@ -131,13 +114,10 @@ class _ClientBottomNavigationState extends State<ClientBottomNavigation> {
       selectedItemColor: Colors.white,
       unselectedItemColor: Colors.grey[500],
       items: [
-        BottomNavigationBarItem(
-            icon: Icon(Icons.home_rounded, size: 35), label: ""),
+        BottomNavigationBarItem(icon: Icon(Icons.home_rounded, size: 35), label: ""),
         BottomNavigationBarItem(icon: Icon(Icons.search, size: 35), label: ""),
-        BottomNavigationBarItem(
-            icon: Icon(Icons.comment_rounded, size: 35), label: ""),
-        BottomNavigationBarItem(
-            icon: Icon(Icons.person_rounded, size: 35), label: ""),
+        BottomNavigationBarItem(icon: Icon(Icons.comment_rounded, size: 35), label: ""),
+        BottomNavigationBarItem(icon: Icon(Icons.person_rounded, size: 35), label: ""),
         BottomNavigationBarItem(icon: Icon(Icons.account_circle), label: ""),
       ],
     );
@@ -152,14 +132,10 @@ class _ClientBottomNavigationState extends State<ClientBottomNavigation> {
       selectedItemColor: Colors.white,
       unselectedItemColor: Colors.grey[500],
       items: [
-        BottomNavigationBarItem(
-            icon: Icon(Icons.business_rounded, size: 35), label: ""),
-        BottomNavigationBarItem(
-            icon: Icon(Icons.menu_book_rounded, size: 35), label: ""),
-        BottomNavigationBarItem(
-            icon: Icon(Icons.event_rounded, size: 35), label: ""),
-        BottomNavigationBarItem(
-            icon: Icon(Icons.card_giftcard_rounded, size: 35), label: ""),
+        BottomNavigationBarItem(icon: Icon(Icons.business_rounded, size: 35), label: ""),
+        BottomNavigationBarItem(icon: Icon(Icons.menu_book_rounded, size: 35), label: ""),
+        BottomNavigationBarItem(icon: Icon(Icons.event_rounded, size: 35), label: ""),
+        BottomNavigationBarItem(icon: Icon(Icons.card_giftcard_rounded, size: 35), label: ""),
         BottomNavigationBarItem(icon: Icon(Icons.account_circle), label: ""),
       ],
     );

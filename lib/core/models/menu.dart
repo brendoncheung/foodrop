@@ -1,6 +1,5 @@
-class Menu {
+class Item {
   String _title;
-
   String _image_url;
   String _avatar_url;
   String _business_id;
@@ -10,22 +9,22 @@ class Menu {
   String _creationDate;
   int _favourite;
   int _numSold;
-  double _price;
+  int _price;
   List<String> _review_id;
 
-  Menu.fromMap(Map<String, dynamic> map) {
-    map['title'] = _title;
-    map['image_url'] = _image_url;
-    map['avatar_url'] = _avatar_url;
-    map['business_id'] = _business_id;
-    map['business_name'] = _business_name;
-    map['description'] = _description;
-    map['lastUpdated'] = _lastUpdated;
-    map['creationDate'] = _creationDate;
-    map['favorites'] = _favourite;
-    map['sold'] = _numSold;
-    map['price'] = _price;
-    map['reviews'] = _review_id;
+  Item.fromMap(Map<String, dynamic> map) {
+    _title = map['title'];
+    _image_url = map['image_url'];
+    _avatar_url = map['avatar_url'];
+    _business_id = map['business_id'];
+    _business_name = map['business_name'];
+    _description = map['description'];
+    _lastUpdated = map['lastUpdated'];
+    _creationDate = map['creationDate'];
+    _favourite = map['favorites'];
+    _numSold = map['sold'];
+    _price = map['price'];
+    _review_id = List.from(map['reviews']);
   }
 
   String get title => this._title;

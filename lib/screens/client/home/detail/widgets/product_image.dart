@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:foodrop/core/models/menu.dart';
 
 class ProductImage extends StatelessWidget {
-  final Menu homeTile;
+  final Item homeTile;
 
   ProductImage({this.homeTile});
 
