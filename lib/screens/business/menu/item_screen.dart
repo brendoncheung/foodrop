@@ -1,13 +1,19 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:foodrop/core/models/item.dart';
 import 'package:foodrop/core/models/items_category.dart';
+import 'package:foodrop/core/services/api_path.dart';
 import 'package:foodrop/core/services/database.dart';
+import 'package:foodrop/core/services/utilities.dart';
 import 'package:foodrop/screens/business/menu/category_selection_screen.dart';
+import 'package:foodrop/screens/common_widgets/camera_image_picker.dart';
 import 'package:provider/provider.dart';
 
 class ItemScreen extends StatefulWidget {
-  ItemScreen({this.db, this.item, this.categories});
-  final Item item;
+  ItemScreen({this.businessId, this.db, this.item, this.categories});
+  final String businessId;
+  Item item;
   final Database db;
   final List<ItemsCategory> categories;
 
@@ -24,7 +30,10 @@ class _ItemScreenState extends State<ItemScreen> {
     if (item != null) {
       _tecName.text = item.name;
       _tecPrice.text = item.price.toString();
+      _tecDescription.text = item.description;
       setState(() {});
+    } else {
+      widget.item = Item();
     }
     super.initState();
   }
@@ -40,13 +49,49 @@ class _ItemScreenState extends State<ItemScreen> {
     _tecName.dispose();
     _tecPrice.dispose();
     _tecDescription.dispose();
+
     super.dispose();
   }
 
+  Item get _item => widget.item;
+
+  bool imageIsFileType = false;
+  File _imageFile;
   @override
   Widget build(BuildContext context) {
     // final _business = Provider.of<Database>(context, listen: false);
     final size = MediaQuery.of(context).size;
+
+    final imageWidget = _item == null || _item.photoUrl == ""
+        ? Container(
+            width: double.infinity,
+            height: MediaQuery.of(context).size.height / 5,
+            // child: IconButton(
+            //   icon: Icon(
+            //     Icons.photo_camera,
+            //     size: 40,
+            //   ),
+            //   onPressed: () {},
+            // ),
+            child: CameraImagePicker(
+              getImage: (imageFile) => setState(
+                () {
+                  // print("xxx ${imageFile.path.toString()} xxx");
+
+                  _item.photoUrl = imageFile.path;
+                  imageIsFileType = true;
+                  _imageFile = imageFile;
+                },
+              ),
+            ),
+          )
+        : imageIsFileType
+            ? Image.file(
+                _imageFile,
+                fit: BoxFit.cover,
+              )
+            : Image.network(_item.photoUrl);
+
     return Scaffold(
       // appBar: AppBar(
       //   title: Text(widget.item.name),
@@ -56,7 +101,7 @@ class _ItemScreenState extends State<ItemScreen> {
           children: [
             Stack(
               children: [
-                Image.network(widget.item.photoUrl),
+                Container(width: double.infinity, child: imageWidget),
                 Padding(
                   padding: EdgeInsets.only(
                       top: size.height / 15, left: 10, right: 15),
@@ -85,14 +130,13 @@ class _ItemScreenState extends State<ItemScreen> {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     TextFormField(
-                      onSaved: (text) => widget.item.name = text,
+                      onSaved: (text) => _item.name = text,
                       controller: _tecName,
                       decoration: InputDecoration(labelText: "Name"),
                       // onChanged: (text) => widget.item.name = text,
                     ),
                     TextFormField(
-                      onSaved: (text) =>
-                          widget.item.price = double.tryParse(text),
+                      onSaved: (text) => _item.price = double.tryParse(text),
                       controller: _tecPrice,
                       decoration: InputDecoration(labelText: "Price"),
                       // onChanged: (text) =>
@@ -100,11 +144,14 @@ class _ItemScreenState extends State<ItemScreen> {
                     ),
                     ListTile(
                       title: Align(
-                          alignment: Alignment(-1.17, 0.0),
-                          child: Text("Category: ${widget.item.categoryName}")),
+                        alignment: Alignment(-1.17, 0.0),
+                        child: _item == null
+                            ? Text("Category:")
+                            : Text("Category: ${_item.categoryName}"),
+                      ),
                       // subtitle: Text(widget.item.categoryName),
                       onTap: () {
-                        final result = Navigator.of(context).push(
+                        Navigator.of(context).push(
                           MaterialPageRoute(
                             builder: (context) => Provider<List<ItemsCategory>>(
                               create: (context) => widget.categories,
@@ -112,13 +159,15 @@ class _ItemScreenState extends State<ItemScreen> {
                                 builder: (_, categories, __) =>
                                     CategorySelectionScreen(
                                         categories: categories,
-                                        defaultCategoryName: item.categoryName,
-                                        finalSelectedCategory:
-                                            (selectedCategory) {
+                                        defaultCategoryName:
+                                            _item.categoryName == ""
+                                                ? null
+                                                : _item.categoryName,
+                                        onSelectedCategory: (selectedCategory) {
                                           setState(() {
-                                            widget.item.categoryName =
+                                            _item.categoryName =
                                                 selectedCategory.name;
-                                            widget.item.categoryId =
+                                            _item.categoryId =
                                                 selectedCategory.docId;
                                           });
                                         }),
@@ -134,7 +183,7 @@ class _ItemScreenState extends State<ItemScreen> {
                     ),
                     TextFormField(
                       // onChanged: (text) => widget.item.description = text,
-                      onSaved: (text) => widget.item.description = text,
+                      onSaved: (text) => _item.description = text,
                       controller: _tecDescription,
                       maxLines: 10,
                       decoration: InputDecoration(
@@ -156,14 +205,22 @@ class _ItemScreenState extends State<ItemScreen> {
     );
   }
 
-  void _onSaveAndClose() {
+  Future<void> _onSaveAndClose() async {
     try {
       _menuItemFormKey.currentState.save();
-      widget.db.setItem(item: widget.item);
+      final urlString = await widget.db.setImage(
+        pickedImage: File(_imageFile.path),
+        docId: Utilities.documentIdFromCurrentDate(),
+        storageCollectionName:
+            APIPath.menuImageStoragePath(businessId: widget.businessId),
+      );
+      _item.photoUrl = urlString;
+      _item.businessId = widget.businessId;
+      widget.db.setItem(item: _item);
     } catch (e) {
       print("somethign is wrong");
     }
 
-    //Navigator.of(context).pop();
+    Navigator.of(context).pop();
   }
 }

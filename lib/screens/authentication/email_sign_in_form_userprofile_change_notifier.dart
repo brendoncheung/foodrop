@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:foodrop/core/authentication/authentication_service.dart';
+import 'package:foodrop/core/services/api_path.dart';
 import 'package:foodrop/core/services/database.dart';
 import 'package:foodrop/screens/common_widgets/show_alert_dialog.dart';
 import 'package:image_picker/image_picker.dart';
@@ -127,8 +128,10 @@ class _EmailSignInFormUserProfileChangeNotifier
       try {
         final db1 = FirestoreDatabase(uid: model.uid);
         if (_pickedImage != null) {
-          final urlString =
-              await db1.setImage(pickedImage: _pickedImage, userId: model.uid);
+          final urlString = await db1.setImage(
+              pickedImage: _pickedImage,
+              docId: model.uid,
+              storageCollectionName: APIPath.userImageStoragePath());
           model.updateWith(photoUrl: urlString);
         }
         // print(model);
@@ -290,7 +293,7 @@ class _EmailSignInFormUserProfileChangeNotifier
 
   @override
   Widget build(BuildContext context) {
-    print(widget.userUpdateProfileModel);
+    // print(widget.userUpdateProfileModel);
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(16.0),
