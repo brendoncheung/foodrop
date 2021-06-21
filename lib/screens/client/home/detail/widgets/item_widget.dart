@@ -1,22 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:foodrop/core/models/menu.dart';
+import 'package:foodrop/core/models/item.dart';
 
-class HomeTileWidget extends StatelessWidget {
-  Item _tile;
-  void Function(Item) _onTileTapped;
+class ItemWidget extends StatelessWidget {
+  Item item;
+  void Function(Item) onTap;
 
-  HomeTileWidget({Item tile, void Function(Item) onTileTapped}) {
-    this._tile = tile;
-    this._onTileTapped = onTileTapped;
-  }
+  ItemWidget({this.item, this.onTap});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
         ScaffoldMessenger.of(context).hideCurrentSnackBar();
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("${_tile.business_name} selected")));
-        _onTileTapped(_tile);
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("${item.description} selected")));
+        onTap(item);
       },
       child: Container(
         clipBehavior: Clip.antiAlias,
@@ -31,7 +28,7 @@ class HomeTileWidget extends StatelessWidget {
               child: FittedBox(
                 fit: BoxFit.cover,
                 child: Image.network(
-                  _tile.image_url,
+                  item.photoUrl.first,
                   loadingBuilder: (context, child, loadingProgress) {
                     if (loadingProgress == null) return child;
                     return Center(child: CircularProgressIndicator());
@@ -44,7 +41,7 @@ class HomeTileWidget extends StatelessWidget {
             Padding(
               padding: EdgeInsets.symmetric(vertical: 0, horizontal: 8),
               child: Text(
-                _tile.title,
+                item.description,
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(color: Colors.white),
               ),
@@ -55,13 +52,13 @@ class HomeTileWidget extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  CircleAvatar(radius: 10, backgroundImage: NetworkImage(_tile.avatar_url)),
+                  CircleAvatar(radius: 10, backgroundImage: NetworkImage(item.businessAvatarUrl)),
                   SizedBox(width: 8),
-                  Text(_tile.business_name, overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: 12, color: Colors.grey[300])),
+                  Text(item.businessId, overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: 12, color: Colors.grey[300])),
                   SizedBox(width: 8),
                   Icon(Icons.favorite, color: Colors.red, size: 16),
                   SizedBox(width: 8),
-                  Text(_tile.favourite.toString(), overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: 12, color: Colors.grey[300]))
+                  Text(item.numOfFavs.toString(), overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: 12, color: Colors.grey[300]))
                 ],
               ),
             ),

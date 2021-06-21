@@ -13,8 +13,6 @@ import 'package:foodrop/screens/client/home/client_home_screen.dart';
 import 'package:foodrop/screens/client/orders/client_order_screen.dart';
 import 'package:provider/provider.dart';
 
-import 'home/client_home_screen_v2.dart';
-
 class ClientBottomNavigation extends StatefulWidget {
   // void Function(int) onTap;
   // ClientBottomNavigation({this.onTap});
@@ -78,7 +76,7 @@ class ClientBottomNavigation extends StatefulWidget {
 class _ClientBottomNavigationState extends State<ClientBottomNavigation> {
   var _selectedIndex = 0;
 
-  final _clientBottomNavigationScreens = [ClientHomeScreenV2(), ClientFavouriteScreen(), ClientGiftScreen(), ClientOrderScreen(), ProfileLandingScreen()];
+  final _clientBottomNavigationScreens = [ClientHomeScreen(), ClientFavouriteScreen(), ClientGiftScreen(), ClientOrderScreen(), ProfileLandingScreen()];
   final _businessBottomNavigationScreens = [BusinessHomeScreen(), MenuScreen(), PromoPage(), RewardScreen(), ProfileLandingScreen()];
 
   void onTapHandler(int index) {
@@ -89,9 +87,6 @@ class _ClientBottomNavigationState extends State<ClientBottomNavigation> {
 
   @override
   Widget build(BuildContext context) {
-    // _selectedIndex = 0;
-    print("rebuild client bottom navigation!!");
-
     final _userProfile = Provider.of<UserProfile>(context);
 
     return _userProfile == null

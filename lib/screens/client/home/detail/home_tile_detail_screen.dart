@@ -1,30 +1,28 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:foodrop/core/models/menu.dart';
+import 'package:foodrop/core/models/item.dart';
 import 'package:foodrop/screens/client/home/detail/widgets/price_and_like_bar.dart';
 import 'package:foodrop/screens/client/home/detail/widgets/product_detail.dart';
 import 'package:foodrop/screens/client/home/detail/widgets/product_image.dart';
 import 'package:foodrop/screens/client/home/detail/widgets/product_review.dart';
 import 'package:foodrop/screens/client/home/detail/widgets/product_suggestion.dart';
-import 'package:foodrop/screens/client/home/detail/widgets/vendor_tile.dart';
+import 'package:foodrop/screens/client/home/detail/widgets/vendor_tile_widget.dart';
 
 class HomeTileDetailScreen extends StatelessWidget {
   static const String ROUTE_NAME = "home/detail";
 
-  Item menu;
+  Item item;
 
-  HomeTileDetailScreen({Item homeTile}) {
-    this.menu = homeTile;
-  }
+  HomeTileDetailScreen({this.item});
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    print(menu.numSold);
+    print(item.numOfFavs);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.grey[900],
-        title: Text(menu.title),
+        title: Text(item.name),
         actions: [
           IconButton(
               icon: Icon(
@@ -41,15 +39,15 @@ class HomeTileDetailScreen extends StatelessWidget {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              ProductImage(homeTile: menu),
+              ProductImage(item: item),
               SizedBox(height: 8),
-              PriceAndLikeBar(homeTile: menu),
+              PriceAndLikeBar(item: item),
               Row(
-                children: [SizedBox(width: 8), Text("${menu.numSold.toString()} sold", style: TextStyle(color: Colors.white, fontSize: 16))],
+                children: [SizedBox(width: 8), Text("${item.numSold.toString()} sold", style: TextStyle(color: Colors.white, fontSize: 16))],
               ),
               SizedBox(height: 8),
-              VendorTile(
-                homeTile: menu,
+              VendorTileWidget(
+                item: item,
                 onTap: () {
                   ScaffoldMessenger.of(context).hideCurrentSnackBar();
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("vendor tile selected")));

@@ -1,20 +1,4 @@
 class Item {
-  Item({
-    this.businessAvatarUrl = "",
-    this.businessId = "",
-    this.categoryId = "",
-    this.categoryName = "",
-    DateTime creationDate,
-    this.description = "",
-    this.docId = "",
-    DateTime lastUpdate,
-    this.lastUpdateByUserId = "",
-    this.name = "",
-    this.num_of_favs = 0,
-    this.photoUrl = "",
-    this.price = 0,
-  })  : lastUpdate = lastUpdate ?? DateTime.now(),
-        creationDate = creationDate ?? DateTime.now();
   String docId;
   String businessAvatarUrl;
   String businessId;
@@ -25,39 +9,44 @@ class Item {
   String description;
   String lastUpdateByUserId;
   String name;
-  int num_of_favs;
-  String photoUrl;
+  int numOfFavs;
+  int numSold;
+  List<String> photoUrl;
   num price;
 
-  Item.fromMap(Map<String, dynamic> data, String docId)
-      : docId = docId,
-        businessAvatarUrl = data['businessAvatarUrl'],
-        businessId = data['businessId'],
-        categoryId = data['categoryId'],
-        categoryName = data['categoryName'],
-        creationDate = DateTime.parse(data['creationDate'].toDate().toString()),
-        lastUpdate = DateTime.parse(data['lastUpdate'].toDate().toString()),
-        description = data['description'],
-        lastUpdateByUserId = data['lastUpdateByUserId'],
-        name = data['name'],
-        num_of_favs = data['num_of_favs'],
-        photoUrl = data['photoUrl'],
-        price = data['price'];
+  Item.fromMap(Map<String, dynamic> data, String docId) {
+    print(data.toString());
+    docId = docId;
+    businessAvatarUrl = data['avatar_url'];
+    businessId = data['business_id'];
+    categoryId = data['category_id'];
+    categoryName = data['category_name'];
+    creationDate = DateTime.parse(data['creation_date'].toDate().toString());
+    lastUpdate = DateTime.parse(data['last_update'].toDate().toString());
+    lastUpdateByUserId = data['last_update_by_user_id'];
+    description = data['description'];
+    name = data['name'];
+    photoUrl = List.from(data["photo_url"]);
+    numOfFavs = data['num_of_favs'];
+    numSold = data["num_sold"];
+    price = data['price'];
+
+  }
 
   Map<String, dynamic> toMap() {
     return {
-      'docId': docId ?? docId,
-      'businessAvatarUrl': businessAvatarUrl ?? businessAvatarUrl,
-      'businessId': businessId ?? businessId,
-      'categoryId': categoryId ?? categoryId,
-      'categoryName': categoryName ?? categoryName,
-      'creationDate': creationDate ?? creationDate,
-      'lastUpdate': lastUpdate ?? lastUpdate,
+      'doc_id': docId ?? docId,
+      'avatar_url': businessAvatarUrl ?? businessAvatarUrl,
+      'business_id': businessId ?? businessId,
+      'category_id': categoryId ?? categoryId,
+      'category_name': categoryName ?? categoryName,
+      'creation_date': creationDate ?? creationDate,
+      'last_update': lastUpdate ?? lastUpdate,
       'description': description ?? description,
-      'lastUpdateByUserId': lastUpdateByUserId ?? lastUpdateByUserId,
+      'last_update_by_user_id': lastUpdateByUserId ?? lastUpdateByUserId,
       'name': name ?? name,
-      'num_of_favs': num_of_favs ?? num_of_favs,
-      'photoUrl': photoUrl ?? photoUrl,
+      'num_of_favs': numOfFavs ?? numOfFavs,
+      'photo_url': photoUrl ?? photoUrl,
       'price': price ?? price
     };
   }

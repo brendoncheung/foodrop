@@ -1,14 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:foodrop/core/models/menu.dart';
+import 'package:foodrop/core/models/item.dart';
 
 class PriceAndLikeBar extends StatelessWidget {
-  const PriceAndLikeBar({
-    Key key,
-    @required Item homeTile,
-  })  : _homeTile = homeTile,
-        super(key: key);
+  final Item item;
 
-  final Item _homeTile;
+  PriceAndLikeBar({this.item});
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +15,7 @@ class PriceAndLikeBar extends StatelessWidget {
           flex: 1,
           child: Padding(
             padding: EdgeInsets.all(8),
-            child: Text("\$${_homeTile.price.toString()}", style: TextStyle(color: Colors.red, fontSize: 16)),
+            child: Text("\$${item.price.toString()}", style: TextStyle(color: Colors.red, fontSize: 16)),
           ),
         ),
         Flexible(
@@ -35,7 +31,7 @@ class PriceAndLikeBar extends StatelessWidget {
                 SizedBox(
                   width: 8,
                 ),
-                Text(_homeTile.favourite.toString(), style: TextStyle(fontSize: 16, color: Colors.white)),
+                Text(item.numOfFavs.toString(), style: TextStyle(fontSize: 16, color: Colors.white)),
               ],
             ),
           ),

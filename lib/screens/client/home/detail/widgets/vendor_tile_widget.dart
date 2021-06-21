@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:foodrop/core/models/menu.dart';
+import 'package:foodrop/core/models/item.dart';
 
-class VendorTile extends StatelessWidget {
-  final Item homeTile;
+class VendorTileWidget extends StatelessWidget {
+  final Item item;
   final Function onTap;
-  VendorTile({this.homeTile, this.onTap});
+  VendorTileWidget({this.item, this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -12,9 +12,9 @@ class VendorTile extends StatelessWidget {
       color: Colors.grey[800],
       child: ListTile(
         onTap: onTap,
-        leading: CircleAvatar(backgroundImage: NetworkImage(homeTile.avatar_url)),
+        leading: CircleAvatar(backgroundImage: NetworkImage(item.businessAvatarUrl)),
         title: Text(
-          homeTile.business_name,
+          item.businessId,
           style: TextStyle(color: Colors.white),
         ),
         subtitle: Text(
