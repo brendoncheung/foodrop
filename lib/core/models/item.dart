@@ -30,7 +30,6 @@ class Item {
     numOfFavs = data['num_of_favs'];
     numSold = data["num_sold"];
     price = data['price'];
-
   }
 
   Map<String, dynamic> toMap() {

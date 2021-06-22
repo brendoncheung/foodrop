@@ -3,18 +3,15 @@ import 'package:foodrop/core/models/item.dart';
 
 class ItemWidget extends StatelessWidget {
   Item item;
+  List<String> photoUrls;
   void Function(Item) onTap;
 
-  ItemWidget({this.item, this.onTap});
+  ItemWidget({this.item, this.onTap, this.photoUrls});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        ScaffoldMessenger.of(context).hideCurrentSnackBar();
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("${item.description} selected")));
-        onTap(item);
-      },
+      onTap: () {},
       child: Container(
         clipBehavior: Clip.antiAlias,
         decoration: BoxDecoration(
@@ -25,17 +22,7 @@ class ItemWidget extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Expanded(
-              child: FittedBox(
-                fit: BoxFit.cover,
-                child: Image.network(
-                  item.photoUrl.first,
-                  loadingBuilder: (context, child, loadingProgress) {
-                    if (loadingProgress == null) return child;
-                    return Center(child: CircularProgressIndicator());
-                  },
-                  fit: BoxFit.cover,
-                ),
-              ),
+              child: SplashImage(item: item),
             ),
             SizedBox(height: 8),
             Padding(
@@ -64,6 +51,30 @@ class ItemWidget extends StatelessWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class SplashImage extends StatelessWidget {
+  const SplashImage({
+    Key key,
+    @required this.item,
+  }) : super(key: key);
+
+  final Item item;
+
+  @override
+  Widget build(BuildContext context) {
+    return FittedBox(
+      fit: BoxFit.cover,
+      child: Image.network(
+        item.photoUrl.first,
+        loadingBuilder: (context, child, loadingProgress) {
+          if (loadingProgress == null) return child;
+          return Center(child: CircularProgressIndicator());
+        },
+        fit: BoxFit.cover,
       ),
     );
   }

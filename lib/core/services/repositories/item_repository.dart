@@ -3,9 +3,11 @@ import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:foodrop/core/models/item.dart';
+import 'package:foodrop/core/services/repositories/image_repository.dart';
 
 class ItemRepository {
   FirebaseFirestore _store;
+  ImageRepository imageRepository;
 
   ItemRepository(FirebaseFirestore store) {
     this._store = store;
@@ -20,7 +22,7 @@ class ItemRepository {
 
   Future<List<Item>> get items {
     return _store.collection('items').get().then((value) {
-      return value.docs.map((e) => Item.fromMap(e.data(), e.id)).toList();
+      return value.docs.map((e) => Item.fromMap(e.data(), e.id)).map((e) {}).toList();
     });
   }
 

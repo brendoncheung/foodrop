@@ -23,6 +23,7 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> with SingleTickerPr
   final _scrollController = ScrollController();
 
   final itemRepository = ItemRepository(FirebaseFirestore.instance);
+  final imageRepository = ImageRepository(storage: FirebaseStorage.instance);
   bool _fabVisible = true;
 
   @override
@@ -65,9 +66,20 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> with SingleTickerPr
         body: FutureBuilder(
           future: itemRepository.items,
           builder: (ctx, AsyncSnapshot<List<Item>> snapshot) {
-            return ListView.builder(itemBuilder: (_, index) {
-              print(snapshot.data.length);
-            });
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            } else {
+              return ListView.builder(
+                  itemCount: snapshot.data.length,
+                  itemBuilder: (_, index) {
+                    return ItemWidget(
+                      item: snapshot.data[index],
+                      photoUrls: [],
+                    );
+                  });
+            }
           },
         ));
   }
