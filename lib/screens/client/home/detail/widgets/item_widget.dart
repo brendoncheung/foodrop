@@ -10,6 +10,7 @@ class ItemWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print("to string ${item.toString()}");
     return GestureDetector(
       onTap: () {},
       child: Container(
@@ -28,7 +29,7 @@ class ItemWidget extends StatelessWidget {
             Padding(
               padding: EdgeInsets.symmetric(vertical: 0, horizontal: 8),
               child: Text(
-                item.description,
+                "hello",
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(color: Colors.white),
               ),
@@ -39,7 +40,7 @@ class ItemWidget extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  CircleAvatar(radius: 10, backgroundImage: NetworkImage(item.businessAvatarUrl)),
+                  CircleAvatar(radius: 10, backgroundImage: NetworkImage(item.photoUrl)),
                   SizedBox(width: 8),
                   Text(item.businessId, overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: 12, color: Colors.grey[300])),
                   SizedBox(width: 8),
@@ -69,7 +70,7 @@ class SplashImage extends StatelessWidget {
     return FittedBox(
       fit: BoxFit.cover,
       child: Image.network(
-        item.photoUrl.first,
+        item.photoUrl,
         loadingBuilder: (context, child, loadingProgress) {
           if (loadingProgress == null) return child;
           return Center(child: CircularProgressIndicator());

@@ -22,7 +22,7 @@ class ItemRepository {
 
   Future<List<Item>> get items {
     return _store.collection('items').get().then((value) {
-      return value.docs.map((e) => Item.fromMap(e.data(), e.id)).map((e) {}).toList();
+      return value.docs.map((e) => Item.fromMap(e.data(), e.id)).toList();
     });
   }
 

@@ -71,6 +71,7 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> with SingleTickerPr
                 child: CircularProgressIndicator(),
               );
             } else {
+              print(snapshot.data.toString());
               return ListView.builder(
                   itemCount: snapshot.data.length,
                   itemBuilder: (_, index) {

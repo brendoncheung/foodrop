@@ -43,7 +43,7 @@ class HomeTileDetailScreen extends StatelessWidget {
               SizedBox(height: 8),
               PriceAndLikeBar(item: item),
               Row(
-                children: [SizedBox(width: 8), Text("${item.numSold.toString()} sold", style: TextStyle(color: Colors.white, fontSize: 16))],
+                children: [SizedBox(width: 8), Text("${item.docId.toString()} sold", style: TextStyle(color: Colors.white, fontSize: 16))],
               ),
               SizedBox(height: 8),
               VendorTileWidget(
