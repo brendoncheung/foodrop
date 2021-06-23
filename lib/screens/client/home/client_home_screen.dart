@@ -72,14 +72,11 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> with SingleTickerPr
             );
           } else {
             print("length is ${snapshot.data.length}");
-            return ListView.builder(
-              itemCount: snapshot.data.length,
-              itemBuilder: (_, index) {
-                return ItemWidget(
-                  item: snapshot.data[index],
-                  photoUrls: [],
-                );
-              },
+            List<Item> items = snapshot.data;
+            print(items.first.toString());
+            return GridView.count(
+              crossAxisCount: 2,
+              children: List.generate(items.length, (index) => ItemWidget(item: items[index])),
             );
           }
         },

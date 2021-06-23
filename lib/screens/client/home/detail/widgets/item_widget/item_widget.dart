@@ -3,54 +3,58 @@ import 'package:foodrop/core/models/item.dart';
 
 class ItemWidget extends StatelessWidget {
   Item item;
-  List<String> photoUrls;
-  void Function(Item) onTap;
+  Function onTap;
 
-  ItemWidget({this.item, this.onTap, this.photoUrls});
+  ItemWidget({@required this.item, this.onTap});
 
   @override
   Widget build(BuildContext context) {
-    print("to string ${item.toString()}");
     return GestureDetector(
-      onTap: () {},
-      child: Container(
+      onTap: onTap,
+      child: Card(
         clipBehavior: Clip.antiAlias,
-        decoration: BoxDecoration(
-          color: Colors.grey[800],
-          borderRadius: BorderRadius.circular(20),
-        ),
+        elevation: 4,
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
           children: [
-            // TODO: Splash image  is causing problems
             Expanded(
-              child: SplashImage(item: item),
-            ),
-            SizedBox(height: 8),
-            Padding(
-              padding: EdgeInsets.symmetric(vertical: 0, horizontal: 8),
-              child: Text(
-                "hello",
-                overflow: TextOverflow.ellipsis,
-                style: TextStyle(color: Colors.white),
+              flex: 3,
+              child: SplashImage(
+                photoUrl: item.photoUrl.first,
               ),
             ),
-            Padding(
-              padding: EdgeInsets.all(8),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  CircleAvatar(
-                    radius: 10,
-                  ),
-                  SizedBox(width: 8),
-                  Text(item.businessId, overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: 12, color: Colors.grey[300])),
-                  SizedBox(width: 8),
-                  Icon(Icons.favorite, color: Colors.red, size: 16),
-                  SizedBox(width: 8),
-                  Text(item.numOfFavs.toString(), overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: 12, color: Colors.grey[300]))
-                ],
+            Flexible(
+              fit: FlexFit.loose,
+              child: Padding(
+                padding: EdgeInsets.all(6),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Expanded(
+                      child: Text(item.name),
+                    ),
+                    Expanded(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            flex: 5,
+                            child: BusinessAvatarWidget(
+                              avatarUrl: item.businessAvatarUrl,
+                              businessName: item.tradingName,
+                            ),
+                          ),
+                          Expanded(
+                            flex: 2,
+                            child: FavoritesStateWidget(
+                              numOfLikes: item.numOfFavs,
+                            ),
+                          )
+                        ],
+                      ),
+                    )
+                  ],
+                ),
               ),
             ),
           ],
@@ -61,24 +65,81 @@ class ItemWidget extends StatelessWidget {
 }
 
 class SplashImage extends StatelessWidget {
-  const SplashImage({
-    Key key,
-    @required this.item,
-  }) : super(key: key);
+  String photoUrl;
 
-  final Item item;
+  SplashImage({@required this.photoUrl});
 
   @override
   Widget build(BuildContext context) {
-    return FittedBox(
-      fit: BoxFit.cover,
-      child: Image.network(
-        item.photoUrl.first,
-        fit: BoxFit.cover,
-      ),
+    return Ink.image(
+      height: 100,
+      fit: BoxFit.fitWidth,
+      image: NetworkImage(photoUrl),
     );
   }
 }
+
+class FavoritesStateWidget extends StatelessWidget {
+  int numOfLikes;
+  bool isFavorited;
+
+  FavoritesStateWidget({@required this.numOfLikes, this.isFavorited = false});
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        Text(
+          numOfLikes.toString(),
+          style: TextStyle(fontSize: 12),
+        ),
+        SizedBox(
+          width: 4,
+        ),
+        Icon(
+          Icons.favorite_border_rounded,
+          size: 14,
+          color: isFavorited ? Colors.red : Colors.grey,
+        ),
+      ],
+    );
+  }
+}
+
+class BusinessAvatarWidget extends StatelessWidget {
+  String avatarUrl;
+  String businessName;
+
+  BusinessAvatarWidget({@required this.avatarUrl, @required this.businessName});
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Flexible(
+          fit: FlexFit.loose,
+          child: CircleAvatar(
+            maxRadius: 15,
+            backgroundImage: NetworkImage('https://i.pravatar.cc/300'),
+          ),
+        ),
+        SizedBox(
+          width: 4,
+        ),
+        Expanded(
+          flex: 5,
+          child: Text(
+            businessName,
+            style: TextStyle(fontSize: 12),
+          ),
+        )
+      ],
+    );
+  }
+}
+
+
 // class ItemWidget extends StatelessWidget {
 //   String name;
 //   ItemWidget(this.name);
@@ -99,39 +160,35 @@ class SplashImage extends StatelessWidget {
 //               image: NetworkImage("https://source.unsplash.com/random"),
 //             ),
 //           ),
-//           Expanded(
-//             child: Column(
-//               crossAxisAlignment: CrossAxisAlignment.stretch,
-//               children: [
-//                 SizedBox(
-//                   height: 4,
-//                 ),
-//                 Expanded(
-//                   child: Padding(
-//                     padding: EdgeInsets.symmetric(horizontal: 4),
+//           Flexible(
+//             fit: FlexFit.loose,
+//             child: Padding(
+//               padding: EdgeInsets.all(4),
+//               child: Column(
+//                 crossAxisAlignment: CrossAxisAlignment.stretch,
+//                 children: [
+//                   Expanded(
 //                     child: Text("Flutter demo"),
 //                   ),
-//                 ),
-//                 Expanded(
-//                   child: Row(
-//                     children: [
-//                       Expanded(
-//                         flex: 5,
-//                         child: BusinessAvatarWidget(),
-//                       ),
-//                       Expanded(
-//                         flex: 2,
-//                         child: FavoritesStateWidget(),
-//                       )
-//                     ],
-//                   ),
-//                 )
-//               ],
+//                   Expanded(
+//                     child: Row(
+//                       mainAxisAlignment: MainAxisAlignment.start,
+//                       children: [
+//                         Expanded(
+//                           flex: 5,
+//                           child: BusinessAvatarWidget(),
+//                         ),
+//                         Expanded(
+//                           flex: 2,
+//                           child: FavoritesStateWidget(),
+//                         )
+//                       ],
+//                     ),
+//                   )
+//                 ],
+//               ),
 //             ),
 //           ),
-//           SizedBox(
-//             height: 8,
-//           )
 //         ],
 //       ),
 //     );
@@ -152,9 +209,6 @@ class SplashImage extends StatelessWidget {
 //           Icons.favorite_border_rounded,
 //           size: 14,
 //         ),
-//         SizedBox(
-//           width: 4,
-//         )
 //       ],
 //     );
 //   }
@@ -165,15 +219,15 @@ class SplashImage extends StatelessWidget {
 //   Widget build(BuildContext context) {
 //     return Row(
 //       children: [
-//         SizedBox(
-//           width: 4,
-//         ),
-//         Expanded(
-//           flex: 1,
+//         Flexible(
+//           fit: FlexFit.loose,
 //           child: CircleAvatar(
 //             maxRadius: 15,
 //             backgroundImage: NetworkImage('https://i.pravatar.cc/300'),
 //           ),
+//         ),
+//         SizedBox(
+//           width: 4,
 //         ),
 //         Expanded(
 //           flex: 5,

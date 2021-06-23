@@ -2,6 +2,7 @@ class Item {
   String docId;
   String businessAvatarUrl;
   String businessId;
+  String tradingName;
   String categoryId;
   String categoryName;
   DateTime creationDate;
@@ -17,6 +18,7 @@ class Item {
     docId = docId;
     businessAvatarUrl = data['businessAvatarUrl'];
     businessId = data['businessId'];
+    tradingName = data['tradingName'];
     categoryId = data['categoryId'];
     categoryName = data['categoryName'];
     creationDate = DateTime.parse(data['creationDate'].toDate().toString());
@@ -45,5 +47,10 @@ class Item {
       'photoUrl': photoUrl ?? photoUrl,
       'price': price ?? price
     };
+  }
+
+  @override
+  String toString() {
+    return 'Item(docId: $docId, businessAvatarUrl: $businessAvatarUrl, businessId: $businessId, tradingName: $tradingName, categoryId: $categoryId, categoryName: $categoryName, creationDate: $creationDate, lastUpdate: $lastUpdate, description: $description, lastUpdateByUserId: $lastUpdateByUserId, name: $name, numOfFavs: $numOfFavs, photoUrl: $photoUrl, price: $price)';
   }
 }
