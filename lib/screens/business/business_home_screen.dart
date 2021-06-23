@@ -61,16 +61,16 @@ class _BusinessHomeScreenState extends State<BusinessHomeScreen> {
                             return Scaffold(
                               floatingActionButton: FloatingActionButton(
                                 child: Icon(Icons.add),
-                                onPressed: () => Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                      builder: (context) => ItemScreen(
-                                            businessId: snapshot.data.uid,
-                                            db: _db,
-                                            categories:
-                                                categoryListSnapshot.data,
-                                          ),
-                                      fullscreenDialog: true),
-                                ),
+                                // onPressed: () => Navigator.of(context).push(
+                                //   MaterialPageRoute(
+                                //       builder: (context) => ItemScreen(
+                                //             businessId: snapshot.data.uid,
+                                //             db: _db,
+                                //             categories:
+                                //                 categoryListSnapshot.data,
+                                //           ),
+                                //       fullscreenDialog: true),
+                                // ),
                               ),
                               appBar: AppBar(
                                 title: Text(snapshot.data.tradingName),
@@ -195,12 +195,12 @@ class _BusinessHomeScreenState extends State<BusinessHomeScreen> {
                         title: Text(item.name),
                         subtitle: Text("${item.categoryName}"),
                         selectedTileColor: Colors.black26,
-                        onTap: () => Navigator.of(context).push(
-                            MaterialPageRoute(
-                                builder: (context) => ItemScreen(
-                                    db: db,
-                                    item: item,
-                                    categories: categoriesList))),
+                        // onTap: () => Navigator.of(context).push(
+                        //     MaterialPageRoute(
+                        //         builder: (context) => ItemScreen(
+                        //             db: db,
+                        //             item: item,
+                        //             categories: categoriesList))),
                       ),
                     );
                   },

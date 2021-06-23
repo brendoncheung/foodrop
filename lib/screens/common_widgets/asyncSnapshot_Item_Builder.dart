@@ -79,7 +79,7 @@ class _AsyncSnapshotItemBuilderState<T>
       return ListView.builder(
           scrollDirection: widget.scrollDirection,
           itemBuilder: (context, index) {
-            print(": $index");
+            // print(": $index");
             if (index == 0) {
               return Padding(
                 padding: EdgeInsets.all(10),

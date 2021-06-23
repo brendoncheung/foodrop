@@ -63,42 +63,75 @@ class _ClientHomeScreenV2State extends State<ClientHomeScreenV2> {
           )
         ],
       ),
-      body: StreamBuilder(
-        stream: _db.itemsStream(),
-        builder: (context, snapshot) {
-          switch (snapshot.connectionState) {
-            case ConnectionState.waiting:
-              {
-                return Center(child: CircularProgressIndicator());
-              }
-              break;
-            case ConnectionState.active:
-              {
-                return AsyncSnapshotItemBuilder<Item>(
-                  withDivider: true,
-                  snapshot: snapshot,
-                  itemBuilder: (context, item) {
-                    return Card(
-                      elevation: 2,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(16)),
-                      child: ListTile(
-                          // tileColor: Colors.green,
-                          title: Text(item.name),
-                          subtitle: Text("${item.categoryName}"),
-                          selectedTileColor: Colors.black26,
-                          onTap: () {}),
+      body: SingleChildScrollView(
+        child: Container(
+          width: MediaQuery.of(context).size.width,
+          height: 700,
+          child: StreamBuilder(
+            stream: _db.itemsStream(),
+            builder: (context, snapshot) {
+              switch (snapshot.connectionState) {
+                case ConnectionState.waiting:
+                  {
+                    return Center(child: CircularProgressIndicator());
+                  }
+                  break;
+                case ConnectionState.active:
+                  {
+                    return Container(
+                      child: AsyncSnapshotItemBuilder<Item>(
+                        withDivider: true,
+                        snapshot: snapshot,
+                        itemBuilder: (context, item) {
+                          return Container(
+                            width: 400,
+                            height: 110,
+                            // color: Colors.blue,
+                            child: ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              shrinkWrap: true,
+                              itemCount: item.photoUrlList.length + 1,
+                              itemBuilder: (context, index) {
+                                if (index == item.photoUrlList.length) {
+                                  return CircleAvatar(
+                                    backgroundColor: Colors.grey,
+                                    radius: 50,
+                                    // height: 100,
+                                    // width: 100,
+                                    child: Icon(
+                                      Icons.photo_camera,
+                                      color: Colors.black,
+                                    ),
+                                  );
+                                }
+                                return Card(
+                                  child: Wrap(
+                                    children: [
+                                      Image.network(
+                                        item.photoUrlList[index],
+                                        height: 100,
+                                        width: 100,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              },
+                            ),
+                          );
+                        },
+                      ),
                     );
-                  },
-                );
+                  }
+                  break;
+                default:
+                  {
+                    return CircularProgressIndicator();
+                  }
               }
-              break;
-            default:
-              {
-                return CircularProgressIndicator();
-              }
-          }
-        },
+            },
+          ),
+        ),
       ),
     );
   }

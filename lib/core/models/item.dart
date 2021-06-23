@@ -11,7 +11,7 @@ class Item {
     this.lastUpdateByUserId = "",
     this.name = "",
     this.num_of_favs = 0,
-    this.photoUrl = "",
+    this.photoUrlList,
     this.price = 0,
   })  : lastUpdate = lastUpdate ?? DateTime.now(),
         creationDate = creationDate ?? DateTime.now();
@@ -26,7 +26,7 @@ class Item {
   String lastUpdateByUserId;
   String name;
   int num_of_favs;
-  String photoUrl;
+  List<String> photoUrlList;
   num price;
 
   Item.fromMap(Map<String, dynamic> data, String docId)
@@ -41,7 +41,7 @@ class Item {
         lastUpdateByUserId = data['lastUpdateByUserId'],
         name = data['name'],
         num_of_favs = data['num_of_favs'],
-        photoUrl = data['photoUrl'],
+        photoUrlList = List.from(data['photoUrlList']),
         price = data['price'];
 
   Map<String, dynamic> toMap() {
@@ -57,7 +57,7 @@ class Item {
       'lastUpdateByUserId': lastUpdateByUserId ?? lastUpdateByUserId,
       'name': name ?? name,
       'num_of_favs': num_of_favs ?? num_of_favs,
-      'photoUrl': photoUrl ?? photoUrl,
+      'photoUrl': photoUrlList ?? photoUrlList,
       'price': price ?? price
     };
   }
