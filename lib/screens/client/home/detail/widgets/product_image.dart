@@ -12,7 +12,7 @@ class ProductImage extends StatelessWidget {
       clipBehavior: Clip.antiAlias,
       decoration: BoxDecoration(borderRadius: BorderRadius.only(bottomRight: Radius.circular(20), bottomLeft: Radius.circular(20))),
       child: Stack(children: [
-        Image.network(item.photoUrl, fit: BoxFit.cover),
+        Image.network(item.photoUrl.first, fit: BoxFit.cover),
         Padding(
           padding: EdgeInsets.all(8),
           child: GestureDetector(

@@ -1,20 +1,4 @@
 class Item {
-  Item({
-    this.businessAvatarUrl = "",
-    this.businessId = "",
-    this.categoryId = "",
-    this.categoryName = "",
-    DateTime creationDate,
-    this.description = "",
-    this.docId = "",
-    DateTime lastUpdate,
-    this.lastUpdateByUserId = "",
-    this.name = "",
-    this.numOfFavs = 0,
-    this.photoUrl = "",
-    this.price = 0,
-  })  : lastUpdate = lastUpdate ?? DateTime.now(),
-        creationDate = creationDate ?? DateTime.now();
   String docId;
   String businessAvatarUrl;
   String businessId;
@@ -26,7 +10,7 @@ class Item {
   String lastUpdateByUserId;
   String name;
   int numOfFavs;
-  String photoUrl;
+  List<String> photoUrl;
   num price;
 
   Item.fromMap(Map<String, dynamic> data, String docId) {
@@ -41,7 +25,7 @@ class Item {
     lastUpdateByUserId = data['lastUpdateByUserId'];
     name = data['name'];
     numOfFavs = data['num_of_favs'];
-    photoUrl = data['photoUrl'];
+    photoUrl = List.from(data["photoUrlList"]);
     price = data['price'];
   }
 

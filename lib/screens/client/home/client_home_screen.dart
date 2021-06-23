@@ -10,7 +10,7 @@ import 'package:foodrop/screens/client/home/detail/home_tile_detail_screen.dart'
 import 'package:foodrop/screens/common_widgets/asyncSnapshot_Item_Builder.dart';
 import 'package:provider/provider.dart';
 
-import 'detail/widgets/item_widget.dart';
+import 'detail/widgets/item_widget/item_widget.dart';
 
 class ClientHomeScreen extends StatefulWidget {
   const ClientHomeScreen({Key key}) : super(key: key);
@@ -41,47 +41,49 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> with SingleTickerPr
     });
 
     return Scaffold(
-        floatingActionButton: Opacity(
-          opacity: _fabVisible ? 1 : 0,
-          child: FloatingActionButton(
-            onPressed: () {},
-            child: Icon(Icons.add, color: Colors.black),
-            backgroundColor: Colors.white,
-          ),
+      floatingActionButton: Opacity(
+        opacity: _fabVisible ? 1 : 0,
+        child: FloatingActionButton(
+          onPressed: () {},
+          child: Icon(Icons.add, color: Colors.black),
+          backgroundColor: Colors.white,
         ),
-        backgroundColor: Colors.black,
-        appBar: AppBar(
-          elevation: 0,
-          backgroundColor: Colors.grey[900],
-          title: Text("Home"),
-          actions: [
-            Padding(
-              padding: EdgeInsets.all(20.0),
-              child: GestureDetector(
-                child: Icon(Icons.search),
-              ),
-            )
-          ],
-        ),
-        body: FutureBuilder(
-          future: itemRepository.items,
-          builder: (ctx, AsyncSnapshot<List<Item>> snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(
-                child: CircularProgressIndicator(),
-              );
-            } else {
-              print(snapshot.data.toString());
-              return ListView.builder(
-                  itemCount: snapshot.data.length,
-                  itemBuilder: (_, index) {
-                    return ItemWidget(
-                      item: snapshot.data[index],
-                      photoUrls: [],
-                    );
-                  });
-            }
-          },
-        ));
+      ),
+      backgroundColor: Colors.black,
+      appBar: AppBar(
+        elevation: 0,
+        backgroundColor: Colors.grey[900],
+        title: Text("Home"),
+        actions: [
+          Padding(
+            padding: EdgeInsets.all(20.0),
+            child: GestureDetector(
+              child: Icon(Icons.search),
+            ),
+          )
+        ],
+      ),
+      body: FutureBuilder(
+        future: itemRepository.items,
+        builder: (ctx, AsyncSnapshot<List<Item>> snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          } else {
+            print("length is ${snapshot.data.length}");
+            return ListView.builder(
+              itemCount: snapshot.data.length,
+              itemBuilder: (_, index) {
+                return ItemWidget(
+                  item: snapshot.data[index],
+                  photoUrls: [],
+                );
+              },
+            );
+          }
+        },
+      ),
+    );
   }
 }
