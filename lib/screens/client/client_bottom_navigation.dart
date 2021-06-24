@@ -51,13 +51,12 @@ class ClientBottomNavigation extends StatefulWidget {
               break;
             case ConnectionState.active:
               {
-                return MultiProvider(providers: [
-                  ChangeNotifierProvider<UserProfile>(create: (context) => snapshot.data),
-                ], child: ClientBottomNavigation(userProfile: snapshot.data));
-                // return ChangeNotifierProvider<UserProfile>(
-                //     create: (context) => snapshot.data,
-                //     child: ClientBottomNavigation(userProfile: snapshot.data));
-
+                return MultiProvider(
+                  providers: [
+                    ChangeNotifierProvider<UserProfile>(create: (context) => snapshot.data),
+                  ],
+                  child: ClientBottomNavigation(userProfile: snapshot.data),
+                );
               }
               break;
             default:
@@ -110,8 +109,8 @@ class _ClientBottomNavigationState extends State<ClientBottomNavigation> {
       unselectedItemColor: Colors.grey[500],
       items: [
         BottomNavigationBarItem(icon: Icon(Icons.home_rounded, size: 35), label: ""),
-        BottomNavigationBarItem(icon: Icon(Icons.search, size: 35), label: ""),
-        BottomNavigationBarItem(icon: Icon(Icons.comment_rounded, size: 35), label: ""),
+        BottomNavigationBarItem(icon: Icon(Icons.qr_code_scanner_rounded, size: 35), label: ""),
+        BottomNavigationBarItem(icon: Icon(Icons.wallet_giftcard_rounded, size: 35), label: ""),
         BottomNavigationBarItem(icon: Icon(Icons.person_rounded, size: 35), label: ""),
         BottomNavigationBarItem(icon: Icon(Icons.account_circle), label: ""),
       ],

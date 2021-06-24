@@ -3,14 +3,10 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:foodrop/core/models/item.dart';
-import 'package:foodrop/core/services/firestore_service.dart';
 import 'package:foodrop/core/services/repositories/image_repository.dart';
 import 'package:foodrop/core/services/repositories/item_repository.dart';
-import 'package:foodrop/screens/client/home/detail/home_tile_detail_screen.dart';
-import 'package:foodrop/screens/common_widgets/asyncSnapshot_Item_Builder.dart';
-import 'package:provider/provider.dart';
-
-import 'detail/widgets/item_widget/item_widget.dart';
+import 'package:foodrop/screens/client/home/detail/detail_item_screen.dart';
+import 'widgets/item_widget.dart';
 
 class ClientHomeScreen extends StatefulWidget {
   const ClientHomeScreen({Key key}) : super(key: key);
@@ -71,15 +67,42 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> with SingleTickerPr
               child: CircularProgressIndicator(),
             );
           } else {
-            print("length is ${snapshot.data.length}");
             List<Item> items = snapshot.data;
             print(items.first.toString());
-            return GridView.count(
-              crossAxisCount: 2,
-              children: List.generate(items.length, (index) => ItemWidget(item: items[index])),
-            );
+            return HomepageGridView(items: items);
           }
         },
+      ),
+    );
+  }
+}
+
+class HomepageGridView extends StatelessWidget {
+  const HomepageGridView({
+    Key key,
+    @required this.items,
+  }) : super(key: key);
+
+  final List<Item> items;
+
+  @override
+  Widget build(BuildContext context) {
+    return GridView.count(
+      crossAxisCount: 2,
+      children: List.generate(
+        items.length,
+        (index) => ItemWidget(
+          item: items[index],
+          onTap: (item) {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => DetailItemScreen(
+                  item: item,
+                ),
+              ),
+            );
+          },
+        ),
       ),
     );
   }

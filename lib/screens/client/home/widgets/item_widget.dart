@@ -2,16 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:foodrop/core/models/item.dart';
 
 class ItemWidget extends StatelessWidget {
-  Item item;
-  Function onTap;
+  final Item item;
+  final Function(Item item) onTap;
 
   ItemWidget({@required this.item, this.onTap});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onTap,
+      onTap: () {
+        onTap(item);
+      },
       child: Card(
+        color: Colors.grey[800],
         clipBehavior: Clip.antiAlias,
         elevation: 4,
         child: Column(
@@ -31,7 +34,7 @@ class ItemWidget extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     Expanded(
-                      child: Text(item.name),
+                      child: Title(item: item),
                     ),
                     Expanded(
                       child: Row(
@@ -64,6 +67,20 @@ class ItemWidget extends StatelessWidget {
   }
 }
 
+class Title extends StatelessWidget {
+  final Item item;
+
+  Title({this.item});
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      item.name,
+      style: TextStyle(color: Colors.white),
+    );
+  }
+}
+
 class SplashImage extends StatelessWidget {
   String photoUrl;
 
@@ -92,7 +109,7 @@ class FavoritesStateWidget extends StatelessWidget {
       children: [
         Text(
           numOfLikes.toString(),
-          style: TextStyle(fontSize: 12),
+          style: TextStyle(fontSize: 12, color: Colors.white),
         ),
         SizedBox(
           width: 4,
@@ -131,112 +148,10 @@ class BusinessAvatarWidget extends StatelessWidget {
           flex: 5,
           child: Text(
             businessName,
-            style: TextStyle(fontSize: 12),
+            style: TextStyle(fontSize: 12, color: Colors.white),
           ),
         )
       ],
     );
   }
 }
-
-
-// class ItemWidget extends StatelessWidget {
-//   String name;
-//   ItemWidget(this.name);
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Card(
-//       clipBehavior: Clip.antiAlias,
-//       elevation: 4,
-//       child: Column(
-//         mainAxisSize: MainAxisSize.min,
-//         children: [
-//           Expanded(
-//             flex: 3,
-//             child: Ink.image(
-//               height: 100,
-//               fit: BoxFit.fitWidth,
-//               image: NetworkImage("https://source.unsplash.com/random"),
-//             ),
-//           ),
-//           Flexible(
-//             fit: FlexFit.loose,
-//             child: Padding(
-//               padding: EdgeInsets.all(4),
-//               child: Column(
-//                 crossAxisAlignment: CrossAxisAlignment.stretch,
-//                 children: [
-//                   Expanded(
-//                     child: Text("Flutter demo"),
-//                   ),
-//                   Expanded(
-//                     child: Row(
-//                       mainAxisAlignment: MainAxisAlignment.start,
-//                       children: [
-//                         Expanded(
-//                           flex: 5,
-//                           child: BusinessAvatarWidget(),
-//                         ),
-//                         Expanded(
-//                           flex: 2,
-//                           child: FavoritesStateWidget(),
-//                         )
-//                       ],
-//                     ),
-//                   )
-//                 ],
-//               ),
-//             ),
-//           ),
-//         ],
-//       ),
-//     );
-//   }
-// }
-
-// class FavoritesStateWidget extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Row(
-//       mainAxisAlignment: MainAxisAlignment.end,
-//       children: [
-//         Text(
-//           "123",
-//           style: TextStyle(fontSize: 12),
-//         ),
-//         Icon(
-//           Icons.favorite_border_rounded,
-//           size: 14,
-//         ),
-//       ],
-//     );
-//   }
-// }
-
-// class BusinessAvatarWidget extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Row(
-//       children: [
-//         Flexible(
-//           fit: FlexFit.loose,
-//           child: CircleAvatar(
-//             maxRadius: 15,
-//             backgroundImage: NetworkImage('https://i.pravatar.cc/300'),
-//           ),
-//         ),
-//         SizedBox(
-//           width: 4,
-//         ),
-//         Expanded(
-//           flex: 5,
-//           child: Text(
-//             "Yummy Eatery",
-//             style: TextStyle(fontSize: 12),
-//           ),
-//         )
-//       ],
-//     );
-//   }
-// }
