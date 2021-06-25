@@ -7,7 +7,7 @@ import 'package:foodrop/screens/business/business_home_screen.dart';
 import 'package:foodrop/screens/business/menu_screen.dart';
 import 'package:foodrop/screens/business/promo/promo_page.dart';
 import 'package:foodrop/screens/business/reward_screen.dart';
-import 'package:foodrop/screens/client/favourite/client_favourite_screen.dart';
+import 'package:foodrop/screens/client/favourite/qr_code_scan_screen.dart';
 import 'package:foodrop/screens/client/gift/client_gift_screen.dart';
 import 'package:foodrop/screens/client/home/client_home_screen.dart';
 import 'package:foodrop/screens/client/orders/client_order_screen.dart';
@@ -75,7 +75,7 @@ class ClientBottomNavigation extends StatefulWidget {
 class _ClientBottomNavigationState extends State<ClientBottomNavigation> {
   var _selectedIndex = 0;
 
-  final _clientBottomNavigationScreens = [ClientHomeScreen(), ClientFavouriteScreen(), ClientGiftScreen(), ClientOrderScreen(), ProfileLandingScreen()];
+  final _clientBottomNavigationScreens = [ClientHomeScreen(), QRCodeScanScreen(), ClientGiftScreen(), ClientOrderScreen(), ProfileLandingScreen()];
   final _businessBottomNavigationScreens = [BusinessHomeScreen(), MenuScreen(), PromoPage(), RewardScreen(), ProfileLandingScreen()];
 
   void onTapHandler(int index) {

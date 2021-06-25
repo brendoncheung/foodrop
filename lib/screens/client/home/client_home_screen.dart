@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:foodrop/core/models/item.dart';
 import 'package:foodrop/core/services/repositories/image_repository.dart';
 import 'package:foodrop/core/services/repositories/item_repository.dart';
@@ -20,30 +21,28 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> with SingleTickerPr
 
   final itemRepository = ItemRepository(FirebaseFirestore.instance);
   final imageRepository = ImageRepository(storage: FirebaseStorage.instance);
-  bool _fabVisible = true;
+
+  void onFabTapped() {
+    print("fab pressed");
+  }
+
+  void onItemTapped(Item item) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => DetailItemScreen(
+          item: item,
+        ),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
-    _scrollController.addListener(() {
-      if (_scrollController.position.userScrollDirection == ScrollDirection.forward) {
-        setState(() {
-          _fabVisible = false;
-        });
-      } else if (_scrollController.position.userScrollDirection == ScrollDirection.reverse) {
-        setState(() {
-          _fabVisible = true;
-        });
-      }
-    });
-
     return Scaffold(
-      floatingActionButton: Opacity(
-        opacity: _fabVisible ? 1 : 0,
-        child: FloatingActionButton(
-          onPressed: () {},
-          child: Icon(Icons.add, color: Colors.black),
-          backgroundColor: Colors.white,
-        ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: onFabTapped,
+        child: Icon(Icons.add, color: Colors.black),
+        backgroundColor: Colors.white,
       ),
       backgroundColor: Colors.black,
       appBar: AppBar(
@@ -68,8 +67,10 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> with SingleTickerPr
             );
           } else {
             List<Item> items = snapshot.data;
-            print(items.first.toString());
-            return HomepageGridView(items: items);
+            return HomepageStaggeredGridView(
+              items: items,
+              onTap: (item) => onItemTapped(item),
+            );
           }
         },
       ),
@@ -77,33 +78,42 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> with SingleTickerPr
   }
 }
 
-class HomepageGridView extends StatelessWidget {
-  const HomepageGridView({
-    Key key,
-    @required this.items,
-  }) : super(key: key);
-
+class HomepageStaggeredGridView extends StatelessWidget {
   final List<Item> items;
+  final Function(Item) onTap;
+
+  HomepageStaggeredGridView({
+    @required this.items,
+    this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return GridView.count(
+    return StaggeredGridView.countBuilder(
       crossAxisCount: 2,
-      children: List.generate(
-        items.length,
-        (index) => ItemWidget(
-          item: items[index],
-          onTap: (item) {
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => DetailItemScreen(
-                  item: item,
-                ),
-              ),
-            );
-          },
-        ),
-      ),
+      itemCount: items.length,
+      itemBuilder: (context, index) => ItemWidget(item: items[index], onTap: onTap),
+      staggeredTileBuilder: (index) => StaggeredTile.fit(1),
     );
   }
 }
+
+
+// return GridView.count(
+//       crossAxisCount: 2,
+//       children: List.generate(
+//         items.length,
+//         (index) => ItemWidget(
+//           item: items[index],
+//           onTap: (item) {
+//             Navigator.of(context).push(
+//               MaterialPageRoute(
+//                 builder: (context) => DetailItemScreen(
+//                   item: item,
+//                 ),
+//               ),
+//             );
+//           },
+//         ),
+//       ),
+//     );

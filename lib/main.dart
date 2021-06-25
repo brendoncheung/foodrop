@@ -47,12 +47,3 @@ class _FoodropRootState extends State<FoodropRoot> {
     );
   }
 }
-
-// var fs = FirebaseFirestore.instance.collection('/restaurants').doc('/ewP3B6XWNyqjM98GYYaq').collection('/reviews').snapshots();
-
-// fs.listen((querySnapshot) {
-//   querySnapshot.docs.forEach((queryDocumentSnapshot) {
-//     print("looooooading");
-//     print(queryDocumentSnapshot.data()['comment']);
-//   });
-// });

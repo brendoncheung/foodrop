@@ -3,7 +3,7 @@ import 'package:foodrop/core/models/item.dart';
 
 class ItemWidget extends StatelessWidget {
   final Item item;
-  final Function(Item item) onTap;
+  final Function(Item) onTap;
 
   ItemWidget({@required this.item, this.onTap});
 
@@ -13,56 +13,72 @@ class ItemWidget extends StatelessWidget {
       onTap: () {
         onTap(item);
       },
-      child: Card(
-        color: Colors.grey[800],
-        clipBehavior: Clip.antiAlias,
-        elevation: 4,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Expanded(
-              flex: 3,
-              child: SplashImage(
-                photoUrl: item.photoUrl.first,
+      child: SizedBox(
+        height: 500,
+        child: Card(
+          color: Colors.grey[800],
+          clipBehavior: Clip.antiAlias,
+          elevation: 4,
+          child: Column(
+            children: [
+              Expanded(
+                flex: 3,
+                child: SplashImage(photoUrl: item.photoUrl.first),
               ),
-            ),
-            Flexible(
-              fit: FlexFit.loose,
-              child: Padding(
-                padding: EdgeInsets.all(6),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Expanded(
-                      child: Title(item: item),
+              Expanded(
+                child: Padding(
+                  padding: EdgeInsets.all(6),
+                  child: Container(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        Title(item: item),
+                        SizedBox(
+                          height: 8,
+                        ),
+                        Flexible(
+                          child: BusinessInformationAndLikes(item: item),
+                        )
+                      ],
                     ),
-                    Expanded(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Expanded(
-                            flex: 5,
-                            child: BusinessAvatarWidget(
-                              avatarUrl: item.businessAvatarUrl,
-                              businessName: item.tradingName,
-                            ),
-                          ),
-                          Expanded(
-                            flex: 2,
-                            child: FavoritesStateWidget(
-                              numOfLikes: item.numOfFavs,
-                            ),
-                          )
-                        ],
-                      ),
-                    )
-                  ],
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
+    );
+  }
+}
+
+class BusinessInformationAndLikes extends StatelessWidget {
+  const BusinessInformationAndLikes({
+    Key key,
+    @required this.item,
+  }) : super(key: key);
+
+  final Item item;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        Expanded(
+          flex: 5,
+          child: BusinessAvatarWidget(
+            avatarUrl: item.businessAvatarUrl,
+            businessName: item.tradingName,
+          ),
+        ),
+        Expanded(
+          flex: 2,
+          child: FavoritesStateWidget(
+            numOfLikes: item.numOfFavs,
+          ),
+        )
+      ],
     );
   }
 }
@@ -83,14 +99,18 @@ class Title extends StatelessWidget {
 
 class SplashImage extends StatelessWidget {
   String photoUrl;
+  ImageStreamListener listener;
 
-  SplashImage({@required this.photoUrl});
+  SplashImage({
+    @required this.photoUrl,
+    this.listener,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Ink.image(
       height: 100,
-      fit: BoxFit.fitWidth,
+      fit: BoxFit.cover,
       image: NetworkImage(photoUrl),
     );
   }
@@ -115,7 +135,7 @@ class FavoritesStateWidget extends StatelessWidget {
           width: 4,
         ),
         Icon(
-          Icons.favorite_border_rounded,
+          Icons.favorite_rounded,
           size: 14,
           color: isFavorited ? Colors.red : Colors.grey,
         ),
@@ -148,6 +168,7 @@ class BusinessAvatarWidget extends StatelessWidget {
           flex: 5,
           child: Text(
             businessName,
+            overflow: TextOverflow.ellipsis,
             style: TextStyle(fontSize: 12, color: Colors.white),
           ),
         )

@@ -1,5 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:foodrop/core/models/business.dart';
 import 'package:foodrop/core/models/item.dart';
 
 class DetailItemScreen extends StatefulWidget {
@@ -14,6 +16,7 @@ class DetailItemScreen extends StatefulWidget {
 class _DetailItemScreenState extends State<DetailItemScreen> {
   int _photoIndex = 0;
   bool _isFavorite = false;
+  bool _isFollowed = false;
   double _commonSpacing = 8;
 
   void onPhotoChange(int index) {
@@ -28,26 +31,38 @@ class _DetailItemScreenState extends State<DetailItemScreen> {
     });
   }
 
+  void onFollowTapped() {
+    setState(() {
+      _isFollowed = !_isFollowed;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
         backgroundColor: Colors.grey[900],
+        title: Text(
+          widget.item.tradingName,
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Column(
-          children: [
-            PhotoCarousel(item: widget.item, onChange: onPhotoChange),
-            PhotoIndexIndicator(photoLength: widget.item.photoUrl.length, index: _photoIndex, size: 5),
-            SizedBox(height: _commonSpacing),
-            Price(newPrice: widget.item.price, oldPrice: widget.item.price * 1.2),
-            SizedBox(height: _commonSpacing),
-            TitleAndLikes(item: widget.item, isFavorite: _isFavorite, onTap: (item) => onFavoriteTapped()),
-            SizedBox(height: _commonSpacing),
-            BusinessInformation()
-          ],
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              PhotoCarousel(item: widget.item, onChange: onPhotoChange),
+              PhotoIndexIndicator(photoLength: widget.item.photoUrl.length, index: _photoIndex, size: 5),
+              SizedBox(height: _commonSpacing),
+              Price(newPrice: widget.item.price, oldPrice: widget.item.price * 1.2),
+              SizedBox(height: _commonSpacing),
+              TitleAndLikes(item: widget.item, isFavorite: _isFavorite, onTap: (item) => onFavoriteTapped()),
+              SizedBox(height: _commonSpacing),
+              BusinessInformationAndFollowButton(item: widget.item, isFollowed: _isFollowed, onFollowTap: onFollowTapped),
+            ],
+          ),
         ),
       ),
     );
@@ -56,7 +71,7 @@ class _DetailItemScreenState extends State<DetailItemScreen> {
 
 class PhotoCarousel extends StatelessWidget {
   final Item item;
-  Function(int index) onChange;
+  final Function(int index) onChange;
 
   PhotoCarousel({this.item, this.onChange});
   @override
@@ -72,17 +87,15 @@ class PhotoCarousel extends StatelessWidget {
       ),
       items: List.generate(
         item.photoUrl.length,
-        (index) => FittedBox(
-          fit: BoxFit.contain,
-          child: Container(
-            clipBehavior: Clip.antiAlias,
-            decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(24))),
-            child: Image.network(
-              item.photoUrl[index],
-              loadingBuilder: (context, image, chunk) {
-                return chunk == null ? image : Text("loading...");
-              },
-            ),
+        (index) => Container(
+          clipBehavior: Clip.antiAlias,
+          decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(24))),
+          child: Image.network(
+            item.photoUrl[index],
+            fit: BoxFit.cover,
+            loadingBuilder: (context, image, chunk) {
+              return chunk == null ? image : Center(child: Text("loading...", style: TextStyle(color: Colors.white)));
+            },
           ),
         ),
       ),
@@ -197,14 +210,66 @@ class TitleAndLikes extends StatelessWidget {
   }
 }
 
-class BusinessInformation extends StatelessWidget {
+class BusinessInformationAndFollowButton extends StatelessWidget {
+  final Item item;
+  bool isFollowed;
+  String api(String s) => "https://avatars.dicebear.com/api/male/${s}.svg";
+  Function() onFollowTap;
+  Function() onBusinessTap;
+
+  BusinessInformationAndFollowButton({
+    @required this.item,
+    this.isFollowed,
+    this.onFollowTap,
+    this.onBusinessTap,
+  });
+
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      tileColor: Colors.grey[600],
-      leading: CircleAvatar(
-        child: Text("he"),
-      ),
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        Flexible(
+          child: CircleAvatar(backgroundImage: NetworkImage("https://i.pravatar.cc/300")),
+        ),
+        SizedBox(width: 8),
+        Expanded(
+          flex: 6,
+          child: Text(
+            item.tradingName,
+            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+            overflow: TextOverflow.ellipsis,
+          ),
+        ),
+        Expanded(
+          flex: 3,
+          child: Align(
+            alignment: Alignment.centerRight,
+            child: ActionChip(
+                onPressed: onFollowTap,
+                backgroundColor: isFollowed ? Colors.grey[500] : Colors.red,
+                avatar: !isFollowed
+                    ? Icon(
+                        Icons.add,
+                        color: Colors.white,
+                      )
+                    : null,
+                label: Text(
+                  isFollowed ? "Followed" : "Follow",
+                  style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+                )),
+          ),
+        )
+      ],
+    );
+  }
+}
+
+class Review extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: null,
     );
   }
 }
