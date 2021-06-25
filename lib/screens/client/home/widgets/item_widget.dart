@@ -144,7 +144,7 @@ class BusinessAvatarWidget extends StatelessWidget {
           fit: FlexFit.loose,
           child: CircleAvatar(
             maxRadius: 15,
-            backgroundImage: NetworkImage('https://i.pravatar.cc/300'),
+            backgroundImage: NetworkImage(avatarUrl),
           ),
         ),
         SizedBox(
