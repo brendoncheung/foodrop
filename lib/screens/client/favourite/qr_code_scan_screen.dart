@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class ClientFavouriteScreen extends StatelessWidget {
-  const ClientFavouriteScreen({Key key}) : super(key: key);
+class QRCodeScanScreen extends StatelessWidget {
+  const QRCodeScanScreen({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

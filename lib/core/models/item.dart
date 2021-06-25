@@ -1,23 +1,8 @@
 class Item {
-  Item({
-    this.businessAvatarUrl = "",
-    this.businessId = "",
-    this.categoryId = "",
-    this.categoryName = "",
-    DateTime creationDate,
-    this.description = "",
-    this.docId = "",
-    DateTime lastUpdate,
-    this.lastUpdateByUserId = "",
-    this.name = "",
-    this.num_of_favs = 0,
-    this.photoUrl = "",
-    this.price = 0,
-  })  : lastUpdate = lastUpdate ?? DateTime.now(),
-        creationDate = creationDate ?? DateTime.now();
   String docId;
   String businessAvatarUrl;
   String businessId;
+  String tradingName;
   String categoryId;
   String categoryName;
   DateTime creationDate;
@@ -25,24 +10,26 @@ class Item {
   String description;
   String lastUpdateByUserId;
   String name;
-  int num_of_favs;
-  String photoUrl;
+  int numOfFavs;
+  List<String> photoUrl;
   num price;
 
-  Item.fromMap(Map<String, dynamic> data, String docId)
-      : docId = docId,
-        businessAvatarUrl = data['businessAvatarUrl'],
-        businessId = data['businessId'],
-        categoryId = data['categoryId'],
-        categoryName = data['categoryName'],
-        creationDate = DateTime.parse(data['creationDate'].toDate().toString()),
-        lastUpdate = DateTime.parse(data['lastUpdate'].toDate().toString()),
-        description = data['description'],
-        lastUpdateByUserId = data['lastUpdateByUserId'],
-        name = data['name'],
-        num_of_favs = data['num_of_favs'],
-        photoUrl = data['photoUrl'],
-        price = data['price'];
+  Item.fromMap(Map<String, dynamic> data, String docId) {
+    docId = docId;
+    businessAvatarUrl = data['businessAvatarUrl'];
+    businessId = data['businessId'];
+    tradingName = data['tradingName'];
+    categoryId = data['categoryId'];
+    categoryName = data['categoryName'];
+    creationDate = DateTime.parse(data['creationDate'].toDate().toString());
+    lastUpdate = DateTime.parse(data['lastUpdate'].toDate().toString());
+    description = data['description'];
+    lastUpdateByUserId = data['lastUpdateByUserId'];
+    name = data['name'];
+    numOfFavs = data['num_of_favs'];
+    photoUrl = List.from(data["photoUrlList"]);
+    price = data['price'];
+  }
 
   Map<String, dynamic> toMap() {
     return {
@@ -56,9 +43,14 @@ class Item {
       'description': description ?? description,
       'lastUpdateByUserId': lastUpdateByUserId ?? lastUpdateByUserId,
       'name': name ?? name,
-      'num_of_favs': num_of_favs ?? num_of_favs,
+      'num_of_favs': numOfFavs ?? numOfFavs,
       'photoUrl': photoUrl ?? photoUrl,
       'price': price ?? price
     };
+  }
+
+  @override
+  String toString() {
+    return 'Item(docId: $docId, businessAvatarUrl: $businessAvatarUrl, businessId: $businessId, tradingName: $tradingName, categoryId: $categoryId, categoryName: $categoryName, creationDate: $creationDate, lastUpdate: $lastUpdate, description: $description, lastUpdateByUserId: $lastUpdateByUserId, name: $name, numOfFavs: $numOfFavs, photoUrl: $photoUrl, price: $price)';
   }
 }
