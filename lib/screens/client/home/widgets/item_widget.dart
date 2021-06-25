@@ -4,8 +4,9 @@ import 'package:foodrop/core/models/item.dart';
 class ItemWidget extends StatelessWidget {
   final Item item;
   final Function(Item) onTap;
+  final int radius;
 
-  ItemWidget({@required this.item, this.onTap});
+  ItemWidget({@required this.item, this.onTap, this.radius});
 
   @override
   Widget build(BuildContext context) {
@@ -13,39 +14,30 @@ class ItemWidget extends StatelessWidget {
       onTap: () {
         onTap(item);
       },
-      child: SizedBox(
-        height: 500,
-        child: Card(
-          color: Colors.grey[800],
-          clipBehavior: Clip.antiAlias,
-          elevation: 4,
-          child: Column(
-            children: [
-              Expanded(
-                flex: 3,
-                child: SplashImage(photoUrl: item.photoUrl.first),
-              ),
-              Expanded(
-                child: Padding(
-                  padding: EdgeInsets.all(6),
-                  child: Container(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        Title(item: item),
-                        SizedBox(
-                          height: 8,
-                        ),
-                        Flexible(
-                          child: BusinessInformationAndLikes(item: item),
-                        )
-                      ],
+      child: Card(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        color: Colors.grey[800],
+        clipBehavior: Clip.antiAlias,
+        elevation: 4,
+        child: Column(
+          children: [
+            SplashImage(photoUrl: item.photoUrl.first),
+            Padding(
+              padding: EdgeInsets.all(6),
+              child: Container(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Title(item: item),
+                    SizedBox(
+                      height: 8,
                     ),
-                  ),
+                    BusinessInformationAndLikes(item: item)
+                  ],
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
@@ -99,20 +91,14 @@ class Title extends StatelessWidget {
 
 class SplashImage extends StatelessWidget {
   String photoUrl;
-  ImageStreamListener listener;
 
   SplashImage({
     @required this.photoUrl,
-    this.listener,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Ink.image(
-      height: 100,
-      fit: BoxFit.cover,
-      image: NetworkImage(photoUrl),
-    );
+    return Image.network(photoUrl);
   }
 }
 
