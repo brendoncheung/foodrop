@@ -52,6 +52,7 @@ class _DetailItemScreenState extends State<DetailItemScreen> {
         padding: const EdgeInsets.all(8.0),
         child: SingleChildScrollView(
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               PhotoCarousel(item: widget.item, onChange: onPhotoChange),
               PhotoIndexIndicator(photoLength: widget.item.photoUrl.length, index: _photoIndex, size: 5),
@@ -61,6 +62,11 @@ class _DetailItemScreenState extends State<DetailItemScreen> {
               TitleAndLikes(item: widget.item, isFavorite: _isFavorite, onTap: (item) => onFavoriteTapped()),
               SizedBox(height: _commonSpacing),
               BusinessInformationAndFollowButton(item: widget.item, isFollowed: _isFollowed, onFollowTap: onFollowTapped),
+              SizedBox(height: _commonSpacing),
+              Text(
+                widget.item.description,
+                style: TextStyle(color: Colors.white),
+              ),
             ],
           ),
         ),
@@ -199,9 +205,12 @@ class TitleAndLikes extends StatelessWidget {
                 onTap: () {
                   onTap(item);
                 },
-                child: Icon(
-                  Icons.favorite,
-                  color: isFavorite ? Colors.red : Colors.white,
+                child: AnimatedContainer(
+                  duration: Duration(seconds: 5),
+                  child: Icon(
+                    Icons.favorite,
+                    color: isFavorite ? Colors.red : Colors.white,
+                  ),
                 ),
               ),
             ))
@@ -213,7 +222,7 @@ class TitleAndLikes extends StatelessWidget {
 class BusinessInformationAndFollowButton extends StatelessWidget {
   final Item item;
   bool isFollowed;
-  String api(String s) => "https://avatars.dicebear.com/api/male/${s}.svg";
+
   Function() onFollowTap;
   Function() onBusinessTap;
 
@@ -230,7 +239,7 @@ class BusinessInformationAndFollowButton extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         Flexible(
-          child: CircleAvatar(backgroundImage: NetworkImage("https://i.pravatar.cc/300")),
+          child: CircleAvatar(backgroundImage: NetworkImage(item.businessAvatarUrl)),
         ),
         SizedBox(width: 8),
         Expanded(

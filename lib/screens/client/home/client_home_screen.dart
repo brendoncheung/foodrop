@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -89,12 +91,26 @@ class HomepageStaggeredGridView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StaggeredGridView.countBuilder(
+    return StaggeredGridView.count(
       crossAxisCount: 2,
-      itemCount: items.length,
-      itemBuilder: (context, index) => ItemWidget(item: items[index], onTap: onTap),
-      staggeredTileBuilder: (index) => StaggeredTile.fit(1),
+      children: List.generate(
+        items.length,
+        (index) => ItemWidget(
+          item: items[index],
+          onTap: onTap,
+        ),
+      ),
+      staggeredTiles: List.generate(
+        items.length,
+        (index) => StaggeredTile.fit(1),
+      ),
     );
+  }
+}
+
+extension ListEx on List<int> {
+  int pickRandom(int length) {
+    return this[Random().nextInt(length - 1)];
   }
 }
 
