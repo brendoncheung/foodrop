@@ -7,6 +7,7 @@ import 'package:foodrop/core/models/business.dart';
 import 'package:foodrop/core/models/business_user_link.dart';
 import 'package:foodrop/core/models/item.dart';
 import 'package:foodrop/core/models/items_category.dart';
+import 'package:foodrop/core/services/utilities.dart';
 
 import 'api_path.dart';
 import 'firestore_service.dart';
@@ -16,13 +17,15 @@ abstract class Database {
   Future<void> setUser(UserProfile user);
   Stream<Business> businessStream({String businessUid});
   Stream<List<BusinessUserLink>> businessUserLinkStream({String userId});
-  Future<void> setImage({File pickedImage, String userId});
+  Future<String> setImage(
+      {File pickedImage, String docId, String storageCollectionName});
   Stream<List<ItemsCategory>> itemsCategoryStream(
       {@required String businessId});
   Future<void> setCategory({ItemsCategory category});
   Stream<List<Item>> businessItemsStreambyBusinessId(
       {@required String businessId});
   Stream<List<Item>> itemsStream();
+  Future<void> setItem({Item item});
 
 // Future<void> setJob(Job job);
   // Future<void> deleteJob(Job job);
@@ -48,7 +51,7 @@ class FirestoreDatabase implements Database {
   @override
   Future<void> setUser(UserProfile user) async {
     await FirestoreService.instance.setData(
-      path: APIPath.userById(uid: uid),
+      path: APIPath.userById(uid: user.uid),
       data: user.toMap(), // return a user object in Map format
     );
   }
@@ -62,13 +65,23 @@ class FirestoreDatabase implements Database {
     );
   }
 
-  Future<String> setImage({File pickedImage, String userId}) async {
+  Future<String> setImage(
+      {File pickedImage, String docId, String storageCollectionName}) async {
+    String stringUrl;
     final ref = FirebaseStorage.instance
         .ref()
-        .child('user_image')
-        .child(userId + '.jpg');
-    await ref.putFile(pickedImage).whenComplete;
-    final stringUrl = ref.getDownloadURL();
+        .child(storageCollectionName)
+        .child(docId + '.jpg');
+
+    await ref.putFile(pickedImage).whenComplete(() async {
+      // try {
+      //   stringUrl = await ref.getDownloadURL();
+      //   print(stringUrl);
+      // } catch (e) {
+      //   print("something is wrong downloading URL");
+      // }
+    });
+    stringUrl = await ref.getDownloadURL();
     print(stringUrl);
     return stringUrl;
   }
@@ -123,6 +136,26 @@ class FirestoreDatabase implements Database {
         },
         // sort: (lhs, rhs) => lhs.index.compareTo(rhs.index),
       );
+
+  @override
+  Future<void> setItem({Item item}) async {
+    if (item.docId == null || item.docId == "")
+      item.docId = Utilities.documentIdFromCurrentDate();
+
+    await FirestoreService.instance.setData(
+      path: APIPath.itemByDocId(docId: item.docId),
+      data: item.toMap(), // return a user object in Map format
+    );
+
+    // save item to subcollection of business
+    await FirestoreService.instance.setData(
+      path: APIPath.itemByBusinessIdAndDocId(
+        businessId: item.businessId,
+        itemId: item.docId,
+      ),
+      data: item.toMap(), // return a user object in Map format
+    );
+  }
 }
 //
 // String documentIdFromCurrentDate() => DateTime.now().toIso8601String();

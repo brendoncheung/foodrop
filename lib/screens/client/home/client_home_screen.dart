@@ -1,13 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:foodrop/core/models/menu.dart';
-import 'package:foodrop/core/services/firestore_service.dart';
-import 'package:foodrop/core/services/repositories/menu_repository.dart';
-import 'package:foodrop/screens/client/home/detail/home_tile_detail_screen.dart';
-import 'package:provider/provider.dart';
-
-import 'detail/widgets/home_tile_widget.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:foodrop/core/models/item.dart';
+import 'package:foodrop/core/services/repositories/image_repository.dart';
+import 'package:foodrop/core/services/repositories/item_repository.dart';
+import 'package:foodrop/screens/client/home/detail/detail_item_screen.dart';
+import 'widgets/item_widget.dart';
 
 class ClientHomeScreen extends StatefulWidget {
   const ClientHomeScreen({Key key}) : super(key: key);
@@ -19,37 +19,30 @@ class ClientHomeScreen extends StatefulWidget {
 class _ClientHomeScreenState extends State<ClientHomeScreen> with SingleTickerProviderStateMixin {
   final _scrollController = ScrollController();
 
-  final mealRepository = MenuRepository(FirebaseFirestore.instance);
+  final itemRepository = ItemRepository(FirebaseFirestore.instance);
+  final imageRepository = ImageRepository(storage: FirebaseStorage.instance);
 
-  final image_source = "https://source.unsplash.com/random/1600x900";
-  String Function(int i) avatar_source = (i) {
-    return "https://i.pravatar.cc/300";
-  };
+  void onFabTapped() {
+    print("fab pressed");
+  }
 
-  bool _fabVisible = true;
+  void onItemTapped(Item item) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => DetailItemScreen(
+          item: item,
+        ),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
-    _scrollController.addListener(() {
-      if (_scrollController.position.userScrollDirection == ScrollDirection.forward) {
-        setState(() {
-          _fabVisible = false;
-        });
-      } else if (_scrollController.position.userScrollDirection == ScrollDirection.reverse) {
-        setState(() {
-          _fabVisible = true;
-        });
-      }
-    });
-
     return Scaffold(
-      floatingActionButton: Opacity(
-        opacity: _fabVisible ? 1 : 0,
-        child: FloatingActionButton(
-          onPressed: () {},
-          child: Icon(Icons.add, color: Colors.black),
-          backgroundColor: Colors.white,
-        ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: onFabTapped,
+        child: Icon(Icons.add, color: Colors.black),
+        backgroundColor: Colors.white,
       ),
       backgroundColor: Colors.black,
       appBar: AppBar(
@@ -65,17 +58,62 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> with SingleTickerPr
           )
         ],
       ),
-      body: StreamBuilder(
-        stream: mealRepository.meals,
-        builder: (_, AsyncSnapshot<List<Menu>> snapshot) {
-          if (!snapshot.hasData) {
-            return CircularProgressIndicator();
+      body: FutureBuilder(
+        future: itemRepository.items,
+        builder: (ctx, AsyncSnapshot<List<Item>> snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          } else {
+            List<Item> items = snapshot.data;
+            return HomepageStaggeredGridView(
+              items: items,
+              onTap: (item) => onItemTapped(item),
+            );
           }
-          List<Menu> menus = snapshot.data;
-          print(menus);
-          return Text("hello");
         },
       ),
     );
   }
 }
+
+class HomepageStaggeredGridView extends StatelessWidget {
+  final List<Item> items;
+  final Function(Item) onTap;
+
+  HomepageStaggeredGridView({
+    @required this.items,
+    this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return StaggeredGridView.countBuilder(
+      crossAxisCount: 2,
+      itemCount: items.length,
+      itemBuilder: (context, index) => ItemWidget(item: items[index], onTap: onTap),
+      staggeredTileBuilder: (index) => StaggeredTile.fit(1),
+    );
+  }
+}
+
+
+// return GridView.count(
+//       crossAxisCount: 2,
+//       children: List.generate(
+//         items.length,
+//         (index) => ItemWidget(
+//           item: items[index],
+//           onTap: (item) {
+//             Navigator.of(context).push(
+//               MaterialPageRoute(
+//                 builder: (context) => DetailItemScreen(
+//                   item: item,
+//                 ),
+//               ),
+//             );
+//           },
+//         ),
+//       ),
+//     );

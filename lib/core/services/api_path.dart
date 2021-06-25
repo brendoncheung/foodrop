@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 class APIPath {
   static String userById({String uid}) => 'users/$uid';
   static String businessById({String uid}) => 'businesses/$uid';
@@ -9,4 +11,10 @@ class APIPath {
   static String businessItems({String businessId}) =>
       'businesses/$businessId/items';
   static String items() => 'items';
+  static String itemByDocId({String docId}) => 'items/$docId';
+  static String itemByBusinessIdAndDocId({String businessId, String itemId}) =>
+      'businesses/$businessId/items/$itemId';
+  static String userImageStoragePath() => 'user_image';
+  static String menuImageStoragePath({@required String businessId}) =>
+      'menu_items/$businessId';
 }

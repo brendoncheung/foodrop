@@ -41,10 +41,9 @@ class _ItemScreenState extends State<ItemScreen> {
           children: [
             Stack(
               children: [
-                Image.network(widget.item.photoUrl),
+                Image.network(""),
                 Padding(
-                  padding: EdgeInsets.only(
-                      top: size.height / 15, left: 10, right: 15),
+                  padding: EdgeInsets.only(top: size.height / 15, left: 10, right: 15),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -77,9 +76,7 @@ class _ItemScreenState extends State<ItemScreen> {
                       decoration: InputDecoration(labelText: "Price"),
                     ),
                     ListTile(
-                      title: Align(
-                          alignment: Alignment(-1.17, 0.0),
-                          child: Text("Category: ${widget.item.categoryName}")),
+                      title: Align(alignment: Alignment(-1.17, 0.0), child: Text("Category: ${widget.item.categoryName}")),
                       // subtitle: Text(widget.item.categoryName),
                       onTap: () {},
                       trailing: Icon(Icons.chevron_right),
