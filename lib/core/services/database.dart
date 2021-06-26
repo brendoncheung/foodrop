@@ -67,31 +67,17 @@ class FirestoreDatabase implements Database {
 
   Future<String> setImage(
       {File pickedImage, String docId, String storageCollectionName}) async {
-<<<<<<< HEAD
     String stringUrl;
-=======
->>>>>>> brendon
+
     final ref = FirebaseStorage.instance
         .ref()
         .child(storageCollectionName)
         .child(docId + '.jpg');
-<<<<<<< HEAD
 
-    await ref.putFile(pickedImage).whenComplete(() async {
-      // try {
-      //   stringUrl = await ref.getDownloadURL();
-      //   print(stringUrl);
-      // } catch (e) {
-      //   print("something is wrong downloading URL");
-      // }
-    });
+    await ref.putFile(pickedImage).whenComplete(() async {});
     stringUrl = await ref.getDownloadURL();
     print(stringUrl);
-=======
-    await ref.putFile(pickedImage).whenComplete;
-    final stringUrl = ref.getDownloadURL();
-    //print(stringUrl);
->>>>>>> brendon
+
     return stringUrl;
   }
 
