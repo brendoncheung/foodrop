@@ -7,7 +7,11 @@ import 'package:foodrop/core/models/business.dart';
 import 'package:foodrop/core/models/business_user_link.dart';
 import 'package:foodrop/core/models/item.dart';
 import 'package:foodrop/core/models/items_category.dart';
+<<<<<<< HEAD:lib/core/services/database.dart
 import 'package:foodrop/core/services/utilities.dart';
+=======
+import 'package:foodrop/core/services/database/utilities.dart';
+>>>>>>> qr_code_feature:lib/core/services/database/database.dart
 
 import 'api_path.dart';
 import 'firestore_service.dart';
@@ -17,13 +21,17 @@ abstract class Database {
   Future<void> setUser(UserProfile user);
   Stream<Business> businessStream({String businessUid});
   Stream<List<BusinessUserLink>> businessUserLinkStream({String userId});
+<<<<<<< HEAD:lib/core/services/database.dart
   Future<String> setImage(
       {File pickedImage, String docId, String storageCollectionName});
   Stream<List<ItemsCategory>> itemsCategoryStream(
       {@required String businessId});
+=======
+  Future<String> setImage({File pickedImage, String docId, String storageCollectionName});
+  Stream<List<ItemsCategory>> itemsCategoryStream({@required String businessId});
+>>>>>>> qr_code_feature:lib/core/services/database/database.dart
   Future<void> setCategory({ItemsCategory category});
-  Stream<List<Item>> businessItemsStreambyBusinessId(
-      {@required String businessId});
+  Stream<List<Item>> businessItemsStreambyBusinessId({@required String businessId});
   Stream<List<Item>> itemsStream();
   Future<void> setItem({Item item});
 
@@ -59,12 +67,12 @@ class FirestoreDatabase implements Database {
   @override
   Future<void> setCategory({ItemsCategory category}) async {
     await FirestoreService.instance.setData(
-      path: APIPath.businessCategory(
-          businessId: category.businessId, docId: category.docId),
+      path: APIPath.businessCategory(businessId: category.businessId, docId: category.docId),
       data: category.toMap(), // return a user object in Map format
     );
   }
 
+<<<<<<< HEAD:lib/core/services/database.dart
   Future<String> setImage(
       {File pickedImage, String docId, String storageCollectionName}) async {
     final ref = FirebaseStorage.instance
@@ -74,6 +82,22 @@ class FirestoreDatabase implements Database {
     await ref.putFile(pickedImage).whenComplete;
     final stringUrl = ref.getDownloadURL();
     //print(stringUrl);
+=======
+  Future<String> setImage({File pickedImage, String docId, String storageCollectionName}) async {
+    String stringUrl;
+    final ref = FirebaseStorage.instance.ref().child(storageCollectionName).child(docId + '.jpg');
+
+    await ref.putFile(pickedImage).whenComplete(() async {
+      // try {
+      //   stringUrl = await ref.getDownloadURL();
+      //   print(stringUrl);
+      // } catch (e) {
+      //   print("something is wrong downloading URL");
+      // }
+    });
+    stringUrl = await ref.getDownloadURL();
+    print(stringUrl);
+>>>>>>> qr_code_feature:lib/core/services/database/database.dart
     return stringUrl;
   }
 
@@ -87,21 +111,16 @@ class FirestoreDatabase implements Database {
       );
 
   @override
-  Stream<List<BusinessUserLink>> businessUserLinkStream({String userId}) =>
-      _service.collectionStream<BusinessUserLink>(
-          path: APIPath.businessUserLink(),
-          queryBuilder: userId != null
-              ? (query) => query.where('userId', isEqualTo: userId)
-              : null,
-          builder: (data, documentID) {
-            print(documentID);
-            return BusinessUserLink.fromMap(data, documentID);
-          });
+  Stream<List<BusinessUserLink>> businessUserLinkStream({String userId}) => _service.collectionStream<BusinessUserLink>(
+      path: APIPath.businessUserLink(),
+      queryBuilder: userId != null ? (query) => query.where('userId', isEqualTo: userId) : null,
+      builder: (data, documentID) {
+        print(documentID);
+        return BusinessUserLink.fromMap(data, documentID);
+      });
 
   @override
-  Stream<List<ItemsCategory>> itemsCategoryStream(
-          {@required String businessId}) =>
-      _service.collectionStream<ItemsCategory>(
+  Stream<List<ItemsCategory>> itemsCategoryStream({@required String businessId}) => _service.collectionStream<ItemsCategory>(
         path: APIPath.businessCategories(businessId: businessId),
         builder: (data, documentID) {
           return ItemsCategory.fromMap(data, documentID);
@@ -110,9 +129,7 @@ class FirestoreDatabase implements Database {
       );
 
   @override
-  Stream<List<Item>> businessItemsStreambyBusinessId(
-          {@required String businessId}) =>
-      _service.collectionStream<Item>(
+  Stream<List<Item>> businessItemsStreambyBusinessId({@required String businessId}) => _service.collectionStream<Item>(
         path: APIPath.businessItems(businessId: businessId),
         builder: (data, documentID) {
           return Item.fromMap(data, documentID);
@@ -130,8 +147,12 @@ class FirestoreDatabase implements Database {
 
   @override
   Future<void> setItem({Item item}) async {
+<<<<<<< HEAD:lib/core/services/database.dart
     if (item.docId == null || item.docId == "")
       item.docId = Utilities.documentIdFromCurrentDate();
+=======
+    if (item.docId == null || item.docId == "") item.docId = Utilities.documentIdFromCurrentDate();
+>>>>>>> qr_code_feature:lib/core/services/database/database.dart
 
     await FirestoreService.instance.setData(
       path: APIPath.itemByDocId(docId: item.docId),

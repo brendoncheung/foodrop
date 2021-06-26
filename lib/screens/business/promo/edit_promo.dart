@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:foodrop/core/models/promo.dart';
-import 'package:foodrop/screens/common_widgets/date_time_picker.dart';
+import 'package:foodrop/screens/business/common_widgets/date_time_picker.dart';
 import 'package:provider/provider.dart';
 
 import 'promo_period_date_time_picker.dart';
@@ -176,15 +176,7 @@ class _EditPromoState extends State<EditPromo> {
       promoSunday: data['sun'] ?? false,
     );
     _model.updateWith(
-        promoEveryDay: _model.promoMonday &&
-                _model.promoTuesday &&
-                _model.promoWednesday &&
-                _model.promoThursday &&
-                _model.promoFriday &&
-                _model.promoSaturday &&
-                _model.promoSunday
-            ? true
-            : false);
+        promoEveryDay: _model.promoMonday && _model.promoTuesday && _model.promoWednesday && _model.promoThursday && _model.promoFriday && _model.promoSaturday && _model.promoSunday ? true : false);
     // _model.updateWith(
     //     promoEveryDay: _model.promoMonday &&
     //             _model.promoTuesday &&
@@ -197,20 +189,13 @@ class _EditPromoState extends State<EditPromo> {
     //         : false);
 
     _selectedDays = "";
-    _selectedDays =
-        _model.promoMonday ? "$_selectedDays Mon " : "$_selectedDays";
-    _selectedDays =
-        _model.promoTuesday ? "$_selectedDays Tue " : "$_selectedDays";
-    _selectedDays =
-        _model.promoWednesday ? "$_selectedDays Wed " : "$_selectedDays";
-    _selectedDays =
-        _model.promoThursday ? "$_selectedDays Thu " : "$_selectedDays";
-    _selectedDays =
-        _model.promoFriday ? "$_selectedDays Fri " : "$_selectedDays";
-    _selectedDays =
-        _model.promoSaturday ? "$_selectedDays Sat " : "$_selectedDays";
-    _selectedDays =
-        _model.promoSunday ? "$_selectedDays Sun " : "$_selectedDays";
+    _selectedDays = _model.promoMonday ? "$_selectedDays Mon " : "$_selectedDays";
+    _selectedDays = _model.promoTuesday ? "$_selectedDays Tue " : "$_selectedDays";
+    _selectedDays = _model.promoWednesday ? "$_selectedDays Wed " : "$_selectedDays";
+    _selectedDays = _model.promoThursday ? "$_selectedDays Thu " : "$_selectedDays";
+    _selectedDays = _model.promoFriday ? "$_selectedDays Fri " : "$_selectedDays";
+    _selectedDays = _model.promoSaturday ? "$_selectedDays Sat " : "$_selectedDays";
+    _selectedDays = _model.promoSunday ? "$_selectedDays Sun " : "$_selectedDays";
   }
 
   // validation - completed
@@ -255,10 +240,7 @@ class _EditPromoState extends State<EditPromo> {
         // update bool variable
         _takeAwayOnly = value;
         // update model and refresh build
-        _model.updateWith(
-            restrictionDeliveryMethod: value
-                ? DeliveryMethod.PickUpInStoreOnly
-                : DeliveryMethod.NoRestrictions);
+        _model.updateWith(restrictionDeliveryMethod: value ? DeliveryMethod.PickUpInStoreOnly : DeliveryMethod.NoRestrictions);
       },
       title: Align(
         child: Text("Takeaway Only"),
@@ -299,8 +281,7 @@ class _EditPromoState extends State<EditPromo> {
                 controller: _flatFeeController,
                 focusNode: _flatFeeFocusNode,
                 validator: (value) => _model.numberNonNegativeValidator(value),
-                onSaved: (value) =>
-                    _model.updateWith(flatFee: double.tryParse(value) ?? 0),
+                onSaved: (value) => _model.updateWith(flatFee: double.tryParse(value) ?? 0),
                 decoration: InputDecoration(
                   labelText: "Flat Fee",
                 ),
@@ -327,15 +308,12 @@ class _EditPromoState extends State<EditPromo> {
                 controller: _percDiscountController,
                 focusNode: _percDiscountFocusNode,
                 validator: (value) => _model.discountPercentValidator(value),
-                onSaved: (value) => _model.updateWith(
-                    benefitDiscount: true,
-                    discountPercentage: double.tryParse(value) / 100),
+                onSaved: (value) => _model.updateWith(benefitDiscount: true, discountPercentage: double.tryParse(value) / 100),
                 decoration: InputDecoration(
                   labelText: "Percentage Discount",
                 ),
                 onTap: () {
-                  _model.updateWith(
-                      selectedBenefits: Benefits.PercentageDiscount);
+                  _model.updateWith(selectedBenefits: Benefits.PercentageDiscount);
                   // setState(() {
                   //   _selectedBenefit = Benefits.PercentageDiscount;
                   // });
@@ -355,8 +333,7 @@ class _EditPromoState extends State<EditPromo> {
             title: TextFormField(
                 controller: _otherBenefitController,
                 focusNode: _otherBenefitFocusNode,
-                onSaved: (value) => _model.updateWith(
-                    benefitOther: true, benefitOtherDescription: value),
+                onSaved: (value) => _model.updateWith(benefitOther: true, benefitOtherDescription: value),
                 decoration: InputDecoration(
                   labelText: "Other",
                 ),
@@ -387,10 +364,8 @@ class _EditPromoState extends State<EditPromo> {
 
     // update model with start and end promo datetime
     _model.updateWith(
-        promoStartingDateTime: DateTime(_startDate.year, _startDate.month,
-            _startDate.day, _startTime.hour, _startTime.minute),
-        promoEndingDateTime: DateTime(_endDate.year, _endDate.month,
-            _endDate.day, _endTime.hour, _endTime.minute));
+        promoStartingDateTime: DateTime(_startDate.year, _startDate.month, _startDate.day, _startTime.hour, _startTime.minute),
+        promoEndingDateTime: DateTime(_endDate.year, _endDate.month, _endDate.day, _endTime.hour, _endTime.minute));
 
     if (_model.promoStartingDateTime.isBefore(_model.promoEndingDateTime)) {
       nonFormStateValidator = true;

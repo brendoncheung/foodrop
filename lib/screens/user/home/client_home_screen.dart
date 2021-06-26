@@ -8,7 +8,7 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:foodrop/core/models/item.dart';
 import 'package:foodrop/core/services/repositories/image_repository.dart';
 import 'package:foodrop/core/services/repositories/item_repository.dart';
-import 'package:foodrop/screens/client/home/detail/detail_item_screen.dart';
+import 'package:foodrop/screens/user/home/detail/detail_item_screen.dart';
 import 'widgets/item_widget.dart';
 
 class ClientHomeScreen extends StatefulWidget {

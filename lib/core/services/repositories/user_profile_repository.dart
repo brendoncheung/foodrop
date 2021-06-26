@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:foodrop/core/models/UserProfile.dart';
-import 'package:foodrop/core/services/api_path.dart';
+import 'package:foodrop/core/services/database/api_path.dart';
 
-import '../firestore_service.dart';
+import '../database/firestore_service.dart';
 
 class UserProfileRepository {
   FirebaseFirestore _store;

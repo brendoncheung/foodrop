@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:foodrop/core/authentication/authentication_service.dart';
 import 'package:foodrop/core/models/UserProfile.dart';
-import 'package:foodrop/core/services/database.dart';
+import 'package:foodrop/core/services/database/database.dart';
 import 'package:foodrop/screens/authentication/profile_landing_screen.dart';
+import 'package:foodrop/screens/business/QRcode/qr_code_screen.dart';
 import 'package:foodrop/screens/business/business_home_screen.dart';
 import 'package:foodrop/screens/business/menu_screen.dart';
 import 'package:foodrop/screens/business/promo/promo_page.dart';
 import 'package:foodrop/screens/business/reward_screen.dart';
-import 'package:foodrop/screens/client/favourite/qr_code_scan_screen.dart';
-import 'package:foodrop/screens/client/gift/client_gift_screen.dart';
-import 'package:foodrop/screens/client/home/client_home_screen.dart';
-import 'package:foodrop/screens/client/orders/client_order_screen.dart';
+import 'package:foodrop/screens/user/gift/client_gift_screen.dart';
+import 'package:foodrop/screens/user/home/client_home_screen.dart';
+import 'package:foodrop/screens/user/orders/client_order_screen.dart';
 import 'package:provider/provider.dart';
 
 class ClientBottomNavigation extends StatefulWidget {
@@ -75,7 +75,7 @@ class ClientBottomNavigation extends StatefulWidget {
 class _ClientBottomNavigationState extends State<ClientBottomNavigation> {
   var _selectedIndex = 0;
 
-  final _clientBottomNavigationScreens = [ClientHomeScreen(), QRCodeScanScreen(), ClientGiftScreen(), ClientOrderScreen(), ProfileLandingScreen()];
+  final _clientBottomNavigationScreens = [ClientHomeScreen(), ClientGiftScreen(), QRCodeScreen(), ClientOrderScreen(), ProfileLandingScreen()];
   final _businessBottomNavigationScreens = [BusinessHomeScreen(), MenuScreen(), PromoPage(), RewardScreen(), ProfileLandingScreen()];
 
   void onTapHandler(int index) {
@@ -109,8 +109,8 @@ class _ClientBottomNavigationState extends State<ClientBottomNavigation> {
       unselectedItemColor: Colors.grey[500],
       items: [
         BottomNavigationBarItem(icon: Icon(Icons.home_rounded, size: 35), label: ""),
-        BottomNavigationBarItem(icon: Icon(Icons.qr_code_scanner_rounded, size: 35), label: ""),
         BottomNavigationBarItem(icon: Icon(Icons.wallet_giftcard_rounded, size: 35), label: ""),
+        BottomNavigationBarItem(icon: Icon(Icons.qr_code_scanner_rounded, size: 35), label: ""),
         BottomNavigationBarItem(icon: Icon(Icons.person_rounded, size: 35), label: ""),
         BottomNavigationBarItem(icon: Icon(Icons.account_circle), label: ""),
       ],
