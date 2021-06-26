@@ -50,7 +50,7 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> with SingleTickerPr
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.grey[900],
-        title: Text("Home"),
+        title: Text("Welcome"),
         actions: [
           Padding(
             padding: EdgeInsets.all(20.0),
