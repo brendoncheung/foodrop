@@ -21,7 +21,7 @@ class ItemWidget extends StatelessWidget {
         elevation: 4,
         child: Column(
           children: [
-            SplashImage(photoUrl: item.photoUrl.first),
+            SplashImage(photoUrl: item.photoUrlList.first),
             Padding(
               padding: EdgeInsets.all(6),
               child: Container(
@@ -67,7 +67,7 @@ class BusinessInformationAndLikes extends StatelessWidget {
         Expanded(
           flex: 2,
           child: FavoritesStateWidget(
-            numOfLikes: item.numOfFavs,
+            numOfLikes: item.num_of_favs,
           ),
         )
       ],

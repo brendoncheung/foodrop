@@ -1,103 +1,65 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:foodrop/core/models/UserProfile.dart';
 import 'package:foodrop/core/models/business.dart';
 import 'package:foodrop/core/models/item.dart';
 import 'package:foodrop/core/models/items_category.dart';
 import 'package:foodrop/core/services/custom_colors.dart';
 import 'package:foodrop/core/services/database.dart';
+import 'package:foodrop/screens/business/menu/edit_category_modal_form.dart';
+import 'package:foodrop/screens/business/menu/item_screen_v1.dart';
 import 'package:foodrop/screens/common_widgets/asyncSnapshot_Item_Builder.dart';
-import 'package:foodrop/screens/common_widgets/empty_content.dart';
 import 'package:provider/provider.dart';
 
-import 'menu/edit_category_modal_form.dart';
-import 'menu/edit_item_screen.dart';
-import 'menu/item_screen.dart';
-
-class BusinessHomeScreen extends StatefulWidget {
-  @override
-  _BusinessHomeScreenState createState() => _BusinessHomeScreenState();
-}
-
-class _BusinessHomeScreenState extends State<BusinessHomeScreen> {
+class MenuScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final _db = Provider.of<Database>(context);
-    final _userProfile = Provider.of<UserProfile>(context);
+    final _business = Provider.of<Business>(context, listen: false);
 
-    List<ItemsCategory> categories;
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: CustomColors.vendorAppBarColor,
+        title: Text(
+          _business.tradingName,
+          style: TextStyle(color: Colors.white),
+        ),
+      ),
+      body: _buildBody(context),
+    );
+  }
 
-    if (_userProfile != null) {
-      if (_userProfile.defaultBusinessId != null &&
-          _userProfile.defaultBusinessId == "") {
-        return Scaffold(
-          appBar: AppBar(
-            backgroundColor: CustomColors.vendorAppBarColor,
-            title: Text("You are not linked to business"),
-          ),
-          body: EmptyContent(),
-        );
-      }
-    }
-
-    return StreamBuilder<Business>(
-        initialData: Business(),
-        stream: _db.businessStream(businessUid: _userProfile.defaultBusinessId),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.active) {
-            if (snapshot.hasData) {
-              return Provider<Business>(
-                create: (context) => snapshot.data,
-                child: StreamBuilder<List<ItemsCategory>>(
-                  stream:
-                      _db.itemsCategoryStream(businessId: snapshot.data.uid),
-                  builder: (context, categoryListSnapshot) {
-                    switch (categoryListSnapshot.connectionState) {
-                      case ConnectionState.waiting:
-                        {
-                          return CircularProgressIndicator();
-                        }
-                        break;
-                      case ConnectionState.active:
-                        {
-                          if (categoryListSnapshot.hasData) {
-                            return Scaffold(
-                              floatingActionButton: FloatingActionButton(
-                                child: Icon(Icons.add),
-                              ),
-                              appBar: AppBar(
-                                title: Text(snapshot.data.tradingName),
-                                backgroundColor: CustomColors.vendorAppBarColor,
-                              ),
-                              body: _buildMenu(
-                                  context, snapshot.data, categoryListSnapshot),
-                            );
-                          }
-                          return CircularProgressIndicator();
-                        }
-                        break;
-                      default:
-                        {
-                          return CircularProgressIndicator();
-                        }
-                    }
-                  },
-                ),
-              );
+  _buildBody(BuildContext context) {
+    final _business = Provider.of<Business>(context, listen: false);
+    final _db = Provider.of<Database>(context, listen: false);
+    return StreamBuilder<List<ItemsCategory>>(
+      stream: _db.itemsCategoryStream(businessId: _business.uid),
+      builder: (context, categoryListSnapshot) {
+        switch (categoryListSnapshot.connectionState) {
+          case ConnectionState.waiting:
+            {
+              return CircularProgressIndicator();
             }
-          }
-          return Scaffold(
-            appBar: AppBar(
-              title: Text("Problem loading data"),
-              backgroundColor: CustomColors.vendorAppBarColor,
-            ),
-            body: Center(
-              child: Text(
-                "You have lost access to the business.\nPlease select another store.",
-                style: TextStyle(fontSize: 16),
-              ),
-            ),
-          );
-        });
+            break;
+          case ConnectionState.active:
+            {
+              if (categoryListSnapshot.hasData) {
+                return Scaffold(
+                  floatingActionButton: FloatingActionButton(
+                    child: Icon(Icons.add),
+                    backgroundColor: CustomColors.vendorAppBarColor,
+                  ),
+                  body: _buildMenu(context, _business, categoryListSnapshot),
+                );
+              }
+              return CircularProgressIndicator();
+            }
+            break;
+          default:
+            {
+              return CircularProgressIndicator();
+            }
+        }
+      },
+    );
   }
 
   Widget _buildMenu(BuildContext context, Business businessData,
@@ -190,12 +152,13 @@ class _BusinessHomeScreenState extends State<BusinessHomeScreen> {
                         title: Text(item.name),
                         subtitle: Text("${item.categoryName}"),
                         selectedTileColor: Colors.black26,
-                        // onTap: () => Navigator.of(context).push(
-                        //     MaterialPageRoute(
-                        //         builder: (context) => ItemScreen(
-                        //             db: db,
-                        //             item: item,
-                        //             categories: categoriesList))),
+                        onTap: () => Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => ItemScreenV1(
+                              item: item,
+                            ),
+                          ),
+                        ),
                       ),
                     );
                   },

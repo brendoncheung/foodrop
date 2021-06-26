@@ -1,23 +1,21 @@
 class Item {
-// <<<<<<< HEAD
-//   Item({
-//     this.businessAvatarUrl = "",
-//     this.businessId = "",
-//     this.categoryId = "",
-//     this.categoryName = "",
-//     DateTime creationDate,
-//     this.description = "",
-//     this.docId = "",
-//     DateTime lastUpdate,
-//     this.lastUpdateByUserId = "",
-//     this.name = "",
-//     this.num_of_favs = 0,
-//     this.photoUrlList,
-//     this.price = 0,
-//   })  : lastUpdate = lastUpdate ?? DateTime.now(),
-//         creationDate = creationDate ?? DateTime.now();
-// =======
-// >>>>>>> homepage_firebase_implementation
+  Item({
+    this.businessAvatarUrl = "",
+    this.businessId = "",
+    this.categoryId = "",
+    this.categoryName = "",
+    DateTime creationDate,
+    this.description = "",
+    this.docId = "",
+    DateTime lastUpdate,
+    this.lastUpdateByUserId = "",
+    this.name = "",
+    this.num_of_favs = 0,
+    this.photoUrlList,
+    this.price = 0,
+  })  : lastUpdate = lastUpdate ?? DateTime.now(),
+        creationDate = creationDate ?? DateTime.now();
+
   String docId;
   String businessAvatarUrl;
   String businessId;
@@ -29,14 +27,10 @@ class Item {
   String description;
   String lastUpdateByUserId;
   String name;
-  int numOfFavs;
-  List<String> photoUrl;
+  int num_of_favs;
+  List<String> photoUrlList;
   num price;
-// <<<<<<< HEAD
-//   int num_of_favs;
-//   List<String> photoUrlList;
-//   num price;
-//
+
 //   Item.fromMap(Map<String, dynamic> data, String docId)
 //       : docId = docId,
 //         businessAvatarUrl = data['businessAvatarUrl'],
@@ -65,11 +59,10 @@ class Item {
     description = data['description'];
     lastUpdateByUserId = data['lastUpdateByUserId'];
     name = data['name'];
-    numOfFavs = data['num_of_favs'];
-    photoUrl = List.from(data["photoUrlList"]);
+    num_of_favs = data['num_of_favs'];
+    photoUrlList = List.from(data["photoUrlList"]);
     price = data['price'];
   }
-// >>>>>>> homepage_firebase_implementation
 
   Map<String, dynamic> toMap() {
     return {
@@ -83,19 +76,14 @@ class Item {
       'description': description ?? description,
       'lastUpdateByUserId': lastUpdateByUserId ?? lastUpdateByUserId,
       'name': name ?? name,
-// <<<<<<< HEAD
-//       'num_of_favs': num_of_favs ?? num_of_favs,
-//       'photoUrl': photoUrlList ?? photoUrlList,
-// =======
-      'num_of_favs': numOfFavs ?? numOfFavs,
-      'photoUrl': photoUrl ?? photoUrl,
-// >>>>>>> homepage_firebase_implementation
+      'num_of_favs': num_of_favs ?? num_of_favs,
+      'photoUrl': photoUrlList ?? photoUrlList,
       'price': price ?? price
     };
   }
 
   @override
   String toString() {
-    return 'Item(docId: $docId, businessAvatarUrl: $businessAvatarUrl, businessId: $businessId, tradingName: $tradingName, categoryId: $categoryId, categoryName: $categoryName, creationDate: $creationDate, lastUpdate: $lastUpdate, description: $description, lastUpdateByUserId: $lastUpdateByUserId, name: $name, numOfFavs: $numOfFavs, photoUrl: $photoUrl, price: $price)';
+    return 'Item(docId: $docId, businessAvatarUrl: $businessAvatarUrl, businessId: $businessId, tradingName: $tradingName, categoryId: $categoryId, categoryName: $categoryName, creationDate: $creationDate, lastUpdate: $lastUpdate, description: $description, lastUpdateByUserId: $lastUpdateByUserId, name: $name, numOfFavs: $num_of_favs, photoUrl: $photoUrlList, price: $price)';
   }
 }

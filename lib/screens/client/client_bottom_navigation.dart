@@ -1,17 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:foodrop/core/authentication/authentication_service.dart';
 import 'package:foodrop/core/models/UserProfile.dart';
+import 'package:foodrop/core/models/business.dart';
 import 'package:foodrop/core/services/custom_colors.dart';
 import 'package:foodrop/core/services/database.dart';
 import 'package:foodrop/screens/authentication/profile_landing_screen.dart';
-import 'package:foodrop/screens/business/business_home_screen.dart';
-import 'package:foodrop/screens/business/menu_screen.dart';
+import 'package:foodrop/screens/business/business_home/business_home_screen_v1.dart';
+import 'package:foodrop/screens/business/business_home/business_home_screen.dart';
+import 'package:foodrop/screens/business/menu/menu_screen.dart';
 import 'package:foodrop/screens/business/promo/promo_page.dart';
 import 'package:foodrop/screens/business/reward_screen.dart';
 import 'package:foodrop/screens/client/favourite/qr_code_scan_screen.dart';
 import 'package:foodrop/screens/client/gift/client_gift_screen.dart';
 import 'package:foodrop/screens/client/home/client_home_screen.dart';
 import 'package:foodrop/screens/client/orders/client_order_screen.dart';
+import 'package:foodrop/screens/common_widgets/empty_content.dart';
 import 'package:provider/provider.dart';
 
 class ClientBottomNavigation extends StatefulWidget {
@@ -85,7 +88,7 @@ class _ClientBottomNavigationState extends State<ClientBottomNavigation> {
     ProfileLandingScreen()
   ];
   final _businessBottomNavigationScreens = [
-    BusinessHomeScreen(),
+    BusinessHomeScreenV1(),
     MenuScreen(),
     PromoPage(),
     RewardScreen(),
@@ -109,10 +112,10 @@ class _ClientBottomNavigationState extends State<ClientBottomNavigation> {
           )
         : Scaffold(
             body: _userProfile.defaultVendorMode
-                ? _businessBottomNavigationScreens[_selectedIndex]
+                ? buildBusinessNavigation(_userProfile)
                 : _clientBottomNavigationScreens[_selectedIndex],
             bottomNavigationBar: _userProfile.defaultVendorMode
-                ? _buildBusinessUserBottomNavigationBar()
+                ? _buildBusinessBottomNav()
                 : _buildUserBottomNavigationBar(),
           );
   }
@@ -139,7 +142,7 @@ class _ClientBottomNavigationState extends State<ClientBottomNavigation> {
     );
   }
 
-  BottomNavigationBar _buildBusinessUserBottomNavigationBar() {
+  Widget _buildBusinessBottomNav() {
     return BottomNavigationBar(
       type: BottomNavigationBarType.fixed,
       onTap: onTapHandler,
@@ -159,5 +162,20 @@ class _ClientBottomNavigationState extends State<ClientBottomNavigation> {
         BottomNavigationBarItem(icon: Icon(Icons.account_circle), label: ""),
       ],
     );
+  }
+
+  buildBusinessNavigation(UserProfile _userProfile) {
+    final _db = Provider.of<Database>(context, listen: false);
+
+    return StreamProvider<Business>.value(
+        value: _db.businessStream(businessUid: _userProfile.defaultBusinessId),
+        initialData: Business(uid: _userProfile.defaultBusinessId),
+        builder: (context, snapshot) {
+          print(snapshot);
+          return Consumer<Business>(
+            builder: (_, business, __) =>
+                _businessBottomNavigationScreens[_selectedIndex],
+          );
+        });
   }
 }
