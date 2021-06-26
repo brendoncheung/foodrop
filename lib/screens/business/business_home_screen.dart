@@ -3,6 +3,7 @@ import 'package:foodrop/core/models/UserProfile.dart';
 import 'package:foodrop/core/models/business.dart';
 import 'package:foodrop/core/models/item.dart';
 import 'package:foodrop/core/models/items_category.dart';
+import 'package:foodrop/core/services/custom_colors.dart';
 import 'package:foodrop/core/services/database.dart';
 import 'package:foodrop/screens/common_widgets/asyncSnapshot_Item_Builder.dart';
 import 'package:foodrop/screens/common_widgets/empty_content.dart';
@@ -30,6 +31,7 @@ class _BusinessHomeScreenState extends State<BusinessHomeScreen> {
           _userProfile.defaultBusinessId == "") {
         return Scaffold(
           appBar: AppBar(
+            backgroundColor: CustomColors.vendorAppBarColor,
             title: Text("You are not linked to business"),
           ),
           body: EmptyContent(),
@@ -61,19 +63,10 @@ class _BusinessHomeScreenState extends State<BusinessHomeScreen> {
                             return Scaffold(
                               floatingActionButton: FloatingActionButton(
                                 child: Icon(Icons.add),
-                                // onPressed: () => Navigator.of(context).push(
-                                //   MaterialPageRoute(
-                                //       builder: (context) => ItemScreen(
-                                //             businessId: snapshot.data.uid,
-                                //             db: _db,
-                                //             categories:
-                                //                 categoryListSnapshot.data,
-                                //           ),
-                                //       fullscreenDialog: true),
-                                // ),
                               ),
                               appBar: AppBar(
                                 title: Text(snapshot.data.tradingName),
+                                backgroundColor: CustomColors.vendorAppBarColor,
                               ),
                               body: _buildMenu(
                                   context, snapshot.data, categoryListSnapshot),
@@ -95,6 +88,7 @@ class _BusinessHomeScreenState extends State<BusinessHomeScreen> {
           return Scaffold(
             appBar: AppBar(
               title: Text("Problem loading data"),
+              backgroundColor: CustomColors.vendorAppBarColor,
             ),
             body: Center(
               child: Text(
@@ -139,8 +133,9 @@ class _BusinessHomeScreenState extends State<BusinessHomeScreen> {
                         key: Key(category.hashCode.toString()),
                         padding: EdgeInsets.all(10),
                         child: ActionChip(
-                          backgroundColor:
-                              category.isActive ? Colors.amber : null,
+                          backgroundColor: category.isActive
+                              ? CustomColors.vendorActionChipColor
+                              : null,
                           key: Key(category.hashCode.toString()),
                           shadowColor: Colors.black,
                           label: Text(

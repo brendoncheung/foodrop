@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:foodrop/core/authentication/authentication_service.dart';
 import 'package:foodrop/core/models/UserProfile.dart';
+import 'package:foodrop/core/services/custom_colors.dart';
 import 'package:foodrop/core/services/database.dart';
 import 'package:foodrop/screens/authentication/profile_landing_screen.dart';
 import 'package:foodrop/screens/business/business_home_screen.dart';
@@ -22,7 +23,7 @@ class ClientBottomNavigation extends StatefulWidget {
   static Widget create(BuildContext context, Database _db) {
     Widget _circularProgressIndicatorInCenter() {
       return Scaffold(
-        backgroundColor: Colors.grey[800],
+        backgroundColor: Colors.grey[900],
         body: Center(
             child: Container(
           child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
@@ -53,7 +54,8 @@ class ClientBottomNavigation extends StatefulWidget {
               {
                 return MultiProvider(
                   providers: [
-                    ChangeNotifierProvider<UserProfile>(create: (context) => snapshot.data),
+                    ChangeNotifierProvider<UserProfile>(
+                        create: (context) => snapshot.data),
                   ],
                   child: ClientBottomNavigation(userProfile: snapshot.data),
                 );
@@ -75,8 +77,20 @@ class ClientBottomNavigation extends StatefulWidget {
 class _ClientBottomNavigationState extends State<ClientBottomNavigation> {
   var _selectedIndex = 0;
 
-  final _clientBottomNavigationScreens = [ClientHomeScreen(), QRCodeScanScreen(), ClientGiftScreen(), ClientOrderScreen(), ProfileLandingScreen()];
-  final _businessBottomNavigationScreens = [BusinessHomeScreen(), MenuScreen(), PromoPage(), RewardScreen(), ProfileLandingScreen()];
+  final _clientBottomNavigationScreens = [
+    ClientHomeScreen(),
+    QRCodeScanScreen(),
+    ClientGiftScreen(),
+    ClientOrderScreen(),
+    ProfileLandingScreen()
+  ];
+  final _businessBottomNavigationScreens = [
+    BusinessHomeScreen(),
+    MenuScreen(),
+    PromoPage(),
+    RewardScreen(),
+    ProfileLandingScreen()
+  ];
 
   void onTapHandler(int index) {
     setState(() {
@@ -94,8 +108,12 @@ class _ClientBottomNavigationState extends State<ClientBottomNavigation> {
             bottomNavigationBar: _buildUserBottomNavigationBar(),
           )
         : Scaffold(
-            body: _userProfile.defaultVendorMode ? _businessBottomNavigationScreens[_selectedIndex] : _clientBottomNavigationScreens[_selectedIndex],
-            bottomNavigationBar: _userProfile.defaultVendorMode ? _buildBusinessUserBottomNavigationBar() : _buildUserBottomNavigationBar(),
+            body: _userProfile.defaultVendorMode
+                ? _businessBottomNavigationScreens[_selectedIndex]
+                : _clientBottomNavigationScreens[_selectedIndex],
+            bottomNavigationBar: _userProfile.defaultVendorMode
+                ? _buildBusinessUserBottomNavigationBar()
+                : _buildUserBottomNavigationBar(),
           );
   }
 
@@ -108,10 +126,14 @@ class _ClientBottomNavigationState extends State<ClientBottomNavigation> {
       selectedItemColor: Colors.white,
       unselectedItemColor: Colors.grey[500],
       items: [
-        BottomNavigationBarItem(icon: Icon(Icons.home_rounded, size: 35), label: ""),
-        BottomNavigationBarItem(icon: Icon(Icons.qr_code_scanner_rounded, size: 35), label: ""),
-        BottomNavigationBarItem(icon: Icon(Icons.wallet_giftcard_rounded, size: 35), label: ""),
-        BottomNavigationBarItem(icon: Icon(Icons.person_rounded, size: 35), label: ""),
+        BottomNavigationBarItem(
+            icon: Icon(Icons.home_rounded, size: 35), label: ""),
+        BottomNavigationBarItem(
+            icon: Icon(Icons.qr_code_scanner_rounded, size: 35), label: ""),
+        BottomNavigationBarItem(
+            icon: Icon(Icons.wallet_giftcard_rounded, size: 35), label: ""),
+        BottomNavigationBarItem(
+            icon: Icon(Icons.person_rounded, size: 35), label: ""),
         BottomNavigationBarItem(icon: Icon(Icons.account_circle), label: ""),
       ],
     );
@@ -122,14 +144,18 @@ class _ClientBottomNavigationState extends State<ClientBottomNavigation> {
       type: BottomNavigationBarType.fixed,
       onTap: onTapHandler,
       currentIndex: _selectedIndex,
-      backgroundColor: Colors.grey[900],
+      backgroundColor: CustomColors.vendorAppBarColor,
       selectedItemColor: Colors.white,
-      unselectedItemColor: Colors.grey[500],
+      unselectedItemColor: CustomColors.vendorAppBarUnselectColor,
       items: [
-        BottomNavigationBarItem(icon: Icon(Icons.business_rounded, size: 35), label: ""),
-        BottomNavigationBarItem(icon: Icon(Icons.menu_book_rounded, size: 35), label: ""),
-        BottomNavigationBarItem(icon: Icon(Icons.event_rounded, size: 35), label: ""),
-        BottomNavigationBarItem(icon: Icon(Icons.card_giftcard_rounded, size: 35), label: ""),
+        BottomNavigationBarItem(
+            icon: Icon(Icons.business_rounded, size: 35), label: ""),
+        BottomNavigationBarItem(
+            icon: Icon(Icons.menu_book_rounded, size: 35), label: ""),
+        BottomNavigationBarItem(
+            icon: Icon(Icons.event_rounded, size: 35), label: ""),
+        BottomNavigationBarItem(
+            icon: Icon(Icons.card_giftcard_rounded, size: 35), label: ""),
         BottomNavigationBarItem(icon: Icon(Icons.account_circle), label: ""),
       ],
     );

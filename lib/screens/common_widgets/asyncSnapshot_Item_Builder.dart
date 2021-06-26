@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:foodrop/core/models/items_category.dart';
+import 'package:foodrop/core/services/custom_colors.dart';
 import 'package:foodrop/core/services/database.dart';
 import 'package:foodrop/screens/business/menu/edit_category_modal_form.dart';
 
@@ -87,7 +88,7 @@ class _AsyncSnapshotItemBuilderState<T>
                   shadowColor: Colors.black,
                   label: Text("Category"),
                   avatar: Icon(Icons.add),
-                  backgroundColor: Colors.amber,
+                  backgroundColor: CustomColors.vendorActionChipColor,
                   // onPressed: () => EditCategoryModalForm(items: items),
                   onPressed: () => showModalBottomSheet(
                       isScrollControlled: true,

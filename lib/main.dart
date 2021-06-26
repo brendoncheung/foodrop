@@ -6,6 +6,7 @@ import 'package:foodrop/screens/authentication/_sign_up_screen.dart';
 import 'package:foodrop/screens/authentication/authentication_flow_wrapper.dart';
 import 'package:foodrop/screens/client/home/detail/detail_item_screen.dart';
 import 'package:foodrop/screens/error/unknown_route_screen.dart';
+import 'package:foodrop/screens/theme/client_theme_data.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
@@ -32,6 +33,11 @@ class _FoodropRootState extends State<FoodropRoot> {
         Provider(create: (_) => AuthenticationService()),
       ],
       child: MaterialApp(
+        theme: new ThemeData(
+            // scaffoldBackgroundColor: Colors.grey[900],
+
+            appBarTheme: AppBarTheme(backgroundColor: Colors.grey[900]),
+            backgroundColor: Colors.black),
         debugShowCheckedModeBanner: false,
         home: AuthenticationFlowWrapper(),
         routes: {
