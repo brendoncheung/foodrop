@@ -1,15 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:foodrop/screens/common_widgets/starting_ending_time_picker.dart';
+import 'package:foodrop/screens/business/common_widgets/starting_ending_time_picker.dart';
 
 class PromoPeriodDateTimePicker extends StatefulWidget {
-  const PromoPeriodDateTimePicker({Key key, @required this.daysSelected})
-      : super(key: key);
+  const PromoPeriodDateTimePicker({Key key, @required this.daysSelected}) : super(key: key);
   final void Function(Map<String, bool>) daysSelected;
 
   @override
-  _PromoPeriodDateTimePickerState createState() =>
-      _PromoPeriodDateTimePickerState();
+  _PromoPeriodDateTimePickerState createState() => _PromoPeriodDateTimePickerState();
 }
 
 class _PromoPeriodDateTimePickerState extends State<PromoPeriodDateTimePicker> {
@@ -79,11 +77,9 @@ class _PromoPeriodDateTimePickerState extends State<PromoPeriodDateTimePicker> {
                 ),
                 StartingEndingTimePicker(
                   selectedStartingTime: _startingTime,
-                  onSelectedStartingTime: (time) =>
-                      setState(() => _startingTime = time),
+                  onSelectedStartingTime: (time) => setState(() => _startingTime = time),
                   selectedEndingTime: _endingTime,
-                  onSelectedEndingTime: (time) =>
-                      setState(() => _endingTime = time),
+                  onSelectedEndingTime: (time) => setState(() => _endingTime = time),
                 ),
                 SizedBox(
                   height: 16,

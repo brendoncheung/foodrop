@@ -3,12 +3,11 @@ import 'package:foodrop/core/authentication/authentication_service.dart';
 import 'package:foodrop/core/models/UserProfile.dart';
 import 'package:foodrop/core/services/database.dart';
 import 'package:foodrop/screens/authentication/email_sign_in_form_userprofile_change_notifier.dart';
-import 'package:foodrop/screens/common_widgets/show_alert_dialog.dart';
+import 'package:foodrop/screens/business/common_widgets/show_alert_dialog.dart';
 import 'package:provider/provider.dart';
 
 class ClientProfileScreen extends StatefulWidget {
-  const ClientProfileScreen({Key key, this.db, this.userFile})
-      : super(key: key);
+  const ClientProfileScreen({Key key, this.db, this.userFile}) : super(key: key);
   final Database db;
   final UserProfile userFile;
 
@@ -76,8 +75,7 @@ class _ClientProfileScreenState extends State<ClientProfileScreen> {
 
   Widget _buildForm(BuildContext context, UserProfile uProfile) {
     print(uProfile);
-    return EmailSignInFormUserProfileChangeNotifier.create(
-        context: context, firebaseUserProfile: uProfile);
+    return EmailSignInFormUserProfileChangeNotifier.create(context: context, firebaseUserProfile: uProfile);
   }
 
   @override

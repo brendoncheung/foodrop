@@ -3,9 +3,9 @@ import 'package:foodrop/core/authentication/authentication_service.dart';
 import 'package:foodrop/core/models/UserProfile.dart';
 import 'package:foodrop/core/models/business_user_link.dart';
 import 'package:foodrop/core/services/database.dart';
-import 'package:foodrop/screens/client/profile/join_buisness_screen.dart';
-import 'package:foodrop/screens/common_widgets/asyncSnapshot_Item_Builder.dart';
-import 'package:foodrop/screens/common_widgets/show_alert_dialog.dart';
+import 'package:foodrop/screens/user/profile/join_buisness_screen.dart';
+import 'package:foodrop/screens/business/common_widgets/asyncSnapshot_Item_Builder.dart';
+import 'package:foodrop/screens/business/common_widgets/show_alert_dialog.dart';
 import 'package:provider/provider.dart';
 
 import 'profile_update_screen.dart';
@@ -63,8 +63,7 @@ class _ProfileHomeScreenState extends State<ProfileHomeScreen> {
                 onTap: () => Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (context) {
-                      return ClientProfileScreen(
-                          db: db, userFile: widget.userProfile);
+                      return ClientProfileScreen(db: db, userFile: widget.userProfile);
                     },
                   ),
                 ),
@@ -127,8 +126,7 @@ class _ProfileHomeScreenState extends State<ProfileHomeScreen> {
             borderRadius: BorderRadius.circular(30.0),
             borderSide: BorderSide(width: 0.8),
           ),
-          hintText:
-              "type '1112223' to test ", //Enter companies office number // TODO: correct the hint text
+          hintText: "type '1112223' to test ", //Enter companies office number // TODO: correct the hint text
           prefixIcon: Icon(
             Icons.search,
             size: 30,
@@ -150,8 +148,7 @@ class _ProfileHomeScreenState extends State<ProfileHomeScreen> {
     setState(() {
       widget.userProfile.updateWith(defaultVendorMode: value);
     });
-    print(
-        "userprofile.defaultVendorMode: ${widget.userProfile.defaultVendorMode}");
+    print("userprofile.defaultVendorMode: ${widget.userProfile.defaultVendorMode}");
     await db.setUser(widget.userProfile);
   }
 
@@ -198,8 +195,7 @@ class _ProfileHomeScreenState extends State<ProfileHomeScreen> {
                     // color: Colors.grey,
                     height: 250,
                     child: StreamBuilder<List<BusinessUserLink>>(
-                      stream: db.businessUserLinkStream(
-                          userId: widget.userProfile.uid),
+                      stream: db.businessUserLinkStream(userId: widget.userProfile.uid),
                       builder: (context, snapshot) {
                         switch (snapshot.connectionState) {
                           case ConnectionState.waiting:
@@ -213,31 +209,18 @@ class _ProfileHomeScreenState extends State<ProfileHomeScreen> {
                                 snapshot: snapshot,
                                 itemBuilder: (context, businessUserLink) {
                                   return CheckboxListTile(
-                                      title: Text(
-                                          businessUserLink.businessTradingName),
-                                      subtitle:
-                                          Text("${businessUserLink.address}"),
-                                      value: _isSelected(
-                                          businessId:
-                                              businessUserLink.businessId),
-                                      selected: _isSelected(
-                                          businessId:
-                                              businessUserLink.businessId),
+                                      title: Text(businessUserLink.businessTradingName),
+                                      subtitle: Text("${businessUserLink.address}"),
+                                      value: _isSelected(businessId: businessUserLink.businessId),
+                                      selected: _isSelected(businessId: businessUserLink.businessId),
                                       selectedTileColor: Colors.black26,
                                       onChanged: (newBool) {
                                         setState(
                                           () {
-                                            widget.userProfile.updateWith(
-                                                defaultBusinessId:
-                                                    businessUserLink
-                                                        .businessId);
-                                            final db = Provider.of<Database>(
-                                                context,
-                                                listen: false);
-                                            db.setUser(widget
-                                                .userProfile); // write to db
-                                            _selectedBusinessId =
-                                                businessUserLink.businessId;
+                                            widget.userProfile.updateWith(defaultBusinessId: businessUserLink.businessId);
+                                            final db = Provider.of<Database>(context, listen: false);
+                                            db.setUser(widget.userProfile); // write to db
+                                            _selectedBusinessId = businessUserLink.businessId;
                                           },
                                         );
                                       });
