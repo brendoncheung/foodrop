@@ -2,10 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:foodrop/core/authentication/authentication_service.dart';
 import 'package:foodrop/core/models/UserProfile.dart';
 import 'package:foodrop/core/models/business_user_link.dart';
-import 'package:foodrop/core/services/database.dart';
-import 'package:foodrop/screens/client/profile/join_buisness_screen.dart';
-import 'package:foodrop/screens/common_widgets/asyncSnapshot_Item_Builder.dart';
-import 'package:foodrop/screens/common_widgets/show_alert_dialog.dart';
+import 'package:foodrop/core/services/custom_colors.dart';
+// <<<<<<< HEAD:lib/screens/client/profile/profile_home_screen.dart
+// // import 'package:foodrop/core/services/custom_colors.dart';
+// // import 'package:foodrop/core/services/database.dart';
+// // import 'package:foodrop/screens/client/profile/join_buisness_screen.dart';
+// // import 'package:foodrop/screens/common_widgets/asyncSnapshot_Item_Builder.dart';
+// // import 'package:foodrop/screens/common_widgets/show_alert_dialog.dart';
+// =======
+import 'package:foodrop/core/services/database/database.dart';
+import 'package:foodrop/screens/user/profile/join_buisness_screen.dart';
+import 'package:foodrop/screens/business/common_widgets/asyncSnapshot_Item_Builder.dart';
+import 'package:foodrop/screens/business/common_widgets/show_alert_dialog.dart';
+// >>>>>>> brendon:lib/screens/user/profile/profile_home_screen.dart
 import 'package:provider/provider.dart';
 
 import 'profile_update_screen.dart';
@@ -171,8 +180,13 @@ class _ProfileHomeScreenState extends State<ProfileHomeScreen> {
     final db = Provider.of<Database>(context, listen: false);
 
     print(widget.userProfile.hasBusiness);
+    print(
+        "vendor mode: ${widget.userProfile.defaultVendorMode} ================");
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: widget.userProfile.defaultVendorMode
+            ? CustomColors.vendorAppBarColor
+            : Theme.of(context).appBarTheme.backgroundColor,
         title: Text("Profile"),
         actions: [
           IconButton(

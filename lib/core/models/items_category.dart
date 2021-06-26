@@ -1,15 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:foodrop/core/services/utilities.dart';
+import 'package:foodrop/core/services/database/utilities.dart';
 
 class ItemsCategory {
-  ItemsCategory(
-      {String docId = "",
-      this.name = "",
-      @required this.businessId,
-      DateTime creationDateTime,
-      this.index = 1,
-      this.isActive = true,
-      DateTime lastUpdate})
+  ItemsCategory({String docId = "", this.name = "", @required this.businessId, DateTime creationDateTime, this.index = 1, this.isActive = true, DateTime lastUpdate})
       : creationDateTime = creationDateTime ?? DateTime.now(),
         lastUpdate = lastUpdate ?? DateTime.now(),
         docId = lastUpdate ?? Utilities.documentIdFromCurrentDate();
@@ -26,8 +19,7 @@ class ItemsCategory {
         name = data['name'],
         index = data['index'],
         businessId = data['businessId'],
-        creationDateTime =
-            DateTime.parse(data['creationDateTime'].toDate().toString()),
+        creationDateTime = DateTime.parse(data['creationDateTime'].toDate().toString()),
         lastUpdate = DateTime.parse(data['lastUpdate'].toDate().toString()),
         isActive = data['isActive'];
   // lastUpdate = data['lastUpdate'],

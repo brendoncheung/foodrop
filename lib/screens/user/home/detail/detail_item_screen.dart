@@ -52,15 +52,32 @@ class _DetailItemScreenState extends State<DetailItemScreen> {
         padding: const EdgeInsets.all(8.0),
         child: SingleChildScrollView(
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               PhotoCarousel(item: widget.item, onChange: onPhotoChange),
-              PhotoIndexIndicator(photoLength: widget.item.photoUrl.length, index: _photoIndex, size: 5),
+              PhotoIndexIndicator(
+                  photoLength: widget.item.photoUrlList.length,
+                  index: _photoIndex,
+                  size: 5),
               SizedBox(height: _commonSpacing),
-              Price(newPrice: widget.item.price, oldPrice: widget.item.price * 1.2),
+              Price(
+                  newPrice: widget.item.price,
+                  oldPrice: widget.item.price * 1.2),
               SizedBox(height: _commonSpacing),
-              TitleAndLikes(item: widget.item, isFavorite: _isFavorite, onTap: (item) => onFavoriteTapped()),
+              TitleAndLikes(
+                  item: widget.item,
+                  isFavorite: _isFavorite,
+                  onTap: (item) => onFavoriteTapped()),
               SizedBox(height: _commonSpacing),
-              BusinessInformationAndFollowButton(item: widget.item, isFollowed: _isFollowed, onFollowTap: onFollowTapped),
+              BusinessInformationAndFollowButton(
+                  item: widget.item,
+                  isFollowed: _isFollowed,
+                  onFollowTap: onFollowTapped),
+              SizedBox(height: _commonSpacing),
+              Text(
+                widget.item.description,
+                style: TextStyle(color: Colors.white),
+              ),
             ],
           ),
         ),
@@ -86,15 +103,20 @@ class PhotoCarousel extends StatelessWidget {
         viewportFraction: 0.8,
       ),
       items: List.generate(
-        item.photoUrl.length,
+        item.photoUrlList.length,
         (index) => Container(
           clipBehavior: Clip.antiAlias,
-          decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(24))),
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(24))),
           child: Image.network(
-            item.photoUrl[index],
+            item.photoUrlList[index],
             fit: BoxFit.cover,
             loadingBuilder: (context, image, chunk) {
-              return chunk == null ? image : Center(child: Text("loading...", style: TextStyle(color: Colors.white)));
+              return chunk == null
+                  ? image
+                  : Center(
+                      child: Text("loading...",
+                          style: TextStyle(color: Colors.white)));
             },
           ),
         ),
@@ -188,7 +210,8 @@ class TitleAndLikes extends StatelessWidget {
           child: Text(
             item.name,
             overflow: TextOverflow.ellipsis,
-            style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
+            style: TextStyle(
+                color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
           ),
         ),
         Flexible(
@@ -199,9 +222,12 @@ class TitleAndLikes extends StatelessWidget {
                 onTap: () {
                   onTap(item);
                 },
-                child: Icon(
-                  Icons.favorite,
-                  color: isFavorite ? Colors.red : Colors.white,
+                child: AnimatedContainer(
+                  duration: Duration(seconds: 5),
+                  child: Icon(
+                    Icons.favorite,
+                    color: isFavorite ? Colors.red : Colors.white,
+                  ),
                 ),
               ),
             ))
@@ -213,7 +239,7 @@ class TitleAndLikes extends StatelessWidget {
 class BusinessInformationAndFollowButton extends StatelessWidget {
   final Item item;
   bool isFollowed;
-  String api(String s) => "https://avatars.dicebear.com/api/male/${s}.svg";
+
   Function() onFollowTap;
   Function() onBusinessTap;
 
@@ -230,7 +256,8 @@ class BusinessInformationAndFollowButton extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         Flexible(
-          child: CircleAvatar(backgroundImage: NetworkImage("https://i.pravatar.cc/300")),
+          child: CircleAvatar(
+              backgroundImage: NetworkImage(item.businessAvatarUrl)),
         ),
         SizedBox(width: 8),
         Expanded(
@@ -256,7 +283,8 @@ class BusinessInformationAndFollowButton extends StatelessWidget {
                     : null,
                 label: Text(
                   isFollowed ? "Followed" : "Follow",
-                  style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold, color: Colors.white),
                 )),
           ),
         )

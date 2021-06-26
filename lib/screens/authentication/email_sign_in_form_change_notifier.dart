@@ -4,8 +4,8 @@ import 'package:flutter/services.dart';
 import 'package:foodrop/core/authentication/authentication_service.dart';
 import 'package:provider/provider.dart';
 
-import '../common_widgets/form_submit_button.dart';
-import '../common_widgets/show_exception_alert_dialog.dart';
+import '../business/common_widgets/form_submit_button.dart';
+import '../business/common_widgets/show_exception_alert_dialog.dart';
 import 'email_sign_in_change_model.dart';
 
 class EmailSignInFormChangeNotifier extends StatefulWidget {
@@ -23,12 +23,10 @@ class EmailSignInFormChangeNotifier extends StatefulWidget {
   }
 
   @override
-  _EmailSignInFormChangeNotifierState createState() =>
-      _EmailSignInFormChangeNotifierState();
+  _EmailSignInFormChangeNotifierState createState() => _EmailSignInFormChangeNotifierState();
 }
 
-class _EmailSignInFormChangeNotifierState
-    extends State<EmailSignInFormChangeNotifier> {
+class _EmailSignInFormChangeNotifierState extends State<EmailSignInFormChangeNotifier> {
   final TextEditingController _tecFirstName = TextEditingController();
   final TextEditingController _tecLastName = TextEditingController();
   final TextEditingController _tecUserName = TextEditingController();
@@ -143,8 +141,7 @@ class _EmailSignInFormChangeNotifierState
       // keyboardType: TextInputType.emailAddress,
       textInputAction: TextInputAction.next,
       onChanged: model.updateUserName,
-      onEditingComplete: () =>
-          FocusScope.of(context).requestFocus(_fnMobileNumber),
+      onEditingComplete: () => FocusScope.of(context).requestFocus(_fnMobileNumber),
     );
   }
 
@@ -214,8 +211,7 @@ class _EmailSignInFormChangeNotifierState
 
   List<Widget> _buildChildren() {
     return [
-      if (model.formType == EmailSignInFormType.register)
-        ..._registeringFields(),
+      if (model.formType == EmailSignInFormType.register) ..._registeringFields(),
       _buildEmailTextField(),
       SizedBox(height: 8.0),
       _buildPasswordTextField(),

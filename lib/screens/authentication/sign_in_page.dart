@@ -42,11 +42,13 @@ class SignInPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Align(alignment: Alignment.center, child: Text('Restaurant Diary')),
+        backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
+        title:
+            Align(alignment: Alignment.center, child: Text('Restaurant Diary')),
         elevation: 4.0,
       ),
       body: _buildContent(context),
-      backgroundColor: Colors.grey[200],
+      backgroundColor: Theme.of(context).backgroundColor,
     );
   }
 

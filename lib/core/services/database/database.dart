@@ -7,7 +7,7 @@ import 'package:foodrop/core/models/business.dart';
 import 'package:foodrop/core/models/business_user_link.dart';
 import 'package:foodrop/core/models/item.dart';
 import 'package:foodrop/core/models/items_category.dart';
-import 'package:foodrop/core/services/utilities.dart';
+import 'package:foodrop/core/services/database/utilities.dart';
 
 import 'api_path.dart';
 import 'firestore_service.dart';
@@ -68,21 +68,16 @@ class FirestoreDatabase implements Database {
   Future<String> setImage(
       {File pickedImage, String docId, String storageCollectionName}) async {
     String stringUrl;
+
     final ref = FirebaseStorage.instance
         .ref()
         .child(storageCollectionName)
         .child(docId + '.jpg');
 
-    await ref.putFile(pickedImage).whenComplete(() async {
-      // try {
-      //   stringUrl = await ref.getDownloadURL();
-      //   print(stringUrl);
-      // } catch (e) {
-      //   print("something is wrong downloading URL");
-      // }
-    });
+    await ref.putFile(pickedImage).whenComplete(() async {});
     stringUrl = await ref.getDownloadURL();
     print(stringUrl);
+
     return stringUrl;
   }
 

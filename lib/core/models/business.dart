@@ -7,19 +7,20 @@ enum Cusine { European, Chinese, Korean, Japanese, Indian, Other }
 enum Operation { Food, Service }
 
 class Business with ChangeNotifier {
-  Business(
-      {this.uid,
-      this.legalName = "",
-      this.tradingName = "",
-      this.chineseName = "",
-      this.isCompany = true,
-      this.companyNumber = "",
-      this.streetAddress = "",
-      this.suburb = "",
-      this.city = "",
-      this.cuisineType = "Other",
-      this.operationType = "Food",
-      this.auth});
+  Business({
+    this.uid,
+    this.legalName = "",
+    this.tradingName = "",
+    this.chineseName = "",
+    this.isCompany = true,
+    this.companyNumber = "",
+    this.streetAddress = "",
+    this.suburb = "",
+    this.city = "",
+    this.cuisineType = "Other",
+    this.operationType = "Food",
+    // this.auth
+  });
   String uid;
   String legalName;
   String tradingName;
@@ -31,7 +32,7 @@ class Business with ChangeNotifier {
   String city;
   String cuisineType;
   String operationType;
-  AuthenticationService auth;
+  // AuthenticationService auth;
 
   void updateWith(
       {String legalName,
