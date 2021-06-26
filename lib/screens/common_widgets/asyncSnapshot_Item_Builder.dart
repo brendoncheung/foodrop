@@ -85,7 +85,7 @@ class _AsyncSnapshotItemBuilderState<T>
                 padding: EdgeInsets.all(10),
                 child: ActionChip(
                   shadowColor: Colors.black,
-                  label: Text("Add"),
+                  label: Text("Category"),
                   avatar: Icon(Icons.add),
                   backgroundColor: Colors.amber,
                   // onPressed: () => EditCategoryModalForm(items: items),
