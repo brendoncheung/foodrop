@@ -1,33 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:foodrop/core/authentication/authentication_service.dart';
 import 'package:foodrop/core/models/UserProfile.dart';
-<<<<<<< HEAD:lib/screens/client/client_bottom_navigation.dart
+
 import 'package:foodrop/core/models/business.dart';
 import 'package:foodrop/core/services/custom_colors.dart';
-import 'package:foodrop/core/services/database.dart';
+// import 'package:foodrop/core/services/database.dart';
 import 'package:foodrop/screens/authentication/profile_landing_screen.dart';
 import 'package:foodrop/screens/business/business_home/business_home_screen_v1.dart';
 import 'package:foodrop/screens/business/business_home/business_home_screen.dart';
 import 'package:foodrop/screens/business/menu/menu_screen.dart';
 import 'package:foodrop/screens/business/promo/promo_page.dart';
 import 'package:foodrop/screens/business/reward_screen.dart';
-import 'package:foodrop/screens/client/favourite/qr_code_scan_screen.dart';
-import 'package:foodrop/screens/client/gift/client_gift_screen.dart';
-import 'package:foodrop/screens/client/home/client_home_screen.dart';
-import 'package:foodrop/screens/client/orders/client_order_screen.dart';
-import 'package:foodrop/screens/common_widgets/empty_content.dart';
-=======
+// import 'package:foodrop/screens/client/favourite/qr_code_scan_screen.dart';
+// import 'package:foodrop/screens/client/gift/client_gift_screen.dart';
+// import 'package:foodrop/screens/client/home/client_home_screen.dart';
+// import 'package:foodrop/screens/client/orders/client_order_screen.dart';
+// import 'package:foodrop/screens/common_widgets/empty_content.dart';
 import 'package:foodrop/core/services/database/database.dart';
 import 'package:foodrop/screens/authentication/profile_landing_screen.dart';
 import 'package:foodrop/screens/business/QRcode/qr_code_screen.dart';
 import 'package:foodrop/screens/business/business_home_screen.dart';
-import 'package:foodrop/screens/business/menu_screen.dart';
+// import 'package:foodrop/screens/business/menu_screen.dart';
 import 'package:foodrop/screens/business/promo/promo_page.dart';
 import 'package:foodrop/screens/business/reward_screen.dart';
 import 'package:foodrop/screens/user/gift/client_gift_screen.dart';
 import 'package:foodrop/screens/user/home/client_home_screen.dart';
 import 'package:foodrop/screens/user/orders/client_order_screen.dart';
->>>>>>> brendon:lib/screens/user/client_bottom_navigation.dart
 import 'package:provider/provider.dart';
 
 class ClientBottomNavigation extends StatefulWidget {
@@ -93,11 +91,25 @@ class ClientBottomNavigation extends StatefulWidget {
 class _ClientBottomNavigationState extends State<ClientBottomNavigation> {
   var _selectedIndex = 0;
 
-<<<<<<< HEAD:lib/screens/client/client_bottom_navigation.dart
+  // final _clientBottomNavigationScreens = [
+  //   ClientHomeScreen(),
+  //   QRCodeScreen(),
+  //   ClientGiftScreen(),
+  //   ClientOrderScreen(),
+  //   ProfileLandingScreen()
+  // ];
+  // final _businessBottomNavigationScreens = [
+  //   BusinessHomeScreenV1(),
+  //   MenuScreen(),
+  //   PromoPage(),
+  //   RewardScreen(),
+  //   ProfileLandingScreen()
+  // ];
+
   final _clientBottomNavigationScreens = [
     ClientHomeScreen(),
-    QRCodeScanScreen(),
     ClientGiftScreen(),
+    QRCodeScreen(),
     ClientOrderScreen(),
     ProfileLandingScreen()
   ];
@@ -108,10 +120,6 @@ class _ClientBottomNavigationState extends State<ClientBottomNavigation> {
     RewardScreen(),
     ProfileLandingScreen()
   ];
-=======
-  final _clientBottomNavigationScreens = [ClientHomeScreen(), ClientGiftScreen(), QRCodeScreen(), ClientOrderScreen(), ProfileLandingScreen()];
-  final _businessBottomNavigationScreens = [BusinessHomeScreen(), MenuScreen(), PromoPage(), RewardScreen(), ProfileLandingScreen()];
->>>>>>> brendon:lib/screens/user/client_bottom_navigation.dart
 
   void onTapHandler(int index) {
     setState(() {
@@ -147,21 +155,25 @@ class _ClientBottomNavigationState extends State<ClientBottomNavigation> {
       selectedItemColor: Colors.white,
       unselectedItemColor: Colors.grey[500],
       items: [
-<<<<<<< HEAD:lib/screens/client/client_bottom_navigation.dart
+// <<<<<<< HEAD:lib/screens/client/client_bottom_navigation.dart
+//         BottomNavigationBarItem(
+//             icon: Icon(Icons.home_rounded, size: 35), label: ""),
+//         BottomNavigationBarItem(
+//             icon: Icon(Icons.qr_code_scanner_rounded, size: 35), label: ""),
+//         BottomNavigationBarItem(
+//             icon: Icon(Icons.wallet_giftcard_rounded, size: 35), label: ""),
+//         BottomNavigationBarItem(
+//             icon: Icon(Icons.person_rounded, size: 35), label: ""),
+// =======
         BottomNavigationBarItem(
             icon: Icon(Icons.home_rounded, size: 35), label: ""),
         BottomNavigationBarItem(
-            icon: Icon(Icons.qr_code_scanner_rounded, size: 35), label: ""),
-        BottomNavigationBarItem(
             icon: Icon(Icons.wallet_giftcard_rounded, size: 35), label: ""),
         BottomNavigationBarItem(
+            icon: Icon(Icons.qr_code_scanner_rounded, size: 35), label: ""),
+        BottomNavigationBarItem(
             icon: Icon(Icons.person_rounded, size: 35), label: ""),
-=======
-        BottomNavigationBarItem(icon: Icon(Icons.home_rounded, size: 35), label: ""),
-        BottomNavigationBarItem(icon: Icon(Icons.wallet_giftcard_rounded, size: 35), label: ""),
-        BottomNavigationBarItem(icon: Icon(Icons.qr_code_scanner_rounded, size: 35), label: ""),
-        BottomNavigationBarItem(icon: Icon(Icons.person_rounded, size: 35), label: ""),
->>>>>>> brendon:lib/screens/user/client_bottom_navigation.dart
+// >>>>>>> brendon:lib/screens/user/client_bottom_navigation.dart
         BottomNavigationBarItem(icon: Icon(Icons.account_circle), label: ""),
       ],
     );

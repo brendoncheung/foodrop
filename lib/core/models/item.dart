@@ -1,5 +1,4 @@
 class Item {
-<<<<<<< HEAD
   Item({
     this.businessAvatarUrl = "",
     this.businessId = "",
@@ -17,7 +16,6 @@ class Item {
   })  : lastUpdate = lastUpdate ?? DateTime.now(),
         creationDate = creationDate ?? DateTime.now();
 
-=======
 // <<<<<<< HEAD
 //   Item({
 //     this.businessAvatarUrl = "",
@@ -37,7 +35,7 @@ class Item {
 //         creationDate = creationDate ?? DateTime.now();
 // =======
 // >>>>>>> homepage_firebase_implementation
->>>>>>> brendon
+
   String docId;
   String businessAvatarUrl;
   String businessId;
@@ -105,7 +103,6 @@ class Item {
     photoUrlList = List.from(data["photoUrlList"]);
     price = data['price'];
   }
-// >>>>>>> homepage_firebase_implementation
 
   Map<String, dynamic> toMap() {
     return {
@@ -119,18 +116,8 @@ class Item {
       'description': description ?? description,
       'lastUpdateByUserId': lastUpdateByUserId ?? lastUpdateByUserId,
       'name': name ?? name,
-<<<<<<< HEAD
       'num_of_favs': num_of_favs ?? num_of_favs,
-      'photoUrl': photoUrlList ?? photoUrlList,
-=======
-// <<<<<<< HEAD
-//       'num_of_favs': num_of_favs ?? num_of_favs,
-//       'photoUrl': photoUrlList ?? photoUrlList,
-// =======
-      'num_of_favs': numOfFavs ?? numOfFavs,
-      'photoUrl': photoUrl ?? photoUrl,
-// >>>>>>> homepage_firebase_implementation
->>>>>>> brendon
+      'photoUrlList': photoUrlList ?? photoUrlList,
       'price': price ?? price
     };
   }

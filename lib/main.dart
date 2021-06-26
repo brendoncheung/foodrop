@@ -4,14 +4,13 @@ import 'package:flutter/rendering.dart';
 import 'package:foodrop/core/authentication/authentication_service.dart';
 import 'package:foodrop/screens/authentication/_sign_up_screen.dart';
 import 'package:foodrop/screens/authentication/authentication_flow_wrapper.dart';
-<<<<<<< HEAD
-import 'package:foodrop/screens/client/home/detail/detail_item_screen.dart';
-import 'package:foodrop/screens/error/unknown_route_screen.dart';
+
+// import 'package:foodrop/screens/client/home/detail/detail_item_screen.dart';
+// import 'package:foodrop/screens/error/unknown_route_screen.dart';
 import 'package:foodrop/screens/theme/client_theme_data.dart';
-=======
+
 import 'package:foodrop/screens/user/home/detail/detail_item_screen.dart';
 
->>>>>>> brendon
 import 'package:provider/provider.dart';
 
 void main() async {
