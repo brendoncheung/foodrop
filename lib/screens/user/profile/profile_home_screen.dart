@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:foodrop/core/authentication/authentication_service.dart';
 import 'package:foodrop/core/models/UserProfile.dart';
 import 'package:foodrop/core/models/business_user_link.dart';
-import 'package:foodrop/core/services/database.dart';
+import 'package:foodrop/core/services/database/database.dart';
 import 'package:foodrop/screens/user/profile/join_buisness_screen.dart';
 import 'package:foodrop/screens/business/common_widgets/asyncSnapshot_Item_Builder.dart';
 import 'package:foodrop/screens/business/common_widgets/show_alert_dialog.dart';

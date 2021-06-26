@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:foodrop/core/models/UserProfile.dart';
 import 'package:foodrop/core/models/business.dart';
-import 'package:foodrop/core/services/database.dart';
+import 'package:foodrop/core/services/database/database.dart';
 
 class JoinBusinessScreen extends StatefulWidget {
   Database db;
@@ -39,8 +39,7 @@ class _JoinBusinessScreenState extends State<JoinBusinessScreen> {
                       SizedBox(height: 16.0),
                       Text(
                         "No results",
-                        style: TextStyle(
-                            fontSize: 32.0, fontWeight: FontWeight.bold),
+                        style: TextStyle(fontSize: 32.0, fontWeight: FontWeight.bold),
                       )
                     ],
                   );
@@ -71,14 +70,11 @@ class _JoinBusinessScreenState extends State<JoinBusinessScreen> {
       //TODO: load from photoURL
       ListTile(
         leading: Icon(Icons.business),
-        title: Text("${_businessData.tradingName} ${_businessData.chineseName}",
-            style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold)),
+        title: Text("${_businessData.tradingName} ${_businessData.chineseName}", style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold)),
       ),
       ListTile(
         leading: Icon(Icons.home),
-        title: Text(
-            "${_businessData.streetAddress}\n${_businessData.suburb}\n${_businessData.city}",
-            style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold)),
+        title: Text("${_businessData.streetAddress}\n${_businessData.suburb}\n${_businessData.city}", style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold)),
       ),
       SizedBox(
         height: 24,
@@ -100,16 +96,13 @@ class _JoinBusinessScreenState extends State<JoinBusinessScreen> {
       controller: _tecSearchField,
       onEditingComplete: _submit,
       decoration: InputDecoration(
-          errorText: !_tecSearchField.text.isNotEmpty && _hasSubmitted
-              ? "cannot be empty"
-              : null,
+          errorText: !_tecSearchField.text.isNotEmpty && _hasSubmitted ? "cannot be empty" : null,
           contentPadding: EdgeInsets.symmetric(vertical: 15.0),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(30.0),
             borderSide: BorderSide(width: 0.8),
           ),
-          hintText:
-              "type '1112223' to test ", //Enter companies office number // TODO: correct the hint text
+          hintText: "type '1112223' to test ", //Enter companies office number // TODO: correct the hint text
           prefixIcon: Icon(
             Icons.search,
             size: 30,
@@ -178,9 +171,7 @@ class _JoinBusinessScreenState extends State<JoinBusinessScreen> {
                   onPressed: () => Navigator.of(context).pop(true),
                   child: Text("Submit"),
                 ),
-                TextButton(
-                    onPressed: () => Navigator.of(context).pop(false),
-                    child: Text("Cancel"))
+                TextButton(onPressed: () => Navigator.of(context).pop(false), child: Text("Cancel"))
               ],
             ));
 

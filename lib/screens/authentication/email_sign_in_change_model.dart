@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:foodrop/core/authentication/authentication_service.dart';
-import 'package:foodrop/core/services/api_path.dart';
-import 'package:foodrop/core/services/firestore_service.dart';
+import 'package:foodrop/core/services/database/api_path.dart';
+import 'package:foodrop/core/services/database/firestore_service.dart';
 
 import 'validators.dart';
 

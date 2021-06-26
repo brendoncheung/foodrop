@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:foodrop/core/authentication/authentication_service.dart';
 import 'package:foodrop/core/models/UserProfile.dart';
-import 'package:foodrop/core/services/database.dart';
+import 'package:foodrop/core/services/database/database.dart';
 import 'package:foodrop/screens/authentication/email_sign_in_form_userprofile_change_notifier.dart';
 import 'package:foodrop/screens/business/common_widgets/show_alert_dialog.dart';
 import 'package:provider/provider.dart';

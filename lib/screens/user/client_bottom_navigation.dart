@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:foodrop/core/authentication/authentication_service.dart';
 import 'package:foodrop/core/models/UserProfile.dart';
-import 'package:foodrop/core/services/database.dart';
+import 'package:foodrop/core/services/database/database.dart';
 import 'package:foodrop/screens/authentication/profile_landing_screen.dart';
 import 'package:foodrop/screens/business/QRcode/qr_code_screen.dart';
 import 'package:foodrop/screens/business/business_home_screen.dart';

@@ -3,7 +3,7 @@ import 'package:foodrop/core/models/UserProfile.dart';
 import 'package:foodrop/core/models/business.dart';
 import 'package:foodrop/core/models/item.dart';
 import 'package:foodrop/core/models/items_category.dart';
-import 'package:foodrop/core/services/database.dart';
+import 'package:foodrop/core/services/database/database.dart';
 import 'package:foodrop/screens/business/common_widgets/asyncSnapshot_Item_Builder.dart';
 import 'package:foodrop/screens/business/common_widgets/empty_content.dart';
 import 'package:provider/provider.dart';
