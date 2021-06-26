@@ -4,15 +4,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:foodrop/core/authentication/authentication_service.dart';
-<<<<<<< HEAD
-import 'package:foodrop/core/services/api_path.dart';
-import 'package:foodrop/core/services/database.dart';
-import 'package:foodrop/screens/common_widgets/show_alert_dialog.dart';
-=======
 import 'package:foodrop/core/services/database/api_path.dart';
 import 'package:foodrop/core/services/database/database.dart';
 import 'package:foodrop/screens/business/common_widgets/show_alert_dialog.dart';
->>>>>>> qr_code_feature
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
@@ -126,27 +120,13 @@ class _EmailSignInFormUserProfileChangeNotifier extends State<EmailSignInFormUse
       try {
         final db1 = FirestoreDatabase(uid: model.uid);
         if (_pickedImage != null) {
-<<<<<<< HEAD
-          final urlString = await db1.setImage(
-              pickedImage: _pickedImage,
-              docId: model.uid,
-              storageCollectionName: APIPath.userImageStoragePath());
-=======
           final urlString = await db1.setImage(pickedImage: _pickedImage, docId: model.uid, storageCollectionName: APIPath.userImageStoragePath());
->>>>>>> qr_code_feature
           model.updateWith(photoUrl: urlString);
         }
         // print(model);
         await db1.setUser(model);
 
-<<<<<<< HEAD
-        showAlertDialog(context,
-            title: "User Profile",
-            content: "Update Successful",
-            defaultActionText: "OK");
-=======
         showAlertDialog(context, title: "User Profile", content: "Update Successful", defaultActionText: "OK");
->>>>>>> qr_code_feature
         // Navigator.of(context).pop();
       } catch (e) {
         showExceptionAlertDialog(
