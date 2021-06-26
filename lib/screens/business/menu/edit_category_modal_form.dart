@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:foodrop/core/models/items_category.dart';
-import 'package:foodrop/core/services/database.dart';
+import 'package:foodrop/core/services/database/database.dart';
 
 class EditCategoryModalForm extends StatefulWidget {
   EditCategoryModalForm({this.item, this.db});
@@ -105,8 +105,7 @@ class _EditCategoryModalFormState extends State<EditCategoryModalForm> {
                             // width: 100,
                             child: TextFormField(
                               controller: _tecName,
-                              decoration:
-                                  InputDecoration(labelText: "category name"),
+                              decoration: InputDecoration(labelText: "category name"),
                               onSaved: (text) => category.name = text,
                             ),
                           ),
@@ -118,8 +117,7 @@ class _EditCategoryModalFormState extends State<EditCategoryModalForm> {
                             child: TextFormField(
                               controller: _tecIndex,
                               decoration: InputDecoration(labelText: "index"),
-                              onSaved: (text) =>
-                                  category.index = int.tryParse(text),
+                              onSaved: (text) => category.index = int.tryParse(text),
                             ),
                           ),
                           Container(
@@ -156,8 +154,7 @@ class _EditCategoryModalFormState extends State<EditCategoryModalForm> {
               SizedBox(
                 height: 16,
               ),
-              ElevatedButton(
-                  onPressed: () => _onSubmit(context), child: Text("Submit")),
+              ElevatedButton(onPressed: () => _onSubmit(context), child: Text("Submit")),
               // ReorderableListView(children: children, onReorder: onReorder)
               // ReorderableListView.builder(
               //   scrollDirection: Axis.vertical,
