@@ -32,6 +32,7 @@ class MenuScreen extends StatelessWidget {
   _buildBody(BuildContext context) {
     final _business = Provider.of<Business>(context, listen: false);
     final _db = Provider.of<Database>(context, listen: false);
+
     return StreamBuilder<List<ItemsCategory>>(
       stream: _db.itemsCategoryStream(businessId: _business.uid),
       builder: (context, categoryListSnapshot) {
@@ -48,6 +49,7 @@ class MenuScreen extends StatelessWidget {
                   floatingActionButton: FloatingActionButton(
                     child: Icon(Icons.add),
                     backgroundColor: CustomColors.vendorAppBarColor,
+                    onPressed: () {},
                   ),
                   body: _buildMenu(context, _business, categoryListSnapshot),
                 );
@@ -66,7 +68,7 @@ class MenuScreen extends StatelessWidget {
 
   Widget _buildMenu(BuildContext context, Business businessData,
       AsyncSnapshot<List<ItemsCategory>> _categorySnapshot) {
-    final _db = Provider.of<Database>(context);
+    final _db = Provider.of<Database>(context, listen: false);
     return Column(
       children: [
         Wrap(
@@ -132,7 +134,7 @@ class MenuScreen extends StatelessWidget {
     return Container(
       // color: Colors.deepOrange,
       child: StreamBuilder<List<Item>>(
-        stream: db.businessItemsStreambyBusinessId(businessId: businessId),
+        stream: db.businessItemsStreamByBusinessId(businessId: businessId),
         builder: (context, snapshot) {
           switch (snapshot.connectionState) {
             case ConnectionState.waiting:
@@ -158,6 +160,7 @@ class MenuScreen extends StatelessWidget {
                           MaterialPageRoute(
                             builder: (context) => ItemScreenV1(
                               item: item,
+                              db: db,
                             ),
                           ),
                         ),

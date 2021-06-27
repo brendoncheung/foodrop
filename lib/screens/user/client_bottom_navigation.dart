@@ -208,10 +208,13 @@ class _ClientBottomNavigationState extends State<ClientBottomNavigation> {
         value: _db.businessStream(businessUid: _userProfile.defaultBusinessId),
         initialData: Business(uid: _userProfile.defaultBusinessId),
         builder: (context, snapshot) {
-          print(snapshot);
-          return Consumer<Business>(
-            builder: (_, business, __) =>
-                _businessBottomNavigationScreens[_selectedIndex],
+          // print(snapshot);
+          return Provider<Database>(
+            create: (context) => FirestoreDatabase(uid: _userProfile.uid),
+            child: Consumer<Business>(
+              builder: (_, business, __) =>
+                  _businessBottomNavigationScreens[_selectedIndex],
+            ),
           );
         });
   }
