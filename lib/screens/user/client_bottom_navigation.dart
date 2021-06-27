@@ -9,7 +9,7 @@ import 'package:foodrop/screens/authentication/profile_landing_screen.dart';
 import 'package:foodrop/screens/business/business_home/business_home_screen_v1.dart';
 import 'package:foodrop/screens/business/business_home/business_home_screen.dart';
 import 'package:foodrop/screens/business/menu/menu_screen.dart';
-import 'package:foodrop/screens/business/promo/promo_page.dart';
+import 'package:foodrop/screens/business/promo/promotion_screen.dart';
 import 'package:foodrop/screens/business/reward_screen.dart';
 // import 'package:foodrop/screens/client/favourite/qr_code_scan_screen.dart';
 // import 'package:foodrop/screens/client/gift/client_gift_screen.dart';
@@ -21,7 +21,7 @@ import 'package:foodrop/screens/authentication/profile_landing_screen.dart';
 import 'package:foodrop/screens/business/QRcode/qr_code_screen.dart';
 import 'package:foodrop/screens/business/business_home_screen.dart';
 // import 'package:foodrop/screens/business/menu_screen.dart';
-import 'package:foodrop/screens/business/promo/promo_page.dart';
+import 'package:foodrop/screens/business/promo/promotion_screen.dart';
 import 'package:foodrop/screens/business/reward_screen.dart';
 import 'package:foodrop/screens/user/gift/client_gift_screen.dart';
 import 'package:foodrop/screens/user/home/client_home_screen.dart';
@@ -68,8 +68,7 @@ class ClientBottomNavigation extends StatefulWidget {
               {
                 return MultiProvider(
                   providers: [
-                    ChangeNotifierProvider<UserProfile>(
-                        create: (context) => snapshot.data),
+                    ChangeNotifierProvider<UserProfile>(create: (context) => snapshot.data),
                   ],
                   child: ClientBottomNavigation(userProfile: snapshot.data),
                 );
@@ -106,20 +105,8 @@ class _ClientBottomNavigationState extends State<ClientBottomNavigation> {
   //   ProfileLandingScreen()
   // ];
 
-  final _clientBottomNavigationScreens = [
-    ClientHomeScreen(),
-    ClientGiftScreen(),
-    QRCodeScreen(),
-    ClientOrderScreen(),
-    ProfileLandingScreen()
-  ];
-  final _businessBottomNavigationScreens = [
-    BusinessHomeScreenV1(),
-    MenuScreen(),
-    PromoPage(),
-    RewardScreen(),
-    ProfileLandingScreen()
-  ];
+  final _clientBottomNavigationScreens = [ClientHomeScreen(), ClientGiftScreen(), QRCodeScreen(), ClientOrderScreen(), ProfileLandingScreen()];
+  final _businessBottomNavigationScreens = [BusinessHomeScreenV1(), MenuScreen(), PromotionScreen(), RewardScreen(), ProfileLandingScreen()];
 
   void onTapHandler(int index) {
     setState(() {
@@ -137,12 +124,8 @@ class _ClientBottomNavigationState extends State<ClientBottomNavigation> {
             bottomNavigationBar: _buildUserBottomNavigationBar(),
           )
         : Scaffold(
-            body: _userProfile.defaultVendorMode
-                ? buildBusinessNavigation(_userProfile)
-                : _clientBottomNavigationScreens[_selectedIndex],
-            bottomNavigationBar: _userProfile.defaultVendorMode
-                ? _buildBusinessBottomNav()
-                : _buildUserBottomNavigationBar(),
+            body: _userProfile.defaultVendorMode ? buildBusinessNavigation(_userProfile) : _clientBottomNavigationScreens[_selectedIndex],
+            bottomNavigationBar: _userProfile.defaultVendorMode ? _buildBusinessBottomNav() : _buildUserBottomNavigationBar(),
           );
   }
 
@@ -165,14 +148,10 @@ class _ClientBottomNavigationState extends State<ClientBottomNavigation> {
 //         BottomNavigationBarItem(
 //             icon: Icon(Icons.person_rounded, size: 35), label: ""),
 // =======
-        BottomNavigationBarItem(
-            icon: Icon(Icons.home_rounded, size: 35), label: ""),
-        BottomNavigationBarItem(
-            icon: Icon(Icons.wallet_giftcard_rounded, size: 35), label: ""),
-        BottomNavigationBarItem(
-            icon: Icon(Icons.qr_code_scanner_rounded, size: 35), label: ""),
-        BottomNavigationBarItem(
-            icon: Icon(Icons.person_rounded, size: 35), label: ""),
+        BottomNavigationBarItem(icon: Icon(Icons.home_rounded, size: 35), label: ""),
+        BottomNavigationBarItem(icon: Icon(Icons.wallet_giftcard_rounded, size: 35), label: ""),
+        BottomNavigationBarItem(icon: Icon(Icons.qr_code_scanner_rounded, size: 35), label: ""),
+        BottomNavigationBarItem(icon: Icon(Icons.person_rounded, size: 35), label: ""),
 // >>>>>>> brendon:lib/screens/user/client_bottom_navigation.dart
         BottomNavigationBarItem(icon: Icon(Icons.account_circle), label: ""),
       ],
@@ -188,14 +167,10 @@ class _ClientBottomNavigationState extends State<ClientBottomNavigation> {
       selectedItemColor: Colors.white,
       unselectedItemColor: CustomColors.vendorAppBarUnselectColor,
       items: [
-        BottomNavigationBarItem(
-            icon: Icon(Icons.business_rounded, size: 35), label: ""),
-        BottomNavigationBarItem(
-            icon: Icon(Icons.menu_book_rounded, size: 35), label: ""),
-        BottomNavigationBarItem(
-            icon: Icon(Icons.event_rounded, size: 35), label: ""),
-        BottomNavigationBarItem(
-            icon: Icon(Icons.card_giftcard_rounded, size: 35), label: ""),
+        BottomNavigationBarItem(icon: Icon(Icons.business_rounded, size: 35), label: ""),
+        BottomNavigationBarItem(icon: Icon(Icons.menu_book_rounded, size: 35), label: ""),
+        BottomNavigationBarItem(icon: Icon(Icons.event_rounded, size: 35), label: ""),
+        BottomNavigationBarItem(icon: Icon(Icons.card_giftcard_rounded, size: 35), label: ""),
         BottomNavigationBarItem(icon: Icon(Icons.account_circle), label: ""),
       ],
     );
@@ -210,8 +185,7 @@ class _ClientBottomNavigationState extends State<ClientBottomNavigation> {
         builder: (context, snapshot) {
           print(snapshot);
           return Consumer<Business>(
-            builder: (_, business, __) =>
-                _businessBottomNavigationScreens[_selectedIndex],
+            builder: (_, business, __) => _businessBottomNavigationScreens[_selectedIndex],
           );
         });
   }

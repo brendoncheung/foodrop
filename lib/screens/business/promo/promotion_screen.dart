@@ -5,12 +5,13 @@ import 'package:provider/provider.dart';
 
 import 'edit_promo.dart';
 
-class PromoPage extends StatelessWidget {
+class PromotionScreen extends StatelessWidget {
   var factory = QRFactory();
 
   @override
   Widget build(BuildContext context) {
     var business = Provider.of<Business>(context);
+    print(business.toMap().toString());
 
     return Scaffold(
       appBar: AppBar(

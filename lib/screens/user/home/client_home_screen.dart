@@ -113,23 +113,3 @@ extension ListEx on List<int> {
     return this[Random().nextInt(length - 1)];
   }
 }
-
-
-// return GridView.count(
-//       crossAxisCount: 2,
-//       children: List.generate(
-//         items.length,
-//         (index) => ItemWidget(
-//           item: items[index],
-//           onTap: (item) {
-//             Navigator.of(context).push(
-//               MaterialPageRoute(
-//                 builder: (context) => DetailItemScreen(
-//                   item: item,
-//                 ),
-//               ),
-//             );
-//           },
-//         ),
-//       ),
-//     );

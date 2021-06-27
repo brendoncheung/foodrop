@@ -46,7 +46,6 @@ class Business with ChangeNotifier {
       String city,
       String cuisineType,
       String operationType}) {
-    print("insider business.updateWith");
     this.legalName = legalName ?? this.legalName;
     this.tradingName = tradingName ?? this.tradingName;
     this.chineseName = mobilDisplayChineseName ?? this.chineseName;
