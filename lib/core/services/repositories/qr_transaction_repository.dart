@@ -4,22 +4,29 @@ import 'package:flutter/material.dart';
 import 'package:foodrop/core/models/QRTransaction.dart';
 import 'package:foodrop/core/models/business.dart';
 
-class QRTransactionReposity {
+class QRTransactionRepository {
   final FirebaseFirestore store;
-  final String businessId;
 
-  QRTransactionReposity({
+  QRTransactionRepository({
     @required this.store,
-    @required this.businessId,
   });
 
-  Future<List<QRTransaction>> fetchAllTransactions() async {
-    var querySnapshot = await store.collection('business').doc(businessId).collection('transaction').get();
+  CollectionReference _getPath(String businessId) {
+    return store.collection('businesses').doc(businessId).collection('transaction');
+  }
+
+  Future<String> addTransaction(QRTransaction transaction) async {
+    var result = await _getPath(transaction.businessId).add(transaction.toMap());
+    return result.id;
+  }
+
+  Future<List<QRTransaction>> fetchAllTransactions(String businessId) async {
+    var querySnapshot = await _getPath(businessId).get();
     return await querySnapshot.docs.map((e) => QRTransaction.fromMap(e.data()));
   }
 
-  Future<List<QRTransaction>> fetchAllTransactionsByUserId(String id) async {
-    var querySnapshot = await store.collection('business').doc(businessId).collection('transaction').where(businessId, isEqualTo: id).get();
+  Future<List<QRTransaction>> fetchAllTransactionsByUserId(String businessId, String userId) async {
+    var querySnapshot = await _getPath(businessId).where(businessId, isEqualTo: userId).get();
     return await querySnapshot.docs.map((e) => QRTransaction.fromMap(e.data()));
   }
 }

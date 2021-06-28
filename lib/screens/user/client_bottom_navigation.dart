@@ -9,7 +9,7 @@ import 'package:foodrop/screens/authentication/profile_landing_screen.dart';
 import 'package:foodrop/screens/business/business_home/business_home_screen_v1.dart';
 import 'package:foodrop/screens/business/business_home/business_home_screen.dart';
 import 'package:foodrop/screens/business/menu/menu_screen.dart';
-import 'package:foodrop/screens/business/promo/promotion_screen.dart';
+import 'package:foodrop/screens/business/qr_generation_screen/qr_code_generation_screen.dart';
 import 'package:foodrop/screens/business/reward_screen.dart';
 // import 'package:foodrop/screens/client/favourite/qr_code_scan_screen.dart';
 // import 'package:foodrop/screens/client/gift/client_gift_screen.dart';
@@ -21,7 +21,7 @@ import 'package:foodrop/screens/authentication/profile_landing_screen.dart';
 import 'package:foodrop/screens/business/QRcode/qr_code_screen.dart';
 import 'package:foodrop/screens/business/business_home_screen.dart';
 // import 'package:foodrop/screens/business/menu_screen.dart';
-import 'package:foodrop/screens/business/promo/promotion_screen.dart';
+import 'package:foodrop/screens/business/qr_generation_screen/qr_code_generation_screen.dart';
 import 'package:foodrop/screens/business/reward_screen.dart';
 import 'package:foodrop/screens/user/gift/client_gift_screen.dart';
 import 'package:foodrop/screens/user/home/client_home_screen.dart';
@@ -106,7 +106,7 @@ class _ClientBottomNavigationState extends State<ClientBottomNavigation> {
   // ];
 
   final _clientBottomNavigationScreens = [ClientHomeScreen(), ClientGiftScreen(), QRCodeScreen(), ClientOrderScreen(), ProfileLandingScreen()];
-  final _businessBottomNavigationScreens = [BusinessHomeScreenV1(), MenuScreen(), PromotionScreen(), RewardScreen(), ProfileLandingScreen()];
+  final _businessBottomNavigationScreens = [QRCodeGenerationScreen(), BusinessHomeScreenV1(), MenuScreen(), QRCodeGenerationScreen(), RewardScreen(), ProfileLandingScreen()];
 
   void onTapHandler(int index) {
     setState(() {
@@ -167,6 +167,7 @@ class _ClientBottomNavigationState extends State<ClientBottomNavigation> {
       selectedItemColor: Colors.white,
       unselectedItemColor: CustomColors.vendorAppBarUnselectColor,
       items: [
+        BottomNavigationBarItem(icon: Icon(Icons.qr_code), label: ""),
         BottomNavigationBarItem(icon: Icon(Icons.business_rounded, size: 35), label: ""),
         BottomNavigationBarItem(icon: Icon(Icons.menu_book_rounded, size: 35), label: ""),
         BottomNavigationBarItem(icon: Icon(Icons.event_rounded, size: 35), label: ""),
