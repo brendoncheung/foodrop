@@ -6,6 +6,9 @@ import 'package:foodrop/core/services/custom_colors.dart';
 import 'package:foodrop/core/services/database/database.dart';
 import 'package:foodrop/screens/business/common_widgets/asyncSnapshot_Item_Builder.dart';
 import 'package:foodrop/screens/business/common_widgets/camera_image_picker.dart';
+import 'package:foodrop/screens/business/common_widgets/show_alert_dialog.dart';
+import 'package:foodrop/screens/business/menu/show_selected_images.dart';
+import 'package:foodrop/screens/common_widgets/camera_multi_image_picker.dart';
 import 'package:provider/provider.dart';
 
 class ItemScreenV1 extends StatefulWidget {
@@ -28,6 +31,9 @@ class _ItemScreenV1State extends State<ItemScreenV1> {
   bool _formSubmittedBefore = false;
   bool _capturedNewImage = false;
   File _imageFile;
+
+  bool _showEnlargedImage = false;
+  int _selectedImageIndexToEnlarge = 0;
 
   Item get _item => widget.item;
   Database get _db => widget.db;
@@ -87,18 +93,84 @@ class _ItemScreenV1State extends State<ItemScreenV1> {
       appBar: AppBar(
         title: Text("${_item.name}"),
         backgroundColor: CustomColors.vendorAppBarColor,
+        actions: [
+          _buildCameraActionIcon(),
+        ],
       ),
       body: _buildBody(context),
+    );
+  }
+
+  Padding _buildCameraActionIcon() {
+    return Padding(
+      padding: EdgeInsets.only(right: 10),
+      child: InkWell(
+        onTap: () => print("show album"),
+        child: CircleAvatar(
+          backgroundColor: Colors.grey,
+          radius: 20,
+          child: CameraMultiImagePicker(
+            getImages: (List<File> file) => {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                    builder: (context) => ShowSelectedImages(
+                          selectedImageFiles: file,
+                        ),
+                    fullscreenDialog: true),
+              )
+            },
+          ),
+        ),
+      ),
     );
   }
 
   _buildBody(BuildContext context) {
     // final _db = Provider.of<Database>(context, listen: false);
     return SingleChildScrollView(
-      child: Column(
+      child: Stack(
         children: [
-          _buildListViewPhotoUrls(),
+          Column(
+            children: [
+              _buildListViewPhotoUrls(),
+            ],
+          ),
+          if (_showEnlargedImage) _showEnlargedImageContainer(context)
         ],
+      ),
+    );
+  }
+
+  InkWell _showEnlargedImageContainer(BuildContext context) {
+    return InkWell(
+      onTap: () {
+        setState(() {
+          _showEnlargedImage = false;
+        });
+      },
+      child: Container(
+        height: MediaQuery.of(context).size.height / 3 * 2,
+        // color: Colors.red,
+        decoration: BoxDecoration(
+          color: Colors.white.withOpacity(0.7),
+        ),
+        child: Center(
+          child: Card(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20),
+            ),
+            clipBehavior: Clip.hardEdge,
+            child: ConstrainedBox(
+              constraints: BoxConstraints(
+                maxHeight: 400,
+                maxWidth: 400,
+              ),
+              child: Image.network(
+                _item.photoUrlList[_selectedImageIndexToEnlarge],
+              ),
+            ),
+          ),
+        ),
       ),
     );
   }
@@ -106,41 +178,61 @@ class _ItemScreenV1State extends State<ItemScreenV1> {
   Container _buildListViewPhotoUrls() {
     return Container(
       width: MediaQuery.of(context).size.width,
-      height: 100,
-      child: Container(
-        width: 400,
-        height: 100,
-        child: ListView.builder(
-          scrollDirection: Axis.horizontal,
-          shrinkWrap: true,
-          itemCount: _item.photoUrlList.length + 1,
-          itemBuilder: (context, index) {
-            if (index == _item.photoUrlList.length) {
-              return CircleAvatar(
-                backgroundColor: Colors.grey,
-                radius: 50,
-                child: Icon(
-                  Icons.photo_camera,
-                  color: Colors.black,
-                ),
-              );
-            }
-            return Card(
-              child: Wrap(
-                children: [
-                  Image.network(
-                    _item.photoUrlList[index],
-                    height: 100,
-                    width: 100,
-                    fit: BoxFit.cover,
+      height: 200,
+      child: ListView.builder(
+        scrollDirection: Axis.horizontal,
+        shrinkWrap: true,
+        itemCount: _item.photoUrlList.length,
+        itemBuilder: (context, index) {
+          return Stack(
+            children: [
+              InkWell(
+                onTap: () => _enlargePic(index),
+                child: Card(
+                  child: Wrap(
+                    children: [
+                      Image.network(
+                        _item.photoUrlList[index],
+                        height: 200,
+                        width: 200,
+                        fit: BoxFit.cover,
+                      ),
+                    ],
                   ),
-                ],
+                ),
               ),
-            );
-          },
-        ),
+              IconButton(
+                  icon: Icon(
+                    Icons.delete,
+                    color: Colors.red,
+                  ),
+                  iconSize: 50,
+                  onPressed: () => _toDeleteImage(index))
+            ],
+          );
+        },
       ),
     );
+  }
+
+  _toDeleteImage(int index) async {
+    final selectDeleteImage = await showAlertDialog(context,
+        title: "Deleting Image",
+        content: "Are you sure",
+        defaultActionText: "Delete",
+        cancelActionText: "Cancel");
+
+    if (selectDeleteImage) {
+      // if confirmDelete
+      print("Delete index: $index");
+    }
+  }
+
+  _enlargePic(int index) {
+    setState(() {
+      _showEnlargedImage = true;
+      _selectedImageIndexToEnlarge = index;
+    });
   }
 
   // return Container(
