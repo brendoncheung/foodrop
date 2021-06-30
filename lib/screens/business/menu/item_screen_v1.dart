@@ -4,17 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:foodrop/core/models/item.dart';
 import 'package:foodrop/core/services/custom_colors.dart';
 import 'package:foodrop/core/services/database/database.dart';
-import 'package:foodrop/screens/business/common_widgets/asyncSnapshot_Item_Builder.dart';
-import 'package:foodrop/screens/business/common_widgets/camera_image_picker.dart';
 import 'package:foodrop/screens/business/common_widgets/show_alert_dialog.dart';
 import 'package:foodrop/screens/business/menu/show_selected_images.dart';
 import 'package:foodrop/screens/common_widgets/camera_multi_image_picker.dart';
-import 'package:provider/provider.dart';
 
 class ItemScreenV1 extends StatefulWidget {
-  ItemScreenV1({@required this.item, this.db});
+  ItemScreenV1({@required this.item, this.db, this.businessId});
   Database db;
   Item item;
+  String businessId;
 
   @override
   _ItemScreenV1State createState() => _ItemScreenV1State();
@@ -115,6 +113,7 @@ class _ItemScreenV1State extends State<ItemScreenV1> {
                 MaterialPageRoute(
                     builder: (context) => ShowSelectedImages(
                           selectedImageFiles: file,
+                          businessId: widget.businessId
                         ),
                     fullscreenDialog: true),
               )

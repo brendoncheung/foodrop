@@ -18,7 +18,7 @@ abstract class Database {
   Stream<Business> businessStream({String businessUid});
   Stream<List<BusinessUserLink>> businessUserLinkStream({String userId});
   Future<String> setImage(
-      {File pickedImage, String docId, String storageCollectionName});
+      {File imageFileLocalPath, String docId, String apiPath});
   Stream<List<ItemsCategory>> itemsCategoryStream(
       {@required String businessId});
   Future<void> setCategory({ItemsCategory category});
@@ -66,19 +66,45 @@ class FirestoreDatabase implements Database {
   }
 
   Future<String> setImage(
-      {File pickedImage, String docId, String storageCollectionName}) async {
+      {File imageFileLocalPath, String docId, String apiPath}) async {
     String stringUrl;
 
-    final ref = FirebaseStorage.instance
-        .ref()
-        .child(storageCollectionName)
-        .child(docId + '.jpg');
+    if (docId == null) {
+      docId = Utilities.documentIdFromCurrentDate();
+    }
+    final ref =
+        FirebaseStorage.instance.ref().child(apiPath).child(docId + '.jpg');
 
-    await ref.putFile(pickedImage).whenComplete(() async {});
+    await ref.putFile(imageFileLocalPath).whenComplete(() async {});
     stringUrl = await ref.getDownloadURL();
     print(stringUrl);
 
     return stringUrl;
+  }
+
+  Future<List<String>> setImages(
+      {@required List<File> imageFiles,
+      String docId,
+      @required String apiPath}) async {
+    // docId is not required if these are new images to be uploaded
+
+    String stringUrl;
+    List<String> newImageUrlList = [];
+
+    if (docId == null) {
+      docId = Utilities.documentIdFromCurrentDate();
+    }
+
+    final ref =
+        FirebaseStorage.instance.ref().child(apiPath).child(docId + '.jpg');
+
+    for (var imageFile in imageFiles) {
+      await ref.putFile(imageFile).whenComplete(() async {});
+      stringUrl = await ref.getDownloadURL();
+      newImageUrlList.add(stringUrl);
+      print(stringUrl);
+    }
+    return newImageUrlList;
   }
 
   @override
