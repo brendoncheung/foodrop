@@ -26,6 +26,10 @@ abstract class Database {
       {@required String businessId});
   Stream<List<Item>> itemsStream();
   Future<void> setItem({Item item});
+  Future<List<String>> setImages(
+      {@required List<File> imageFiles,
+      String docId,
+      @required String apiPath});
 
 // Future<void> setJob(Job job);
   // Future<void> deleteJob(Job job);
@@ -91,15 +95,18 @@ class FirestoreDatabase implements Database {
     String stringUrl;
     List<String> newImageUrlList = [];
 
-    if (docId == null) {
-      docId = Utilities.documentIdFromCurrentDate();
-    }
+    // if (docId == null) {
+    //   docId = Utilities.documentIdFromCurrentDate();
+    // }
 
-    final ref =
-        FirebaseStorage.instance.ref().child(apiPath).child(docId + '.jpg');
+    Reference ref;
 
     for (var imageFile in imageFiles) {
-      await ref.putFile(imageFile).whenComplete(() async {});
+      docId = Utilities.documentIdFromCurrentDate();
+      ref = FirebaseStorage.instance.ref().child(apiPath).child(docId + '.jpg');
+      await ref.putFile(imageFile).whenComplete(() async {
+        // stringUrl = await ref.getDownloadURL();
+      });
       stringUrl = await ref.getDownloadURL();
       newImageUrlList.add(stringUrl);
       print(stringUrl);

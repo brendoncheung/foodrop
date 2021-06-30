@@ -11,10 +11,11 @@ class Item {
     this.lastUpdateByUserId = "",
     this.name = "",
     this.num_of_favs = 0,
-    this.photoUrlList,
+    List<String> photoUrlList,
     this.price = 0,
   })  : lastUpdate = lastUpdate ?? DateTime.now(),
-        creationDate = creationDate ?? DateTime.now();
+        creationDate = creationDate ?? DateTime.now(),
+        photoUrlList = photoUrlList ?? [];
 
 // <<<<<<< HEAD
 //   Item({

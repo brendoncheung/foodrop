@@ -16,8 +16,17 @@ class MenuScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _business = Provider.of<Business>(context, listen: false);
-
+    final _db = Provider.of<Database>(context, listen: false);
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: CustomColors.vendorAppBarColor,
+        child: Icon(Icons.add),
+        onPressed: () => Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => ItemScreenV1(
+                  db: _db,
+                  businessId: _business.uid,
+                ))),
+      ),
       appBar: AppBar(
         backgroundColor: CustomColors.vendorAppBarColor,
         title: Text(
@@ -25,13 +34,13 @@ class MenuScreen extends StatelessWidget {
           style: TextStyle(color: Colors.white),
         ),
       ),
-      body: _buildBody(context),
+      body: _buildBody(context, _db),
     );
   }
 
-  _buildBody(BuildContext context) {
+  _buildBody(BuildContext context, Database _db) {
     final _business = Provider.of<Business>(context, listen: false);
-    final _db = Provider.of<Database>(context, listen: false);
+    // final _db = Provider.of<Database>(context, listen: false);
 
     return StreamBuilder<List<ItemsCategory>>(
       stream: _db.itemsCategoryStream(businessId: _business.uid),
@@ -161,6 +170,7 @@ class MenuScreen extends StatelessWidget {
                             builder: (context) => ItemScreenV1(
                               item: item,
                               db: db,
+                              businessId: businessId,
                             ),
                           ),
                         ),

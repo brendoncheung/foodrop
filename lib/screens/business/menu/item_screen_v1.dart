@@ -1,15 +1,17 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:foodrop/core/models/business.dart';
 import 'package:foodrop/core/models/item.dart';
 import 'package:foodrop/core/services/custom_colors.dart';
 import 'package:foodrop/core/services/database/database.dart';
 import 'package:foodrop/screens/business/common_widgets/show_alert_dialog.dart';
 import 'package:foodrop/screens/business/menu/show_selected_images.dart';
 import 'package:foodrop/screens/common_widgets/camera_multi_image_picker.dart';
+import 'package:provider/provider.dart';
 
 class ItemScreenV1 extends StatefulWidget {
-  ItemScreenV1({@required this.item, this.db, this.businessId});
+  ItemScreenV1({this.item, this.db, this.businessId});
   Database db;
   Item item;
   String businessId;
@@ -33,19 +35,24 @@ class _ItemScreenV1State extends State<ItemScreenV1> {
   bool _showEnlargedImage = false;
   int _selectedImageIndexToEnlarge = 0;
 
-  Item get _item => widget.item;
+  bool _isCreatingNewItem = true;
+  bool _thereAreNoItemImages = true;
+
+  // Item get _item => widget.item;
+  Item _item = new Item();
   Database get _db => widget.db;
+  // Item cuItem = Item();
 
   @override
   void initState() {
     // TODO: implement initState
-    if (_item != null) {
+    if (widget.item != null) {
+      _item = widget.item;
       _tecName.text = _item.name;
       _tecPrice.text = _item.price.toString();
       _tecDescription.text = _item.description;
+      _isCreatingNewItem = false;
       setState(() {});
-    } else {
-      widget.item = Item();
     }
     super.initState();
   }
@@ -62,6 +69,9 @@ class _ItemScreenV1State extends State<ItemScreenV1> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    if (_item.photoUrlList != null) {
+      _thereAreNoItemImages = _item.photoUrlList.length > 0 ? false : true;
+    }
 
     // final imageWidget = _item == null || _item.photoUrlList == ""
     //     ? Container(
@@ -113,7 +123,10 @@ class _ItemScreenV1State extends State<ItemScreenV1> {
                 MaterialPageRoute(
                     builder: (context) => ShowSelectedImages(
                           selectedImageFiles: file,
-                          businessId: widget.businessId
+                          businessId: widget.businessId,
+                          db: _db,
+                          newImageUrls: (listOfUrls) =>
+                              _addToCurrentUrls(listOfUrls),
                         ),
                     fullscreenDialog: true),
               )
@@ -131,7 +144,14 @@ class _ItemScreenV1State extends State<ItemScreenV1> {
         children: [
           Column(
             children: [
-              _buildListViewPhotoUrls(),
+              _thereAreNoItemImages // if true => show Placeholder widget
+                  ? Padding(
+                      padding: EdgeInsets.all(8),
+                      child: Placeholder(
+                        fallbackHeight: MediaQuery.of(context).size.height / 5,
+                      ),
+                    )
+                  : _buildListViewPhotoUrls(),
             ],
           ),
           if (_showEnlargedImage) _showEnlargedImageContainer(context)
@@ -232,6 +252,17 @@ class _ItemScreenV1State extends State<ItemScreenV1> {
       _showEnlargedImage = true;
       _selectedImageIndexToEnlarge = index;
     });
+  }
+
+  _addToCurrentUrls(List<String> listOfUrls) {
+    if (_item.photoUrlList == null) {
+      _item.photoUrlList = [];
+    }
+    for (String url in listOfUrls) {
+      _item.photoUrlList.add(url);
+      print("adding =====> $url");
+    }
+    setState(() {});
   }
 
   // return Container(
