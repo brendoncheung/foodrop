@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:foodrop/core/authentication/authentication_service.dart';
 import 'package:foodrop/screens/authentication/validators.dart';
+import 'package:foodrop/screens/user/home/client_home_screen.dart';
 
 enum EmailSignInFormType { signIn, register, update }
 
@@ -32,10 +33,8 @@ class UserProfile with ChangeNotifier, EmailAndPasswordValidators {
     this.defaultBusinessId = "",
   })  : dob = dob ?? DateTime.parse("1970-01-01"),
         creationDate = creationDate ?? DateTime.now(),
-        mobileVerificationDate =
-            mobileVerificationDate ?? DateTime.parse("1970-01-01"),
-        emailVerificationDate =
-            emailVerificationDate ?? DateTime.parse("1970-01-01"),
+        mobileVerificationDate = mobileVerificationDate ?? DateTime.parse("1970-01-01"),
+        emailVerificationDate = emailVerificationDate ?? DateTime.parse("1970-01-01"),
         lastSignInDate = lastSignInDate ?? DateTime.now();
 
   AuthenticationService auth;
@@ -52,8 +51,7 @@ class UserProfile with ChangeNotifier, EmailAndPasswordValidators {
   String mobileNumber;
   String emailAddress;
   String emailPassword;
-  DateTime
-      mobileVerificationDate; // verification ideally to be done every 6 month to ensure customer detail is up to date.
+  DateTime mobileVerificationDate; // verification ideally to be done every 6 month to ensure customer detail is up to date.
   DateTime emailVerificationDate;
   EmailSignInFormType formType;
   bool isLoading;
@@ -63,6 +61,7 @@ class UserProfile with ChangeNotifier, EmailAndPasswordValidators {
   bool hasBusiness;
   bool defaultVendorMode;
   String defaultBusinessId;
+  List<String> followBusinessId;
 
   UserProfile.fromMap(Map<String, dynamic> map, String uid)
       : uid = map['uid'],
@@ -77,7 +76,8 @@ class UserProfile with ChangeNotifier, EmailAndPasswordValidators {
         emailPassword = '',
         hasBusiness = map['hasBusiness'],
         defaultBusinessId = map['defaultBusinessId'],
-        defaultVendorMode = map['defaultVendorMode'];
+        defaultVendorMode = map['defaultVendorMode'],
+        followBusinessId = List.from(map["followBusinessId"]);
 
   // mobileVerificationDate = map['mobileVerificationDate'],
   // emailVerificationDate = map['emailVerificationDate'];
@@ -94,8 +94,7 @@ class UserProfile with ChangeNotifier, EmailAndPasswordValidators {
         updateWith(uid: auth.getUser().uid);
       } else {
         print("attempt to create user login");
-        await auth.createClientWithEmailAndPassword(
-            emailAddress, emailPassword);
+        await auth.createClientWithEmailAndPassword(emailAddress, emailPassword);
         updateWith(uid: auth.getUser().uid);
       }
     } catch (e) {
@@ -124,20 +123,15 @@ class UserProfile with ChangeNotifier, EmailAndPasswordValidators {
   }
 
   String get secondaryButtonText {
-    return formType == EmailSignInFormType.signIn
-        ? 'Need an account? Register'
-        : 'Have an account? Sign in';
+    return formType == EmailSignInFormType.signIn ? 'Need an account? Register' : 'Have an account? Sign in';
   }
 
   bool get canSubmit {
-    return emailValidator.isNotEmpty(emailAddress) &&
-        passwordValidator.isNotEmpty(emailPassword) &&
-        !isLoading;
+    return emailValidator.isNotEmpty(emailAddress) && passwordValidator.isNotEmpty(emailPassword) && !isLoading;
   }
 
   String get passwordErrorText {
-    bool showErrorText =
-        submitted && !passwordValidator.isNotEmpty(emailPassword);
+    bool showErrorText = submitted && !passwordValidator.isNotEmpty(emailPassword);
     return showErrorText ? invalidPasswordErrorText : null;
   }
 
@@ -152,9 +146,7 @@ class UserProfile with ChangeNotifier, EmailAndPasswordValidators {
   }
 
   void toggleFormType() {
-    final formType = this.formType == EmailSignInFormType.signIn
-        ? EmailSignInFormType.register
-        : EmailSignInFormType.signIn;
+    final formType = this.formType == EmailSignInFormType.signIn ? EmailSignInFormType.register : EmailSignInFormType.signIn;
     updateWith(
       emailAddress: '',
       emailPassword: '',
@@ -168,8 +160,7 @@ class UserProfile with ChangeNotifier, EmailAndPasswordValidators {
   void updateLastName(String lastName) => updateWith(lastName: lastName);
   void updateUserName(String userName) => updateWith(username: userName);
 
-  void updateMobileNumber(String mobileNumber) =>
-      updateWith(mobileNumber: mobileNumber);
+  void updateMobileNumber(String mobileNumber) => updateWith(mobileNumber: mobileNumber);
 
   // void updateEmail(String email) => updateWith(emailAddress: emailAddress);
   //
@@ -191,7 +182,8 @@ class UserProfile with ChangeNotifier, EmailAndPasswordValidators {
       'hasBusiness': hasBusiness,
       'defaultVendorMode': defaultVendorMode,
       'defaultBusinessId': defaultBusinessId,
-      'photoUrl': photoUrl
+      'photoUrl': photoUrl,
+      'followBusinessId': followBusinessId
     };
   }
 
@@ -234,10 +226,8 @@ class UserProfile with ChangeNotifier, EmailAndPasswordValidators {
     this.mobileNumber = mobileNumber ?? this.mobileNumber;
     this.emailAddress = emailAddress ?? this.emailAddress;
     this.emailPassword = emailPassword ?? this.emailPassword;
-    this.mobileVerificationDate =
-        mobileVerificationDate ?? this.mobileVerificationDate;
-    this.emailVerificationDate =
-        emailVerificationDate ?? this.emailVerificationDate;
+    this.mobileVerificationDate = mobileVerificationDate ?? this.mobileVerificationDate;
+    this.emailVerificationDate = emailVerificationDate ?? this.emailVerificationDate;
     this.formType = formType ?? this.formType;
     this.isLoading = isLoading ?? this.isLoading;
     this.submitted = submitted ?? this.submitted;

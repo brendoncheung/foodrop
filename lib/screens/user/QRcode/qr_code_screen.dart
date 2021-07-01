@@ -9,7 +9,7 @@ class QRCodeScreen extends StatelessWidget {
       child: Center(
         child: QrImage(
           data: "{sad,asd,a,sd,as,d,as,d,asd,,as,d,as,d,f,dsf,}",
-          size: 200.0,
+          size: 100.0,
         ),
       ),
     );

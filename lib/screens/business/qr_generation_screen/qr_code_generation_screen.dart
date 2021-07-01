@@ -7,6 +7,7 @@ import 'package:foodrop/core/services/factory/QRFactory.dart';
 import 'package:foodrop/core/services/repositories/qr_transaction_repository.dart';
 import 'package:foodrop/screens/business/qr_generation_screen/qr_code_comfirmation_screen.dart';
 import 'package:provider/provider.dart';
+
 import 'dart:math';
 
 import '../promo/edit_promo.dart';
@@ -23,8 +24,11 @@ class QRCodeGenerationScreen extends StatelessWidget {
     Size size = MediaQuery.of(context).size;
 
     return Scaffold(
+      backgroundColor: Colors.green,
       appBar: AppBar(
-        title: Align(child: Text("Promotion")),
+        backgroundColor: Colors.green,
+        elevation: 0,
+        title: Align(child: Text("Transfer points")),
         actions: [
           IconButton(
             icon: Icon(Icons.add),
@@ -38,7 +42,12 @@ class QRCodeGenerationScreen extends StatelessWidget {
         children: [
           Padding(
             padding: EdgeInsets.symmetric(horizontal: (size.width * 0.2)),
-            child: TextField(
+            child: TextFormField(
+              decoration: InputDecoration(
+                icon: Icon(Icons.attach_money),
+                fillColor: Colors.white,
+                focusColor: Colors.white,
+              ),
               controller: contoller,
             ),
           ),
@@ -54,7 +63,10 @@ class QRCodeGenerationScreen extends StatelessWidget {
 
               Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (contexxt) => QRCodeConfirmationScreen(transaction: transaction),
+                  builder: (contexxt) => QRCodeConfirmationScreen(
+                    transaction: transaction,
+                    user: user,
+                  ),
                 ),
               );
             },

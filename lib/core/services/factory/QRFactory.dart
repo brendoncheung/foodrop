@@ -7,6 +7,7 @@ class QRCodeWidgetFactory {
     QRTransaction transaction,
   ) {
     return QrImage(
+      size: 300,
       data: transaction.toMap().toString(),
     );
   }

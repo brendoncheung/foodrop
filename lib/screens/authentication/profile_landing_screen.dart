@@ -23,15 +23,8 @@ class _ProfileLandingScreenState extends State<ProfileLandingScreen> {
     _onUserStateChanges(_getCurrentUser(context));
 
     return _userLoggedIn
-        // ? Consumer<UserProfile>(builder: (_, userProfile, __) {
-        //     print(userProfile);
-        //     return ClientProfileScreen(
-        //       userFile: userProfile,
-        //       //onLoggedIn: () => _onLoggedIn(context),
-        //     );
-        //   })
         ? Consumer<UserProfile>(builder: (_, userProfile, __) {
-            print(userProfile);
+            print("this is the profile ${userProfile}");
             return ProfileHomeScreen(
               userProfile: userProfile,
               //onLoggedIn: () => _onLoggedIn(context),

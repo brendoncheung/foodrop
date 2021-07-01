@@ -26,6 +26,12 @@ class ItemRepository {
     });
   }
 
+  Future<List<Item>> getItemsFromFollowedBusinessId(String userId) {
+    return _store.collection('items').get().then((value) {
+      return value.docs.map((e) => Item.fromMap(e.data(), e.id)).toList();
+    });
+  }
+
   Future<Item> getItemById(String id) {
     return _store.collection('menu').doc(id).get().then((value) {
       return Item.fromMap(value.data(), value.id);
