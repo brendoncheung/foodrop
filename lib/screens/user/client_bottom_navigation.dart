@@ -13,7 +13,7 @@ import 'package:foodrop/screens/business/qr_generation_screen/qr_code_generation
 import 'package:foodrop/screens/business/reward_screen.dart';
 import 'package:foodrop/core/services/database/database.dart';
 import 'package:foodrop/screens/authentication/profile_landing_screen.dart';
-import 'package:foodrop/screens/user/QRcode/qr_code_screen.dart';
+import 'package:foodrop/screens/user/qr_code_scan/qr_code_scan_screen.dart';
 import 'package:foodrop/screens/business/business_home_screen.dart';
 import 'package:foodrop/screens/business/qr_generation_screen/qr_code_generation_screen.dart';
 import 'package:foodrop/screens/business/reward_screen.dart';
@@ -60,7 +60,10 @@ class ClientBottomNavigation extends StatefulWidget {
             {
               return MultiProvider(
                 providers: [
-                  ChangeNotifierProvider<UserProfile>(create: (context) => snapshot.data),
+                  ChangeNotifierProvider<UserProfile>(create: (context) {
+                    print("bottom nav ${snapshot.data}");
+                    return snapshot.data;
+                  }),
                 ],
                 child: ClientBottomNavigation(userProfile: snapshot.data),
               );
@@ -87,7 +90,7 @@ class _ClientBottomNavigationState extends State<ClientBottomNavigation> {
   final _clientBottomNavigationScreens = [
     ClientHomeScreen(),
     ClientGiftScreen(),
-    QRCodeScreen(),
+    QRCodeScanScreen(),
     ClientOrderScreen(),
     ProfileLandingScreen(),
   ];

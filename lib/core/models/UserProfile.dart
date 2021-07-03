@@ -89,8 +89,6 @@ class UserProfile with ChangeNotifier, EmailAndPasswordValidators {
       if (formType == EmailSignInFormType.signIn) {
         print("attempt to sign user in");
         await auth.logInUserWithEmailAndPassword(emailAddress, emailPassword);
-        // print(auth.getUser());
-        // print(auth.getUser().email);
         updateWith(uid: auth.getUser().uid);
       } else {
         print("attempt to create user login");

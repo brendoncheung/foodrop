@@ -7,8 +7,6 @@ import 'package:foodrop/screens/user/profile/profile_home_screen.dart';
 import 'package:provider/provider.dart';
 
 class ProfileLandingScreen extends StatefulWidget {
-  // ProfileLandingScreen({this.onLoggedIn});
-  // VoidCallback onLoggedIn;
   @override
   _ProfileLandingScreenState createState() => _ProfileLandingScreenState();
 }

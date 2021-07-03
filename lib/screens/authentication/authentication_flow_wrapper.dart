@@ -1,3 +1,4 @@
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:foodrop/core/authentication/authentication_service.dart';
@@ -15,9 +16,10 @@ class AuthenticationFlowWrapper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var auth = Provider.of<AuthenticationService>(context, listen: false);
-
+    print("building AuthenticationFlowWrapper");
     return StreamProvider<UserProfile>.value(
       catchError: (context, error) {
+        print(error.toString());
         return null;
       },
       value: auth.onAuthChangeStream(),
@@ -28,11 +30,18 @@ class AuthenticationFlowWrapper extends StatelessWidget {
             final user = auth.getUser();
 
             try {
+              print("rebuilding Consumer <UserProfile>");
+
               if (userProfile == null) {
                 auth.signInAnonymous();
+                print("Consumer<UserProfile> userProfile is null");
+                print("signed in anonymously${auth.getUser()}");
               }
 
               if (user.uid.isNotEmpty && user.email.isNotEmpty) {
+                print("auth.user.email is not null");
+                print("user profile email: ${userProfile.emailAddress}");
+                print("user profile phone: ${userProfile.mobileNumber}");
                 _updateUserProfile(user.uid);
                 print(userProfile.isAnonymous);
               }
@@ -40,9 +49,12 @@ class AuthenticationFlowWrapper extends StatelessWidget {
               print(e);
             }
 
-            try {} catch (e) {
+            try {
+              print(" Calling authId at AuthenticationFlowWrapper");
+              print(user.uid);
+            } catch (e) {
               // show logoutAwaitScreen
-
+              print("no user id");
               errorDetected = true;
             }
 
