@@ -14,8 +14,8 @@ import 'package:uuid/uuid.dart';
 
 class QRCodeConfirmationScreen extends StatefulWidget {
   final QRTransaction transaction;
-  Business business;
-  UserProfile user;
+  final Business business;
+  final UserProfile user;
 
   QRCodeConfirmationScreen({
     this.transaction,
@@ -37,13 +37,17 @@ class _QRCodeConfirmationScreenState extends State<QRCodeConfirmationScreen> {
   var _uuid = Uuid();
 
   QRIntermediateTransaction qrIntermediate;
+  QRTransaction qrTransaction;
 
   String qrData;
 
   void onConfirmTapped() {
     setState(() {
-      qrIntermediate = QRIntermediateTransaction(businessId: widget.business.uid, uuid: _uuid.v1());
+      qrIntermediate = QRIntermediateTransaction(businessId: widget.business.uid, uuid: widget.transaction.uuid);
+
       qrData = qrIntermediate.toJson();
+      repo.addIntermediateTransaction(qrIntermediate);
+      repo.addTransaction(widget.transaction);
 
       _isUserConfirmed = !_isUserConfirmed;
     });

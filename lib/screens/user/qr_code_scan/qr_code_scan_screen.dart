@@ -1,12 +1,14 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:foodrop/core/models/QRIntermediate.dart';
+import 'package:foodrop/core/models/UserProfile.dart';
 import 'package:foodrop/core/models/business.dart';
+import 'package:foodrop/core/services/repositories/qr_transaction_repository.dart';
+import 'package:provider/provider.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 class QRCodeScanScreen extends StatefulWidget {
-  String qrCode;
-
   @override
   _QRCodeScanScreenState createState() => _QRCodeScanScreenState();
 }
@@ -14,9 +16,12 @@ class QRCodeScanScreen extends StatefulWidget {
 class _QRCodeScanScreenState extends State<QRCodeScanScreen> {
   String text = "hello";
 
-  void onTapped() async {
+  void onTapped(String userId) async {
     String barcode = await FlutterBarcodeScanner.scanBarcode("Green", "Cancel", true, ScanMode.QR);
     QRIntermediateTransaction intermediateTransaction = QRIntermediateTransaction.fromJson(barcode);
+    QRTransactionRepository repo = QRTransactionRepository(store: FirebaseFirestore.instance);
+    repo.updateTransactionWithRecepientId(intermediateTransaction, userId);
+
     setState(() {
       text = intermediateTransaction.uuid;
     });
@@ -24,26 +29,29 @@ class _QRCodeScanScreenState extends State<QRCodeScanScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var user = Provider.of<UserProfile>(context);
+
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(),
-        body: Center(
-          child: Column(
-            children: [
-              Text(text),
-              ElevatedButton(
-                onPressed: onTapped,
-                child: Text("Scan"),
+        body: user == null
+            ? Center(
+                child: Text("Please sign in"),
+              )
+            : Center(
+                child: Column(
+                  children: [
+                    Text(text),
+                    ElevatedButton(
+                      onPressed: () {
+                        onTapped(user.uid);
+                      },
+                      child: Text("Scan"),
+                    ),
+                  ],
+                ),
               ),
-            ],
-          ),
-        ),
       ),
     );
   }
 }
-// String barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
-//                                                     COLOR_CODE, 
-//                                                     CANCEL_BUTTON_TEXT, 
-//                                                     isShowFlashIcon, 
-//                                                     scanMode);

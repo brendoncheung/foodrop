@@ -30,6 +30,16 @@ class QRTransactionRepository {
     return result.id;
   }
 
+  Future<void> updateTransactionWithRecepientId(QRIntermediateTransaction transaction, String recepientId) async {
+    var query = _getQRTransactionPath(transaction.businessId).where('uuid', isEqualTo: transaction.uuid).withConverter<QRTransaction>(
+          fromFirestore: (snapshot, _) => QRTransaction.fromMap(snapshot.data()),
+          toFirestore: (model, _) => model.toMap(),
+        );
+    var id = (await query.get()).docs.first.id;
+
+    _getQRTransactionPath(transaction.businessId).doc(id).update({"recipientId": recepientId});
+  }
+
   Stream<List<QRTransaction>> fetchAllTransactionsLive(String businessId) {
     var querySnapshot = _getQRTransactionPath(businessId).snapshots();
     return querySnapshot.map<List<QRTransaction>>((event) {

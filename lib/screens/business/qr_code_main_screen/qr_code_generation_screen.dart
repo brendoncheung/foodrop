@@ -65,7 +65,7 @@ class QRCodeGenerationScreen extends StatelessWidget {
                 recipientId: null,
                 creatorId: user.uid,
                 dollarAmountTransacted: double.parse(contoller.value.text),
-                uuid: Uuid().v5(Uuid.NAMESPACE_URL, "www.foodrop.com"),
+                uuid: Uuid().v1(),
               );
 
               print("pressed");
