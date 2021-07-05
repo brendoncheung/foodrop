@@ -3,12 +3,10 @@ import 'package:foodrop/core/models/QRTransaction.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 class QRCodeWidgetFactory {
-  Widget makeQRCodeWidget(
-    QRTransaction transaction,
-  ) {
+  Widget makeQRCodeWidgetWithUuid(String uuid) {
     return QrImage(
       size: 300,
-      data: transaction.toMap().toString(),
+      data: uuid,
     );
   }
 }

@@ -21,9 +21,7 @@ class ClientHomeScreen extends StatefulWidget {
   _ClientHomeScreenState createState() => _ClientHomeScreenState();
 }
 
-class _ClientHomeScreenState extends State<ClientHomeScreen> with SingleTickerProviderStateMixin {
-  final _scrollController = ScrollController();
-
+class _ClientHomeScreenState extends State<ClientHomeScreen> {
   final itemRepository = ItemRepository(FirebaseFirestore.instance);
   final imageRepository = ImageRepository(storage: FirebaseStorage.instance);
 

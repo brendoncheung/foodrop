@@ -5,20 +5,26 @@ import 'package:foodrop/core/models/UserProfile.dart';
 import 'package:foodrop/core/models/business.dart';
 import 'package:foodrop/core/services/factory/QRFactory.dart';
 import 'package:foodrop/core/services/repositories/qr_transaction_repository.dart';
-import 'package:foodrop/screens/business/qr_generation_screen/qr_code_comfirmation_screen.dart';
+import 'package:foodrop/screens/business/qr_code_main_screen/qr_code_comfirmation_screen.dart';
+
 import 'package:provider/provider.dart';
+import 'package:uuid/uuid.dart';
 
 import 'dart:math';
 
 import '../promo/edit_promo.dart';
 
 class QRCodeGenerationScreen extends StatelessWidget {
+  final Business business;
+  final UserProfile user;
+
+  QRCodeGenerationScreen({
+    @required this.business,
+    @required this.user,
+  });
+
   @override
   Widget build(BuildContext context) {
-    var business = Provider.of<Business>(context);
-    var user = Provider.of<UserProfile>(context);
-
-    var factory = QRCodeWidgetFactory();
     var contoller = TextEditingController();
 
     Size size = MediaQuery.of(context).size;
@@ -51,20 +57,24 @@ class QRCodeGenerationScreen extends StatelessWidget {
               controller: contoller,
             ),
           ),
-          TextButton(
+          ElevatedButton(
             child: Text("Generate"),
             onPressed: () {
               var transaction = QRTransaction(
                 businessId: business.uid,
-                creatorId: user.uid,
-                dollarAmountTransacted: double.parse(contoller.text),
                 recipientId: null,
+                creatorId: user.uid,
+                dollarAmountTransacted: double.parse(contoller.value.text),
+                uuid: Uuid().v5(Uuid.NAMESPACE_URL, "www.foodrop.com"),
               );
+
+              print("pressed");
 
               Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (contexxt) => QRCodeConfirmationScreen(
                     transaction: transaction,
+                    business: business,
                     user: user,
                   ),
                 ),

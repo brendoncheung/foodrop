@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -31,6 +32,7 @@ class _FoodropRootState extends State<FoodropRoot> {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
+        Provider(create: (_) => FirebaseFirestore.instance),
         Provider(create: (_) => AuthenticationService()),
       ],
       child: MaterialApp(

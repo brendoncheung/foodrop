@@ -8,12 +8,14 @@ class QRTransaction {
   final String recipientId;
   final String creatorId;
   final bool isTransactionCompleted = false;
-  final num dollarAmountTransacted;
+  final double dollarAmountTransacted;
+  final String uuid;
   QRTransaction({
     @required this.businessId,
     @required this.recipientId,
     @required this.creatorId,
     @required this.dollarAmountTransacted,
+    @required this.uuid,
   });
   final DateTime creationTime = DateTime.now();
   final DateTime completeTime = DateTime.now();
@@ -23,12 +25,14 @@ class QRTransaction {
     String recipientId,
     String creatorId,
     num dollarAmountTransacted,
+    String uuid,
   }) {
     return QRTransaction(
       businessId: businessId ?? this.businessId,
       recipientId: recipientId ?? this.recipientId,
       creatorId: creatorId ?? this.creatorId,
       dollarAmountTransacted: dollarAmountTransacted ?? this.dollarAmountTransacted,
+      uuid: uuid ?? this.uuid,
     );
   }
 
@@ -38,9 +42,7 @@ class QRTransaction {
       'recipientId': recipientId,
       'creatorId': creatorId,
       'dollarAmountTransacted': dollarAmountTransacted,
-      'isTransactionCompleted': isTransactionCompleted,
-      'creationTime': creationTime,
-      'compeleteTime': completeTime,
+      'uuid': uuid,
     };
   }
 
@@ -50,6 +52,7 @@ class QRTransaction {
       recipientId: map['recipientId'],
       creatorId: map['creatorId'],
       dollarAmountTransacted: map['dollarAmountTransacted'],
+      uuid: map['uuid'],
     );
   }
 
@@ -59,18 +62,23 @@ class QRTransaction {
 
   @override
   String toString() {
-    return 'QRTransaction(businessId: $businessId, recipientId: $recipientId, creatorId: $creatorId, dollarAmountTransacted: $dollarAmountTransacted)';
+    return 'QRTransaction(businessId: $businessId, recipientId: $recipientId, creatorId: $creatorId, dollarAmountTransacted: $dollarAmountTransacted, uuid: $uuid)';
   }
 
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
 
-    return other is QRTransaction && other.businessId == businessId && other.recipientId == recipientId && other.creatorId == creatorId && other.dollarAmountTransacted == dollarAmountTransacted;
+    return other is QRTransaction &&
+        other.businessId == businessId &&
+        other.recipientId == recipientId &&
+        other.creatorId == creatorId &&
+        other.dollarAmountTransacted == dollarAmountTransacted &&
+        other.uuid == uuid;
   }
 
   @override
   int get hashCode {
-    return businessId.hashCode ^ recipientId.hashCode ^ creatorId.hashCode ^ dollarAmountTransacted.hashCode;
+    return businessId.hashCode ^ recipientId.hashCode ^ creatorId.hashCode ^ dollarAmountTransacted.hashCode ^ uuid.hashCode;
   }
 }

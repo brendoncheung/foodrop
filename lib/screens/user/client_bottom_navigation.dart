@@ -1,22 +1,24 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:foodrop/core/authentication/authentication_service.dart';
 import 'package:foodrop/core/models/UserProfile.dart';
 
 import 'package:foodrop/core/models/business.dart';
 import 'package:foodrop/core/services/custom_colors.dart';
+import 'package:foodrop/core/services/repositories/qr_transaction_repository.dart';
 import 'package:foodrop/screens/authentication/profile_landing_screen.dart';
 import 'package:foodrop/screens/business/business_home/business_home_screen_v1.dart';
-import 'package:foodrop/screens/business/business_home/business_home_screen.dart';
+
 import 'package:foodrop/screens/business/menu/menu_screen.dart';
 import 'package:foodrop/screens/business/promotion_screen.dart';
-import 'package:foodrop/screens/business/qr_generation_screen/qr_code_generation_screen.dart';
+
+import 'package:foodrop/screens/business/qr_code_main_screen/qr_code_history.dart';
+
 import 'package:foodrop/screens/business/reward_screen.dart';
 import 'package:foodrop/core/services/database/database.dart';
-import 'package:foodrop/screens/authentication/profile_landing_screen.dart';
+
 import 'package:foodrop/screens/user/qr_code_scan/qr_code_scan_screen.dart';
-import 'package:foodrop/screens/business/business_home_screen.dart';
-import 'package:foodrop/screens/business/qr_generation_screen/qr_code_generation_screen.dart';
-import 'package:foodrop/screens/business/reward_screen.dart';
+
 import 'package:foodrop/screens/user/gift/client_gift_screen.dart';
 import 'package:foodrop/screens/user/home/client_home_screen.dart';
 import 'package:foodrop/screens/user/orders/client_order_screen.dart';
@@ -60,6 +62,10 @@ class ClientBottomNavigation extends StatefulWidget {
             {
               return MultiProvider(
                 providers: [
+                  ProxyProvider<FirebaseFirestore, QRTransactionRepository>(
+                    create: (context) => QRTransactionRepository(store: Provider.of<FirebaseFirestore>(context, listen: false)),
+                    update: (_, store, repo) => QRTransactionRepository(store: store),
+                  ),
                   ChangeNotifierProvider<UserProfile>(create: (context) {
                     print("bottom nav ${snapshot.data}");
                     return snapshot.data;
@@ -95,7 +101,7 @@ class _ClientBottomNavigationState extends State<ClientBottomNavigation> {
     ProfileLandingScreen(),
   ];
   final _businessBottomNavigationScreens = [
-    QRCodeGenerationScreen(),
+    QRCodeHistory(),
     BusinessHomeScreenV1(),
     MenuScreen(),
     PromotionScreen(),
