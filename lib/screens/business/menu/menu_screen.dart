@@ -8,6 +8,7 @@ import 'package:foodrop/core/services/custom_colors.dart';
 // import 'package:foodrop/core/services/database.dart';
 import 'package:foodrop/core/services/database/database.dart';
 import 'package:foodrop/screens/business/common_widgets/asyncSnapshot_Item_Builder.dart';
+import 'package:foodrop/screens/business/common_widgets/show_alert_dialog.dart';
 import 'package:foodrop/screens/business/menu/edit_category_modal_form.dart';
 import 'package:foodrop/screens/business/menu/item_screen_v1.dart';
 // import 'package:foodrop/screens/common_widgets/asyncSnapshot_Item_Builder.dart';
@@ -40,6 +41,7 @@ class MenuScreen extends StatelessWidget {
                           db: _db,
                           businessId: _business.uid,
                           categories: categoryListSnapshot.data,
+                          businessAvatarUrl: _business.businessAvatarUrl,
                         ),
                       ),
                     ),
@@ -198,10 +200,12 @@ class MenuScreen extends StatelessWidget {
                   itemBuilder: (context, item) {
                     final mainPhotoUrl = item.photoUrlList[0];
                     return Dismissible(
-                      onDismissed: (direction) {
-                        db.deleteItem(business.uid, item.docId);
-                        return print("dismissed!!!!!!");
-                      },
+                      onDismissed: (direction) => _dismissAction(
+                        context: context,
+                        db: db,
+                        businessId: business.uid,
+                        itemDocId: item.docId,
+                      ),
                       direction: DismissDirection.endToStart,
                       key: ObjectKey(item),
                       background: buildSwipeActionLeft(),
@@ -284,5 +288,24 @@ class MenuScreen extends StatelessWidget {
         },
       ),
     );
+  }
+
+  _dismissAction(
+      {BuildContext context,
+      Database db,
+      String businessId,
+      String itemDocId}) async {
+    final confirmDeleteItem = await showAlertDialog(
+      context,
+      title: "Deleting menu item",
+      content: "Press delete to remove item permanently.",
+      defaultActionText: "Delete",
+      cancelActionText: "Cancel",
+    );
+
+    if (confirmDeleteItem) {
+      db.deleteItem(businessId, itemDocId);
+      return print("dismissed!!!!!!");
+    }
   }
 }

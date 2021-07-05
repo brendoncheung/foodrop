@@ -419,6 +419,7 @@ class _ItemScreenV1State extends State<ItemScreenV1> {
 
     _item.businessId = widget.businessId;
     _item.lastUpdateByUserId = widget.userId;
+    _item.businessAvatarUrl = widget.businessAvatarUrl;
 
     if (_itemFormKey.currentState.validate()) {
       _itemFormKey.currentState.save();
