@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:foodrop/core/models/UserProfile.dart';
 import 'package:foodrop/core/models/business.dart';
 import 'package:foodrop/core/models/item.dart';
 import 'package:foodrop/core/models/items_category.dart';
@@ -102,6 +103,17 @@ class MenuScreen extends StatelessWidget {
   //   );
   // }
 
+  Widget buildSwipeActionLeft() => Container(
+        alignment: Alignment.centerRight,
+        padding: EdgeInsets.symmetric(horizontal: 20),
+        color: Colors.redAccent,
+        child: Icon(
+          Icons.delete,
+          color: Colors.white,
+          size: 50,
+        ),
+      );
+
   Widget _buildBody(BuildContext context, Business businessData,
       AsyncSnapshot<List<ItemsCategory>> _categorySnapshot) {
     final _db = Provider.of<Database>(context, listen: false);
@@ -157,20 +169,21 @@ class MenuScreen extends StatelessWidget {
           thickness: 2,
         ),
         Expanded(
-            child: _buildBodyToShowItems(
+            child: _buildBodyToShowItems(context,
+                business: businessData,
                 db: _db,
-                businessId: businessData.uid,
                 categoriesList: _categorySnapshot.data))
       ],
     );
   }
 
-  Container _buildBodyToShowItems(
-      {Database db, String businessId, List<ItemsCategory> categoriesList}) {
+  Container _buildBodyToShowItems(BuildContext context,
+      {Database db, List<ItemsCategory> categoriesList, Business business}) {
+    final _user = Provider.of<UserProfile>(context, listen: false);
     return Container(
       // color: Colors.deepOrange,
       child: StreamBuilder<List<Item>>(
-        stream: db.businessItemsStreamByBusinessId(businessId: businessId),
+        stream: db.businessItemsStreamByBusinessId(businessId: business.uid),
         builder: (context, snapshot) {
           switch (snapshot.connectionState) {
             case ConnectionState.waiting:
@@ -184,77 +197,79 @@ class MenuScreen extends StatelessWidget {
                   snapshot: snapshot,
                   itemBuilder: (context, item) {
                     final mainPhotoUrl = item.photoUrlList[0];
-                    return InkWell(
-                      onTap: () => Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => ItemScreenV1(
-                              item: item,
-                              db: db,
-                              businessId: businessId,
-                              categories: categoriesList),
+                    return Dismissible(
+                      onDismissed: (direction) {
+                        db.deleteItem(business.uid, item.docId);
+                        return print("dismissed!!!!!!");
+                      },
+                      direction: DismissDirection.endToStart,
+                      key: ObjectKey(item),
+                      background: buildSwipeActionLeft(),
+                      child: InkWell(
+                        onTap: () => Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => ItemScreenV1(
+                                userId: _user.uid,
+                                item: item,
+                                db: db,
+                                businessId: business.uid,
+                                businessAvatarUrl: business.businessAvatarUrl,
+                                categories: categoriesList),
+                          ),
                         ),
-                      ),
-                      child: Card(
-                        elevation: 2,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(16)),
-                        child: Padding(
-                          padding: EdgeInsets.all(8),
-                          child: Container(
-                            child: Row(
-                              children: [
-                                Expanded(
+                        child: Card(
+                          elevation: 2,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(16)),
+                          child: Padding(
+                            padding: EdgeInsets.all(0),
+                            child: Container(
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                      flex: 1,
+                                      child: Container(
+                                          decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.all(
+                                              Radius.circular(20),
+                                            ),
+                                          ),
+                                          clipBehavior: Clip.hardEdge,
+                                          child: Image.network(
+                                            mainPhotoUrl,
+                                            width: 200,
+                                            // height: 250,
+                                          ))),
+                                  Expanded(
                                     flex: 1,
                                     child: Container(
-                                        decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.all(
-                                            Radius.circular(20),
+                                      child: Column(
+                                        children: [
+                                          ListTile(
+                                            isThreeLine: true,
+                                            dense: true,
+                                            title: Text(item.name),
+                                            subtitle: Text(item.description),
                                           ),
-                                        ),
-                                        clipBehavior: Clip.hardEdge,
-                                        child: Image.network(mainPhotoUrl))),
-                                Expanded(
-                                  flex: 1,
-                                  child: Container(
-                                    child: Column(
-                                      children: [
-                                        ListTile(
-                                          isThreeLine: true,
-                                          dense: true,
-                                          title: Text(item.name),
-                                          subtitle: Text(item.description),
-                                        ),
-                                        Padding(
-                                          padding: EdgeInsets.all(10),
-                                          child: Align(
-                                              alignment: Alignment.bottomRight,
-                                              child: Text("\$${double.tryParse(
-                                                item.price.toString(),
-                                              )}")),
-                                        )
-                                      ],
+                                          Padding(
+                                            padding: EdgeInsets.all(10),
+                                            child: Align(
+                                                alignment:
+                                                    Alignment.bottomRight,
+                                                child:
+                                                    Text("\$${double.tryParse(
+                                                  item.price.toString(),
+                                                )}")),
+                                          )
+                                        ],
+                                      ),
                                     ),
-                                  ),
-                                )
-                              ],
+                                  )
+                                ],
+                              ),
                             ),
                           ),
                         ),
-                        // child: ListTile(
-                        //   // tileColor: Colors.green,
-                        //   title: Text(item.name),
-                        //   subtitle: Text("${item.categoryName}"),
-                        //   selectedTileColor: Colors.black26,
-                        //   onTap: () => Navigator.of(context).push(
-                        //     MaterialPageRoute(
-                        //       builder: (context) => ItemScreenV1(
-                        //         item: item,
-                        //         db: db,
-                        //         businessId: businessId,
-                        //       ),
-                        //     ),
-                        //   ),
-                        // ),
                       ),
                     );
                   },

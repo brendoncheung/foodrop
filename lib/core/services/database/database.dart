@@ -30,6 +30,7 @@ abstract class Database {
       {@required List<File> imageFiles,
       String docId,
       @required String apiPath});
+  Future<void> deleteItem(String businessId, String itemDocId);
 
 // Future<void> setJob(Job job);
   // Future<void> deleteJob(Job job);
@@ -182,6 +183,17 @@ class FirestoreDatabase implements Database {
         itemId: item.docId,
       ),
       data: item.toMap(), // return a user object in Map format
+    );
+  }
+
+  @override
+  Future<void> deleteItem(String businessId, String itemDocId) {
+    _service.deleteData(
+      path: APIPath.itemByBusinessIdAndDocId(
+          businessId: businessId, itemId: itemDocId),
+    );
+    _service.deleteData(
+      path: APIPath.itemByDocId(docId: itemDocId),
     );
   }
 }

@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:foodrop/core/models/business.dart';
 import 'package:foodrop/core/models/item.dart';
 import 'package:foodrop/core/models/items_category.dart';
 import 'package:foodrop/core/services/custom_colors.dart';
@@ -13,11 +12,19 @@ import 'package:foodrop/screens/common_widgets/camera_multi_image_picker.dart';
 import 'package:provider/provider.dart';
 
 class ItemScreenV1 extends StatefulWidget {
-  ItemScreenV1({this.item, this.db, this.businessId, this.categories});
+  ItemScreenV1(
+      {this.userId,
+      this.item,
+      this.db,
+      this.businessId,
+      this.categories,
+      this.businessAvatarUrl});
   Database db;
   Item item;
   String businessId;
   List<ItemsCategory> categories;
+  String userId;
+  String businessAvatarUrl;
 
   @override
   _ItemScreenV1State createState() => _ItemScreenV1State();
@@ -76,7 +83,7 @@ class _ItemScreenV1State extends State<ItemScreenV1> {
   @override
   Widget build(BuildContext context) {
     // final size = MediaQuery.of(context).size;
-
+    // final _user = Provider.of<UserProfile>(context, listen: false);
     if (_item.photoUrlList != null) {
       _thereAreNoItemImages = _item.photoUrlList.length > 0 ? false : true;
       _photoTextColor = _item.photoUrlList.length == 0 && _formSubmittedBefore
@@ -368,6 +375,8 @@ class _ItemScreenV1State extends State<ItemScreenV1> {
                                                 selectedCategory.name;
                                             _item.categoryId =
                                                 selectedCategory.docId;
+                                            _tecCategory.text =
+                                                _item.categoryName;
                                           });
                                         }),
                               ),
@@ -403,13 +412,17 @@ class _ItemScreenV1State extends State<ItemScreenV1> {
     );
   }
 
-  _onSaveAndClose({BuildContext context}) {
+  _onSaveAndClose({BuildContext context}) async {
     setState(() {
       _formSubmittedBefore = true;
     });
+
     _item.businessId = widget.businessId;
+    _item.lastUpdateByUserId = widget.userId;
+
     if (_itemFormKey.currentState.validate()) {
       _itemFormKey.currentState.save();
+      await widget.db.setItem(item: _item);
       Navigator.of(context).pop();
     } else {
       ScaffoldMessenger.of(context).showSnackBar(

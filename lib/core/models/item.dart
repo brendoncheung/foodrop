@@ -89,20 +89,21 @@ class Item {
 // // =======
 
   Item.fromMap(Map<String, dynamic> data, String docId) {
-    docId = docId;
-    businessAvatarUrl = data['businessAvatarUrl'];
-    businessId = data['businessId'];
-    tradingName = data['tradingName'];
-    categoryId = data['categoryId'];
-    categoryName = data['categoryName'];
-    creationDate = DateTime.parse(data['creationDate'].toDate().toString());
-    lastUpdate = DateTime.parse(data['lastUpdate'].toDate().toString());
-    description = data['description'];
-    lastUpdateByUserId = data['lastUpdateByUserId'];
-    name = data['name'];
-    num_of_favs = data['num_of_favs'];
-    photoUrlList = List.from(data["photoUrlList"]);
-    price = data['price'];
+    this.docId = data['docId'];
+    this.businessAvatarUrl = data['businessAvatarUrl'];
+    this.businessId = data['businessId'];
+    this.tradingName = data['tradingName'];
+    this.categoryId = data['categoryId'];
+    this.categoryName = data['categoryName'];
+    this.creationDate =
+        DateTime.parse(data['creationDate'].toDate().toString());
+    this.lastUpdate = DateTime.parse(data['lastUpdate'].toDate().toString());
+    this.description = data['description'];
+    this.lastUpdateByUserId = data['lastUpdateByUserId'];
+    this.name = data['name'];
+    this.num_of_favs = data['num_of_favs'];
+    this.photoUrlList = List.from(data["photoUrlList"]);
+    this.price = data['price'];
   }
 
   Map<String, dynamic> toMap() {
