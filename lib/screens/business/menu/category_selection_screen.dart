@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:foodrop/core/models/items_category.dart';
+import 'package:foodrop/screens/business/common_widgets/show_exception_alert_dialog.dart';
 
 class CategorySelectionScreen extends StatefulWidget {
   CategorySelectionScreen(
@@ -46,11 +47,11 @@ class _CategorySelectionScreenState extends State<CategorySelectionScreen> {
             widget.onSelectedCategory(_selectedCategory);
             return true;
           },
-          child: _buildBody(),
+          child: _buildBody(context),
         ));
   }
 
-  _buildBody() {
+  _buildBody(BuildContext context) {
     return ListView(
         children: widget.categories
             .map((category) => RadioListTile(
@@ -62,5 +63,22 @@ class _CategorySelectionScreenState extends State<CategorySelectionScreen> {
                   }),
                 ))
             .toList());
+    // try {
+    //   return ListView(
+    //       children: widget.categories
+    //           .map((category) => RadioListTile(
+    //                 title: Text(category.name),
+    //                 value: category,
+    //                 groupValue: _selectedCategory,
+    //                 onChanged: (category) => setState(() {
+    //                   _selectedCategory = category;
+    //                 }),
+    //               ))
+    //           .toList());
+    // } catch (e) {
+    //   showExceptionAlertDialog(context,
+    //       exception: e, title: "Problem loading data");
+    //   Navigator.of(context).pop();
+    // }
   }
 }

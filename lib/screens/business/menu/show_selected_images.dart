@@ -54,22 +54,40 @@ class _ShowSelectedImagesState extends State<ShowSelectedImages> {
         ],
       ),
       body: Container(
-        width: 500,
-        height: 500,
+        // width: 500,
         child: isAddingFileToCloud
-            ? CircularProgressIndicator()
+            ? Center(
+                child: Container(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        "Saving images please wait.",
+                        style: TextStyle(fontSize: 20),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      CircularProgressIndicator(),
+                    ],
+                  ),
+                ),
+              )
             : ListView.builder(
-                scrollDirection: Axis.horizontal,
+                // scrollDirection: Axis.horizontal,
                 itemCount: widget.selectedImageFiles.length,
                 itemBuilder: (context, index) {
                   return ConstrainedBox(
                     constraints: BoxConstraints(
-                      maxHeight: 100,
+                      maxHeight: 400,
                       // maxWidth: 250,
                     ),
-                    child: Image.file(
-                      widget.selectedImageFiles[index],
-                      fit: BoxFit.cover,
+                    child: Padding(
+                      padding: EdgeInsets.all(16),
+                      child: Image.file(
+                        widget.selectedImageFiles[index],
+                        fit: BoxFit.cover,
+                      ),
                     ),
                   );
                 }),

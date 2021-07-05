@@ -3,25 +3,28 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:foodrop/core/models/business.dart';
 import 'package:foodrop/core/models/item.dart';
+import 'package:foodrop/core/models/items_category.dart';
 import 'package:foodrop/core/services/custom_colors.dart';
 import 'package:foodrop/core/services/database/database.dart';
 import 'package:foodrop/screens/business/common_widgets/show_alert_dialog.dart';
+import 'package:foodrop/screens/business/menu/category_selection_screen.dart';
 import 'package:foodrop/screens/business/menu/show_selected_images.dart';
 import 'package:foodrop/screens/common_widgets/camera_multi_image_picker.dart';
 import 'package:provider/provider.dart';
 
 class ItemScreenV1 extends StatefulWidget {
-  ItemScreenV1({this.item, this.db, this.businessId});
+  ItemScreenV1({this.item, this.db, this.businessId, this.categories});
   Database db;
   Item item;
   String businessId;
+  List<ItemsCategory> categories;
 
   @override
   _ItemScreenV1State createState() => _ItemScreenV1State();
 }
 
 class _ItemScreenV1State extends State<ItemScreenV1> {
-  final _menuItemFormKey = GlobalKey<FormState>();
+  final _itemFormKey = GlobalKey<FormState>();
 
   TextEditingController _tecName = TextEditingController();
   TextEditingController _tecPrice = TextEditingController();
@@ -29,19 +32,21 @@ class _ItemScreenV1State extends State<ItemScreenV1> {
   TextEditingController _tecCategory = TextEditingController();
 
   bool _formSubmittedBefore = false;
-  bool _capturedNewImage = false;
-  File _imageFile;
+  // bool _capturedNewImage = false;
+  // File _imageFile;
 
   bool _showEnlargedImage = false;
   int _selectedImageIndexToEnlarge = 0;
 
-  bool _isCreatingNewItem = true;
+  // bool _isCreatingNewItem = true;
   bool _thereAreNoItemImages = true;
 
   // Item get _item => widget.item;
-  Item _item = new Item();
+  Item _item = new Item(photoUrlList: []);
   Database get _db => widget.db;
   // Item cuItem = Item();
+
+  Color _photoTextColor;
 
   @override
   void initState() {
@@ -51,7 +56,8 @@ class _ItemScreenV1State extends State<ItemScreenV1> {
       _tecName.text = _item.name;
       _tecPrice.text = _item.price.toString();
       _tecDescription.text = _item.description;
-      _isCreatingNewItem = false;
+      // _isCreatingNewItem = false;
+      _tecCategory.text = _item.categoryName;
       setState(() {});
     }
     super.initState();
@@ -63,14 +69,19 @@ class _ItemScreenV1State extends State<ItemScreenV1> {
     _tecName.dispose();
     _tecPrice.dispose();
     _tecDescription.dispose();
+    _tecCategory.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
+    // final size = MediaQuery.of(context).size;
+
     if (_item.photoUrlList != null) {
       _thereAreNoItemImages = _item.photoUrlList.length > 0 ? false : true;
+      _photoTextColor = _item.photoUrlList.length == 0 && _formSubmittedBefore
+          ? Colors.red
+          : Colors.black54;
     }
 
     // final imageWidget = _item == null || _item.photoUrlList == ""
@@ -113,7 +124,7 @@ class _ItemScreenV1State extends State<ItemScreenV1> {
     return Padding(
       padding: EdgeInsets.only(right: 10),
       child: InkWell(
-        onTap: () => print("show album"),
+        // onTap: () => print("show album"),
         child: CircleAvatar(
           backgroundColor: Colors.grey,
           radius: 20,
@@ -145,13 +156,26 @@ class _ItemScreenV1State extends State<ItemScreenV1> {
           Column(
             children: [
               _thereAreNoItemImages // if true => show Placeholder widget
-                  ? Padding(
-                      padding: EdgeInsets.all(8),
-                      child: Placeholder(
-                        fallbackHeight: MediaQuery.of(context).size.height / 5,
-                      ),
+                  ? Column(
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.all(8),
+                          child: Placeholder(
+                            fallbackHeight:
+                                MediaQuery.of(context).size.height / 5,
+                          ),
+                        ),
+                        Center(
+                          child: Container(
+                              child: Text(
+                            "Add some photos",
+                            style: TextStyle(color: _photoTextColor),
+                          )),
+                        )
+                      ],
                     )
                   : _buildListViewPhotoUrls(),
+              _buildForm(),
             ],
           ),
           if (_showEnlargedImage) _showEnlargedImageContainer(context)
@@ -242,7 +266,10 @@ class _ItemScreenV1State extends State<ItemScreenV1> {
         cancelActionText: "Cancel");
 
     if (selectDeleteImage) {
-      // if confirmDelete
+      setState(() {
+        _item.photoUrlList.removeAt(index);
+      });
+
       print("Delete index: $index");
     }
   }
@@ -265,111 +292,150 @@ class _ItemScreenV1State extends State<ItemScreenV1> {
     setState(() {});
   }
 
-  // return Container(
-  // width: 400,
-  // height: 100,
-  // child: ListView.builder(
-  // scrollDirection: Axis.horizontal,
-  // shrinkWrap: true,
-  // itemCount: item.photoUrlList.length + 1,
-  // itemBuilder: (context, index) {
-  // if (index == item.photoUrlList.length) {
-  // return CircleAvatar(
-  // backgroundColor: Colors.grey,
-  // radius: 50,
-  // child: Icon(
-  // Icons.photo_camera,
-  // color: Colors.black,
-  // ),
-  // );
-  // }
-  // return Card(
-  // child: Wrap(
-  // children: [
-  // Image.network(
-  // item.photoUrlList[index],
-  // height: 100,
-  // width: 100,
-  // fit: BoxFit.cover,
-  // ),
-  // ],
-  // ),
-  // );
-  // },
-  // ),
-  // );
-// },
-// ),
-// );
+  _buildForm() {
+    return Column(
+      children: [
+        SizedBox(
+          height: 10,
+        ),
+        Form(
+          key: _itemFormKey,
+          child: Padding(
+            padding: EdgeInsets.all(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                TextFormField(
+                    onSaved: (text) => _item.name = text,
+                    controller: _tecName,
+                    decoration: InputDecoration(labelText: "Name"),
+                    validator: (text) {
+                      if ((text.isEmpty || text == null) &&
+                          _formSubmittedBefore) {
+                        return "Cannot be empty";
+                      } else {
+                        return null;
+                      }
+                    }
+                    // onChanged: (text) => widget.item.name = text,
+                    ),
+                TextFormField(
+                    onSaved: (text) => _item.price = double.tryParse(text),
+                    controller: _tecPrice,
+                    decoration: InputDecoration(labelText: "Price"),
+                    validator: (price) {
+                      if (double.tryParse(price) != null &&
+                          _formSubmittedBefore) {
+                        return null;
+                      } else {
+                        return "this is an invalid entry";
+                      }
+                    }),
+                Stack(
+                  children: [
+                    TextFormField(
+                      controller: _tecCategory,
+                      validator: (text) {
+                        if (_formSubmittedBefore && text.length == 0) {
+                          return "Please select category";
+                        } else {
+                          return null;
+                        }
+                      },
+                      style: TextStyle(
+                          fontWeight: FontWeight.w400, color: Colors.black),
+                      decoration: InputDecoration(
+                          labelText: "Category: ${_item.categoryName}"),
+                    ),
+                    ListTile(
+                      trailing: Icon(Icons.chevron_right),
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => Provider<List<ItemsCategory>>(
+                              create: (context) => widget.categories,
+                              child: Consumer<List<ItemsCategory>>(
+                                builder: (_, categories, __) =>
+                                    CategorySelectionScreen(
+                                        categories: categories,
+                                        defaultCategoryName:
+                                            _item.categoryName == ""
+                                                ? null
+                                                : _item.categoryName,
+                                        onSelectedCategory: (selectedCategory) {
+                                          setState(() {
+                                            _item.categoryName =
+                                                selectedCategory.name;
+                                            _item.categoryId =
+                                                selectedCategory.docId;
+                                          });
+                                        }),
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                    )
+                  ],
+                ),
+                // Divider(
+                //   thickness: 2,
+                // ),
+                TextFormField(
+                  // onChanged: (text) => widget.item.description = text,
+                  onSaved: (text) => _item.description = text,
+                  controller: _tecDescription,
+                  maxLines: 10,
+                  decoration: InputDecoration(
+                    labelText: "Description (optional)",
+                  ),
+                ),
+                SizedBox(height: 10),
+                ElevatedButton(
+                  onPressed: () => _onSaveAndClose(context: context),
+                  child: Text("Save and Close!"),
+                )
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
 
-//   _buildBody() {
-//     final _db = Provider.of<Database>(context, listen: false);
-//     SingleChildScrollView(
-//         child: Container(
-//             width: MediaQuery.of(context).size.width,
-//             height: 700,
-//             child: StreamBuilder(
-//                 stream: _db.itemsStream(),
-//                 builder: (context, snapshot) {
-// switch (snapshot.connectionState) {
-// // case ConnectionState.waiting:
-// // {
-// // return Center(child: CircularProgressIndicator());
-// // }
-// // break;
-// // case ConnectionState.active:
-// // {
-// // return Container(
-// // child: AsyncSnapshotItemBuilder<Item>(
-// // withDivider: true,
-// // snapshot: snapshot,
-// // itemBuilder: (context, item) {
-// // return Container(
-// // width: 400,
-// // height: 110,
-// // // color: Colors.blue,
-// // child: ListView.builder(
-// // scrollDirection: Axis.horizontal,
-// // shrinkWrap: true,
-// // itemCount: item.photoUrlList.length + 1,
-// // itemBuilder: (context, index) {
-// // if (index == item.photoUrlList.length) {
-// // return CircleAvatar(
-// // backgroundColor: Colors.grey,
-// // radius: 50,
-// // // height: 100,
-// // // width: 100,
-// // child: Icon(
-// // Icons.photo_camera,
-// // color: Colors.black,
-// // ),
-// // );
-// // }
-// // return Card(
-// // child: Wrap(
-// // children: [
-// // Image.network(
-// // item.photoUrlList[index],
-// // height: 100,
-// // width: 100,
-// // fit: BoxFit.cover,
-// // ),
-// // ],
-// // ),
-// // );
-// // },
-// // ),
-// // );
-// // },
-// // ),
-// // );
-// // }
-// // break;
-// // default:
-// // {
-// // return CircularProgressIndicator();
-// //     }
-//
-//                 })));
-//   }
+  _onSaveAndClose({BuildContext context}) {
+    setState(() {
+      _formSubmittedBefore = true;
+    });
+    _item.businessId = widget.businessId;
+    if (_itemFormKey.currentState.validate()) {
+      _itemFormKey.currentState.save();
+      Navigator.of(context).pop();
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Error countered'),
+        ),
+      );
+    }
+
+    // try {
+    //   if (_capturedNewImage) {
+    //     final urlString = await widget.db.setImage(
+    //       pickedImage: File(_imageFile.path),
+    //       docId: Utilities.documentIdFromCurrentDate(),
+    //       storageCollectionName:
+    //       APIPath.menuImageStoragePath(businessId: widget.businessId),
+    //     );
+    //     _item.photoUrl = urlString;
+    //     _item.businessId = widget.businessId ?? _item.businessId;
+    //   }
+    //
+    //   await widget.db.setItem(item: _item);
+    // } on FirebaseException catch (e) {
+    //   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+    //     content: Text(e.message),
+    //   ));
+    // }
+  }
 }

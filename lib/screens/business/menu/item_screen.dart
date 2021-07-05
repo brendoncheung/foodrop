@@ -60,29 +60,29 @@
 //   Widget build(BuildContext context) {
 //     final size = MediaQuery.of(context).size;
 //
-//     final imageWidget = _item == null || _item.photoUrlList == ""
-//         ? Container(
-//             width: double.infinity,
-//             height: MediaQuery.of(context).size.height / 5,
-//             child: CameraImagePicker(
-//               getImage: (imageFile) => setState(
-//                 () {
-//                   _item.photoUrlList = imageFile.path;
-//                   _capturedNewImage = true;
-//                   _imageFile = imageFile;
-//                 },
-//               ),
-//             ),
-//           )
-//         : _capturedNewImage
-//             ? Image.file(
-//                 _imageFile,
-//                 fit: BoxFit.cover,
-//               )
-//             : Image.network(
-//                 _item.photoUrlList,
-//                 fit: BoxFit.cover,
-//               );
+//     // final imageWidget = _item == null || _item.photoUrlList == ""
+//     // ? Container(
+//     //     width: double.infinity,
+//     //     height: MediaQuery.of(context).size.height / 5,
+//     //     child: CameraImagePicker(
+//     //       getImage: (imageFile) => setState(
+//     //         () {
+//     //           // _item.photoUrlList = imageFile.path;
+//     //           _capturedNewImage = true;
+//     //           _imageFile = imageFile;
+//     //         },
+//     //       ),
+//     //     ),
+//     //   )
+//     // : _capturedNewImage
+//     //     ? Image.file(
+//     //         _imageFile,
+//     //         fit: BoxFit.cover,
+//     //       )
+//     //     : Image.network(
+//     //         // _item.photoUrlList,
+//     //         fit: BoxFit.cover,
+//     //       );
 //
 //     return Scaffold(
 //       body: SingleChildScrollView(

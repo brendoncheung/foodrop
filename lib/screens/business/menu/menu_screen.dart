@@ -17,31 +17,6 @@ class MenuScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final _business = Provider.of<Business>(context, listen: false);
     final _db = Provider.of<Database>(context, listen: false);
-    return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: CustomColors.vendorAppBarColor,
-        child: Icon(Icons.add),
-        onPressed: () => Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => ItemScreenV1(
-                  db: _db,
-                  businessId: _business.uid,
-                ))),
-      ),
-      appBar: AppBar(
-        backgroundColor: CustomColors.vendorAppBarColor,
-        title: Text(
-          _business.tradingName,
-          style: TextStyle(color: Colors.white),
-        ),
-      ),
-      body: _buildBody(context, _db),
-    );
-  }
-
-  _buildBody(BuildContext context, Database _db) {
-    final _business = Provider.of<Business>(context, listen: false);
-    // final _db = Provider.of<Database>(context, listen: false);
-
     return StreamBuilder<List<ItemsCategory>>(
       stream: _db.itemsCategoryStream(businessId: _business.uid),
       builder: (context, categoryListSnapshot) {
@@ -56,11 +31,26 @@ class MenuScreen extends StatelessWidget {
               if (categoryListSnapshot.hasData) {
                 return Scaffold(
                   floatingActionButton: FloatingActionButton(
-                    child: Icon(Icons.add),
                     backgroundColor: CustomColors.vendorAppBarColor,
-                    onPressed: () {},
+                    child: Icon(Icons.add),
+                    onPressed: () => Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => ItemScreenV1(
+                          db: _db,
+                          businessId: _business.uid,
+                          categories: categoryListSnapshot.data,
+                        ),
+                      ),
+                    ),
                   ),
-                  body: _buildMenu(context, _business, categoryListSnapshot),
+                  appBar: AppBar(
+                    backgroundColor: CustomColors.vendorAppBarColor,
+                    title: Text(
+                      _business.tradingName,
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                  body: _buildBody(context, _business, categoryListSnapshot),
                 );
               }
               return CircularProgressIndicator();
@@ -75,7 +65,44 @@ class MenuScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildMenu(BuildContext context, Business businessData,
+  // _buildBody(BuildContext context, Database _db) {
+  //   final _business = Provider.of<Business>(context, listen: false);
+  //   // final _db = Provider.of<Database>(context, listen: false);
+  //
+  //   return StreamBuilder<List<ItemsCategory>>(
+  //     stream: _db.itemsCategoryStream(businessId: _business.uid),
+  //     builder: (context, categoryListSnapshot) {
+  //       switch (categoryListSnapshot.connectionState) {
+  //         case ConnectionState.waiting:
+  //           {
+  //             return CircularProgressIndicator();
+  //           }
+  //           break;
+  //         case ConnectionState.active:
+  //           {
+  //             if (categoryListSnapshot.hasData) {
+  //               return Scaffold(
+  //                 floatingActionButton: FloatingActionButton(
+  //                   child: Icon(Icons.add),
+  //                   backgroundColor: CustomColors.vendorAppBarColor,
+  //                   onPressed: () {},
+  //                 ),
+  //                 body: _buildMenu(context, _business, categoryListSnapshot),
+  //               );
+  //             }
+  //             return CircularProgressIndicator();
+  //           }
+  //           break;
+  //         default:
+  //           {
+  //             return CircularProgressIndicator();
+  //           }
+  //       }
+  //     },
+  //   );
+  // }
+
+  Widget _buildBody(BuildContext context, Business businessData,
       AsyncSnapshot<List<ItemsCategory>> _categorySnapshot) {
     final _db = Provider.of<Database>(context, listen: false);
     return Column(
@@ -156,24 +183,78 @@ class MenuScreen extends StatelessWidget {
                 return AsyncSnapshotItemBuilder<Item>(
                   snapshot: snapshot,
                   itemBuilder: (context, item) {
-                    return Card(
-                      elevation: 2,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(16)),
-                      child: ListTile(
-                        // tileColor: Colors.green,
-                        title: Text(item.name),
-                        subtitle: Text("${item.categoryName}"),
-                        selectedTileColor: Colors.black26,
-                        onTap: () => Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) => ItemScreenV1(
+                    final mainPhotoUrl = item.photoUrlList[0];
+                    return InkWell(
+                      onTap: () => Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => ItemScreenV1(
                               item: item,
                               db: db,
                               businessId: businessId,
+                              categories: categoriesList),
+                        ),
+                      ),
+                      child: Card(
+                        elevation: 2,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(16)),
+                        child: Padding(
+                          padding: EdgeInsets.all(8),
+                          child: Container(
+                            child: Row(
+                              children: [
+                                Expanded(
+                                    flex: 1,
+                                    child: Container(
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.all(
+                                            Radius.circular(20),
+                                          ),
+                                        ),
+                                        clipBehavior: Clip.hardEdge,
+                                        child: Image.network(mainPhotoUrl))),
+                                Expanded(
+                                  flex: 1,
+                                  child: Container(
+                                    child: Column(
+                                      children: [
+                                        ListTile(
+                                          isThreeLine: true,
+                                          dense: true,
+                                          title: Text(item.name),
+                                          subtitle: Text(item.description),
+                                        ),
+                                        Padding(
+                                          padding: EdgeInsets.all(10),
+                                          child: Align(
+                                              alignment: Alignment.bottomRight,
+                                              child: Text("\$${double.tryParse(
+                                                item.price.toString(),
+                                              )}")),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                )
+                              ],
                             ),
                           ),
                         ),
+                        // child: ListTile(
+                        //   // tileColor: Colors.green,
+                        //   title: Text(item.name),
+                        //   subtitle: Text("${item.categoryName}"),
+                        //   selectedTileColor: Colors.black26,
+                        //   onTap: () => Navigator.of(context).push(
+                        //     MaterialPageRoute(
+                        //       builder: (context) => ItemScreenV1(
+                        //         item: item,
+                        //         db: db,
+                        //         businessId: businessId,
+                        //       ),
+                        //     ),
+                        //   ),
+                        // ),
                       ),
                     );
                   },
