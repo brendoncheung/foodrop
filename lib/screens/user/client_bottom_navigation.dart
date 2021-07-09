@@ -1,27 +1,27 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:foodrop/core/authentication/authentication_service.dart';
-import 'package:foodrop/core/models/UserProfile.dart';
+import '../../core/authentication/authentication_service.dart';
+import '../../core/models/UserProfile.dart';
 
-import 'package:foodrop/core/models/business.dart';
-import 'package:foodrop/core/services/custom_colors.dart';
-import 'package:foodrop/core/services/repositories/qr_transaction_repository.dart';
-import 'package:foodrop/screens/authentication/profile_landing_screen.dart';
-import 'package:foodrop/screens/business/business_home/business_home_screen_v1.dart';
+import '../../core/models/business.dart';
+import '../../core/services/custom_colors.dart';
+import '../../core/services/repositories/qr_transaction_repository.dart';
+import '../authentication/profile_landing_screen.dart';
+import '../business/business_home/business_home_screen_v1.dart';
 
-import 'package:foodrop/screens/business/menu/menu_screen.dart';
-import 'package:foodrop/screens/business/promotion_screen.dart';
+import '../business/menu/menu_screen.dart';
+import '../business/promotion_screen.dart';
 
-import 'package:foodrop/screens/business/qr_code_main_screen/qr_code_history.dart';
+import '../business/qr_code_main_screen/qr_code_history.dart';
 
-import 'package:foodrop/screens/business/reward_screen.dart';
-import 'package:foodrop/core/services/database/database.dart';
+import '../business/reward_screen.dart';
+import '../../core/services/database/database.dart';
 
-import 'package:foodrop/screens/user/qr_code_scan/qr_code_scan_screen.dart';
+import 'qr_code_scan/qr_code_scan_screen.dart';
 
-import 'package:foodrop/screens/user/gift/client_gift_screen.dart';
-import 'package:foodrop/screens/user/home/client_home_screen.dart';
-import 'package:foodrop/screens/user/orders/client_order_screen.dart';
+import 'gift/client_gift_screen.dart';
+import 'home/client_home_screen.dart';
+import 'orders/client_order_screen.dart';
 import 'package:provider/provider.dart';
 
 class ClientBottomNavigation extends StatefulWidget {

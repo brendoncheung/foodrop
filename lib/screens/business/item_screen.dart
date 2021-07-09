@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:foodrop/core/models/item.dart';
-import 'package:foodrop/core/services/database/database.dart';
+import '../../core/models/item.dart';
+import '../../core/services/database/database.dart';
 
 class ItemScreen extends StatefulWidget {
   ItemScreen({this.db, this.item});

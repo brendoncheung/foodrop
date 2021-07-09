@@ -1,10 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
-import 'package:foodrop/core/models/QRIntermediate.dart';
-import 'package:foodrop/core/models/UserProfile.dart';
-import 'package:foodrop/core/models/business.dart';
-import 'package:foodrop/core/services/repositories/qr_transaction_repository.dart';
+import '../../../core/models/UserProfile.dart';
+import '../../../core/models/qr_Intermediate.dart';
+import '../../../core/models/qr_transaction.dart';
+
+import '../../../core/services/repositories/qr_transaction_repository.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 

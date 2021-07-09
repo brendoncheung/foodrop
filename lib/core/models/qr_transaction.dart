@@ -8,7 +8,7 @@ class QRTransaction {
   final String recipientId;
   final String creatorId;
   final bool isTransactionCompleted = false;
-  final double dollarAmountTransacted;
+  final num dollarAmountTransacted;
   final String uuid;
   QRTransaction({
     @required this.businessId,

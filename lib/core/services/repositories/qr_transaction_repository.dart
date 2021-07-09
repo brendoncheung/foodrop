@@ -1,9 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:foodrop/core/models/QRIntermediate.dart';
-import 'package:foodrop/core/models/QRTransaction.dart';
-import 'package:foodrop/core/models/business.dart';
+
+import '../../models/qr_Intermediate.dart';
+import '../../models/qr_transaction.dart';
 
 class QRTransactionRepository {
   final FirebaseFirestore store;
@@ -14,6 +13,10 @@ class QRTransactionRepository {
 
   CollectionReference _getQRTransactionPath(String businessId) {
     return store.collection('businesses').doc(businessId).collection('transaction');
+    // .withConverter<QRTransaction>(
+    //       fromFirestore: (snapshot, _) => QRTransaction.fromMap(snapshot.data()),
+    //       toFirestore: (model, _) => model.toMap(),
+    //     );
   }
 
   CollectionReference _getQRIntermediateTransactionPath() {
@@ -31,16 +34,14 @@ class QRTransactionRepository {
   }
 
   Future<void> updateTransactionWithRecepientId(QRIntermediateTransaction transaction, String recepientId) async {
-    var query = _getQRTransactionPath(transaction.businessId).where('uuid', isEqualTo: transaction.uuid).withConverter<QRTransaction>(
-          fromFirestore: (snapshot, _) => QRTransaction.fromMap(snapshot.data()),
-          toFirestore: (model, _) => model.toMap(),
-        );
+    var query = _getQRTransactionPath(transaction.businessId).where('uuid', isEqualTo: transaction.uuid);
     var id = (await query.get()).docs.first.id;
 
     _getQRTransactionPath(transaction.businessId).doc(id).update({"recipientId": recepientId});
   }
 
-  Stream<List<QRTransaction>> fetchAllTransactionsLive(String businessId) {
+  Stream<List<QRTransaction>> fetchAllTransactionsStream(String businessId, {bool live = false}) {
+    // TODO: use withConverter
     var querySnapshot = _getQRTransactionPath(businessId).snapshots();
     return querySnapshot.map<List<QRTransaction>>((event) {
       return event.docs.map((e) {
@@ -49,12 +50,22 @@ class QRTransactionRepository {
     });
   }
 
+  Stream<QRTransaction> fetchQRTransactionByUuidStream({String businessId, String uuid}) {
+    return _getQRTransactionPath(businessId).where('uuid', isEqualTo: uuid).snapshots().map(
+          (event) => QRTransaction.fromMap(
+            event.docs.first.data(),
+          ),
+        );
+  }
+
   Future<List<QRTransaction>> fetchAllTransactions(String businessId) async {
+    // TODO: use withConverter
     var querySnapshot = await _getQRTransactionPath(businessId).get();
-    return await querySnapshot.docs.map((e) => QRTransaction.fromMap(e.data())).toList();
+    return querySnapshot.docs.map((e) => QRTransaction.fromMap(e.data())).toList();
   }
 
   Future<List<QRTransaction>> fetchAllTransactionsByUserId(String businessId, String userId) async {
+    // TODO: use withConverter
     var querySnapshot = await _getQRTransactionPath(businessId).where(businessId, isEqualTo: userId).get();
     return await querySnapshot.docs.map((e) => QRTransaction.fromMap(e.data()));
   }

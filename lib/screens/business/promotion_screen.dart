@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:foodrop/screens/business/promo/edit_promo.dart';
+import 'promo/edit_promo.dart';
 
 class PromotionScreen extends StatelessWidget {
   @override

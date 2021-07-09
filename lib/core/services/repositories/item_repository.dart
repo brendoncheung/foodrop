@@ -2,8 +2,8 @@ import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:foodrop/core/models/item.dart';
-import 'package:foodrop/core/services/repositories/image_repository.dart';
+import '../../models/item.dart';
+import 'image_repository.dart';
 
 class ItemRepository {
   FirebaseFirestore _store;

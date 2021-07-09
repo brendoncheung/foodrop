@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:foodrop/core/models/UserProfile.dart';
-import 'package:foodrop/core/models/business.dart';
-import 'package:foodrop/core/services/database/database.dart';
+import '../../../core/models/UserProfile.dart';
+import '../../../core/models/business.dart';
+import '../../../core/services/database/database.dart';
 
 class JoinBusinessScreen extends StatefulWidget {
   Database db;

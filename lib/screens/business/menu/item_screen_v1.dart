@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:foodrop/core/models/item.dart';
-import 'package:foodrop/core/services/custom_colors.dart';
+import '../../../core/models/item.dart';
+import '../../../core/services/custom_colors.dart';
 
 class ItemScreenV1 extends StatefulWidget {
   ItemScreenV1({@required this.item});

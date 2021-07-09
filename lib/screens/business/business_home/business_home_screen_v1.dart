@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:foodrop/core/models/business.dart';
-import 'package:foodrop/core/models/item.dart';
-import 'package:foodrop/core/models/items_category.dart';
-import 'package:foodrop/core/services/custom_colors.dart';
+import '../../../core/models/business.dart';
+import '../../../core/models/item.dart';
+import '../../../core/models/items_category.dart';
+import '../../../core/services/custom_colors.dart';
 // import 'package:foodrop/core/services/database.dart';
 import 'package:foodrop/screens/business/item_screen.dart';
 import 'package:foodrop/screens/business/menu/edit_category_modal_form.dart';

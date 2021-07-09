@@ -1,18 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:foodrop/core/models/QRTransaction.dart';
-import 'package:foodrop/core/models/UserProfile.dart';
-import 'package:foodrop/core/models/business.dart';
-import 'package:foodrop/core/services/factory/QRFactory.dart';
+import 'package:foodrop/core/models/qr_Intermediate.dart';
 import 'package:foodrop/core/services/repositories/qr_transaction_repository.dart';
-import 'package:foodrop/screens/business/qr_code_main_screen/qr_code_comfirmation_screen.dart';
-
-import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 
-import 'dart:math';
-
+import '../../../core/models/UserProfile.dart';
+import '../../../core/models/business.dart';
+import '../../../core/models/qr_transaction.dart';
 import '../promo/edit_promo.dart';
+import 'qr_code_comfirmation_screen.dart';
 
 class QRCodeGenerationScreen extends StatelessWidget {
   final Business business;
@@ -58,24 +54,29 @@ class QRCodeGenerationScreen extends StatelessWidget {
             ),
           ),
           ElevatedButton(
-            child: Text("Generate"),
+            child: Text("Confirm"),
             onPressed: () {
               var transaction = QRTransaction(
                 businessId: business.uid,
                 recipientId: null,
                 creatorId: user.uid,
                 dollarAmountTransacted: double.parse(contoller.value.text),
-                uuid: Uuid().v1(),
+                uuid: Uuid().v4(),
               );
+              QRIntermediateTransaction intermediateTransaction = QRIntermediateTransaction(uuid: transaction.uuid, businessId: transaction.businessId);
 
-              print("pressed");
+              var repo = QRTransactionRepository(store: FirebaseFirestore.instance);
+              var interFuture = repo.addIntermediateTransaction(intermediateTransaction);
+              var transactionFuture = repo.addTransaction(transaction);
 
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (contexxt) => QRCodeConfirmationScreen(
-                    transaction: transaction,
-                    business: business,
-                    user: user,
+              Future.wait([interFuture, transactionFuture]).then(
+                (value) => Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => QRCodeConfirmationScreen(
+                      transaction: transaction,
+                      intermediateTransaction: intermediateTransaction,
+                      user: user,
+                    ),
                   ),
                 ),
               );

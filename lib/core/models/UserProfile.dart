@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
-import 'package:foodrop/core/authentication/authentication_service.dart';
-import 'package:foodrop/screens/authentication/validators.dart';
-import 'package:foodrop/screens/user/home/client_home_screen.dart';
+import '../authentication/authentication_service.dart';
+import '../../screens/authentication/validators.dart';
+import '../../screens/user/home/client_home_screen.dart';
 
 enum EmailSignInFormType { signIn, register, update }
 

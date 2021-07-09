@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:foodrop/core/authentication/authentication_service.dart';
+import '../authentication/authentication_service.dart';
 
 import 'UserProfile.dart';
 

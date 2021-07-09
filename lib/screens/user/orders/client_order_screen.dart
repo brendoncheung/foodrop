@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:foodrop/core/models/UserProfile.dart';
+import '../../../core/models/UserProfile.dart';
 import 'package:provider/provider.dart';
 
 class ClientOrderScreen extends StatelessWidget {

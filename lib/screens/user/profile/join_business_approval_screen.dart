@@ -1,17 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:foodrop/core/models/business.dart';
+import '../../../core/models/business.dart';
 
 class JoinBusinessApprovalScreen extends StatefulWidget {
   JoinBusinessApprovalScreen({this.business});
   Business business;
 
   @override
-  _JoinBusinessApprovalScreenState createState() =>
-      _JoinBusinessApprovalScreenState();
+  _JoinBusinessApprovalScreenState createState() => _JoinBusinessApprovalScreenState();
 }
 
-class _JoinBusinessApprovalScreenState
-    extends State<JoinBusinessApprovalScreen> {
+class _JoinBusinessApprovalScreenState extends State<JoinBusinessApprovalScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

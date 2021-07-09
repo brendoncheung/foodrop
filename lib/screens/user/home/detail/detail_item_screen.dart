@@ -1,8 +1,8 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:foodrop/core/models/business.dart';
-import 'package:foodrop/core/models/item.dart';
+import '../../../../core/models/business.dart';
+import '../../../../core/models/item.dart';
 
 class DetailItemScreen extends StatefulWidget {
   final Item item;

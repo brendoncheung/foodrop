@@ -1,5 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:foodrop/core/models/UserProfile.dart';
+import '../models/UserProfile.dart';
 
 // import 'package:google_sign_in/google_sign_in.dart';
 

@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:foodrop/core/models/promo.dart';
-import 'package:foodrop/screens/business/common_widgets/date_time_picker.dart';
+import '../../../core/models/promo.dart';
+import '../common_widgets/date_time_picker.dart';
 import 'package:provider/provider.dart';
 
 import 'promo_period_date_time_picker.dart';

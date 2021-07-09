@@ -1,9 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:foodrop/core/authentication/authentication_service.dart';
-import 'package:foodrop/core/models/UserProfile.dart';
-import 'package:foodrop/screens/authentication/sign_in_page.dart';
-import 'package:foodrop/screens/user/profile/profile_home_screen.dart';
+import '../../core/authentication/authentication_service.dart';
+import '../../core/models/UserProfile.dart';
+import 'sign_in_page.dart';
+import '../user/profile/profile_home_screen.dart';
 import 'package:provider/provider.dart';
 
 class ProfileLandingScreen extends StatefulWidget {

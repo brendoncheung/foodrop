@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:foodrop/core/authentication/authentication_service.dart';
-import 'package:foodrop/core/models/UserProfile.dart';
-import 'package:foodrop/core/services/database/database.dart';
-import 'package:foodrop/screens/authentication/email_sign_in_form_userprofile_change_notifier.dart';
-import 'package:foodrop/screens/business/common_widgets/show_alert_dialog.dart';
+import '../../../core/authentication/authentication_service.dart';
+import '../../../core/models/UserProfile.dart';
+import '../../../core/services/database/database.dart';
+import '../../authentication/email_sign_in_form_userprofile_change_notifier.dart';
+import '../../business/common_widgets/show_alert_dialog.dart';
 import 'package:provider/provider.dart';
 
 class ClientProfileScreen extends StatefulWidget {

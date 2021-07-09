@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:foodrop/screens/business/common_widgets/starting_ending_time_picker.dart';
+import '../common_widgets/starting_ending_time_picker.dart';
 
 class PromoPeriodDateTimePicker extends StatefulWidget {
   const PromoPeriodDateTimePicker({Key key, @required this.daysSelected}) : super(key: key);

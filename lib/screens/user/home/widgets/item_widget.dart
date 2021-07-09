@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:foodrop/core/models/item.dart';
+import '../../../../core/models/item.dart';
 
 class ItemWidget extends StatelessWidget {
   final Item item;

@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:foodrop/core/models/business.dart';
-import 'package:foodrop/core/models/item.dart';
-import 'package:foodrop/core/models/items_category.dart';
-import 'package:foodrop/core/services/custom_colors.dart';
+import '../../../core/models/business.dart';
+import '../../../core/models/item.dart';
+import '../../../core/models/items_category.dart';
+import '../../../core/services/custom_colors.dart';
 // import 'package:foodrop/core/services/database.dart';
 import 'package:foodrop/core/services/database/database.dart';
 import 'package:foodrop/screens/business/common_widgets/asyncSnapshot_Item_Builder.dart';
@@ -64,8 +64,7 @@ class MenuScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildMenu(BuildContext context, Business businessData,
-      AsyncSnapshot<List<ItemsCategory>> _categorySnapshot) {
+  Widget _buildMenu(BuildContext context, Business businessData, AsyncSnapshot<List<ItemsCategory>> _categorySnapshot) {
     final _db = Provider.of<Database>(context);
     return Column(
       children: [
@@ -97,13 +96,10 @@ class MenuScreen extends StatelessWidget {
                         key: Key(category.hashCode.toString()),
                         padding: EdgeInsets.all(10),
                         child: ActionChip(
-                          backgroundColor: category.isActive
-                              ? CustomColors.vendorActionChipColor
-                              : null,
+                          backgroundColor: category.isActive ? CustomColors.vendorActionChipColor : null,
                           key: Key(category.hashCode.toString()),
                           shadowColor: Colors.black,
-                          label: Text(
-                              "${category.index.toString()} ${(category.name)}"),
+                          label: Text("${category.index.toString()} ${(category.name)}"),
                           onPressed: () {
                             //TODO: animated listcontroller
                             print("scrolled to the right position");
@@ -118,17 +114,12 @@ class MenuScreen extends StatelessWidget {
         Divider(
           thickness: 2,
         ),
-        Expanded(
-            child: _buildBodyToShowItems(
-                db: _db,
-                businessId: businessData.uid,
-                categoriesList: _categorySnapshot.data))
+        Expanded(child: _buildBodyToShowItems(db: _db, businessId: businessData.uid, categoriesList: _categorySnapshot.data))
       ],
     );
   }
 
-  Container _buildBodyToShowItems(
-      {Database db, String businessId, List<ItemsCategory> categoriesList}) {
+  Container _buildBodyToShowItems({Database db, String businessId, List<ItemsCategory> categoriesList}) {
     return Container(
       // color: Colors.deepOrange,
       child: StreamBuilder<List<Item>>(
@@ -147,8 +138,7 @@ class MenuScreen extends StatelessWidget {
                   itemBuilder: (context, item) {
                     return Card(
                       elevation: 2,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(16)),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
                       child: ListTile(
                         // tileColor: Colors.green,
                         title: Text(item.name),

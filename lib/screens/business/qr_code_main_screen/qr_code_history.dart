@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:foodrop/core/models/QRTransaction.dart';
-import 'package:foodrop/core/models/UserProfile.dart';
-import 'package:foodrop/core/models/business.dart';
-import 'package:foodrop/core/services/repositories/qr_transaction_repository.dart';
-import 'package:foodrop/screens/business/qr_code_main_screen/qr_code_generation_screen.dart';
+
+import '../../../core/models/UserProfile.dart';
+import '../../../core/models/business.dart';
+import '../../../core/models/qr_transaction.dart';
+import '../../../core/services/repositories/qr_transaction_repository.dart';
+import 'qr_code_generation_screen.dart';
 import 'package:provider/provider.dart';
 
 class QRCodeHistory extends StatelessWidget {

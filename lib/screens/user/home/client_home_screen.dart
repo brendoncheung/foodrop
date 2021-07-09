@@ -2,15 +2,14 @@ import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:foodrop/core/models/UserProfile.dart';
-import 'package:foodrop/core/models/item.dart';
-import 'package:foodrop/core/services/repositories/image_repository.dart';
-import 'package:foodrop/core/services/repositories/item_repository.dart';
-import 'package:foodrop/screens/user/home/detail/detail_item_screen.dart';
+import '../../../core/models/UserProfile.dart';
+import '../../../core/models/item.dart';
+import '../../../core/services/repositories/image_repository.dart';
+import '../../../core/services/repositories/item_repository.dart';
+import 'detail/detail_item_screen.dart';
 import 'package:provider/provider.dart';
 import 'widgets/item_widget.dart';
 
@@ -80,20 +79,22 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
 class TopNavigationBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Flexible(child: Text("Follow", style: TextStyle(fontSize: 16))),
-            SizedBox(width: 8),
-            Flexible(child: Text("Market", style: TextStyle(fontSize: 16))),
-            SizedBox(width: 8),
-            Flexible(child: Text("Nearby", style: TextStyle(fontSize: 16))),
-          ],
-        ),
-      ],
+    return Center(
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Flexible(child: Text("Follow", style: TextStyle(fontSize: 16))),
+              SizedBox(width: 8),
+              Flexible(child: Text("Market", style: TextStyle(fontSize: 16))),
+              SizedBox(width: 8),
+              Flexible(child: Text("Nearby", style: TextStyle(fontSize: 16))),
+            ],
+          ),
+        ],
+      ),
     );
   }
 }
