@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:foodrop/core/models/items_category.dart';
-import 'package:foodrop/core/services/database/database.dart';
+import '../../../core/models/items_category.dart';
+import '../../../core/services/database/database.dart';
 
 class EditCategoryModalForm extends StatefulWidget {
   EditCategoryModalForm({this.item, this.db});

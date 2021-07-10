@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:foodrop/core/models/items_category.dart';
+import '../../../core/models/items_category.dart';
 // <<<<<<< HEAD:lib/screens/common_widgets/asyncSnapshot_Item_Builder.dart
 import 'package:foodrop/core/services/custom_colors.dart';
 // import 'package:foodrop/core/services/database.dart';
@@ -14,13 +14,7 @@ import 'empty_content.dart';
 typedef ItemWidgetBuilder<T> = Widget Function(BuildContext context, T item);
 
 class AsyncSnapshotItemBuilder<T> extends StatefulWidget {
-  AsyncSnapshotItemBuilder(
-      {this.snapshot,
-      this.itemBuilder,
-      this.withDivider = true,
-      this.businessId,
-      this.db,
-      this.scrollDirection = Axis.vertical});
+  AsyncSnapshotItemBuilder({this.snapshot, this.itemBuilder, this.withDivider = true, this.businessId, this.db, this.scrollDirection = Axis.vertical});
 
   final AsyncSnapshot snapshot;
   final ItemWidgetBuilder<T> itemBuilder;
@@ -30,12 +24,10 @@ class AsyncSnapshotItemBuilder<T> extends StatefulWidget {
   final Database db;
 
   @override
-  _AsyncSnapshotItemBuilderState<T> createState() =>
-      _AsyncSnapshotItemBuilderState<T>();
+  _AsyncSnapshotItemBuilderState<T> createState() => _AsyncSnapshotItemBuilderState<T>();
 }
 
-class _AsyncSnapshotItemBuilderState<T>
-    extends State<AsyncSnapshotItemBuilder<T>> {
+class _AsyncSnapshotItemBuilderState<T> extends State<AsyncSnapshotItemBuilder<T>> {
   @override
   Widget build(BuildContext context) {
     if (widget.snapshot.hasData) {

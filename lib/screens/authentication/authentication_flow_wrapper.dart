@@ -1,9 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:foodrop/core/authentication/authentication_service.dart';
-import 'package:foodrop/core/models/UserProfile.dart';
-import 'package:foodrop/core/services/database/database.dart';
-import 'package:foodrop/screens/user/client_bottom_navigation.dart';
+import '../../core/authentication/authentication_service.dart';
+import '../../core/models/UserProfile.dart';
+import '../../core/services/database/database.dart';
+import '../user/client_bottom_navigation.dart';
 import 'package:provider/provider.dart';
 
 import 'logout_await_screen.dart';

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:foodrop/screens/business/promo/promo_form_validators.dart';
+import '../../screens/business/promo/promo_form_validators.dart';
 
 enum DeliveryMethod { PickUpInStoreOnly, DineInOnly, NoRestrictions }
 enum Benefits { FlatFee, PercentageDiscount, Freebie, Other }
@@ -46,8 +46,7 @@ class PromoModel with ChangeNotifier, ValidationMixin {
   bool promoEveryDay;
   double restrictionMinPurchase; // set minimum purchase
   //final List<Product> restrictionItems; // restrict promo to certain products
-  DeliveryMethod
-      restrictionDeliveryMethod; // restrict to eithe takeaway or dine in
+  DeliveryMethod restrictionDeliveryMethod; // restrict to eithe takeaway or dine in
   bool hasPassCode;
   String restrictionPassCode; // restrict to users with the code
   bool benefitDiscount; // can only allow one benefit
@@ -89,8 +88,7 @@ class PromoModel with ChangeNotifier, ValidationMixin {
 
     this.promoName = promoName ?? this.promoName;
     this.promoDescription = promoDescription ?? this.promoDescription;
-    this.promoStartingDateTime =
-        promoStartingDateTime ?? this.promoStartingDateTime;
+    this.promoStartingDateTime = promoStartingDateTime ?? this.promoStartingDateTime;
     this.promoEndingDateTime = promoEndingDateTime ?? this.promoEndingDateTime;
     this.promoMonday = promoMonday ?? this.promoMonday;
     this.promoTuesday = promoTuesday ?? this.promoTuesday;
@@ -100,10 +98,8 @@ class PromoModel with ChangeNotifier, ValidationMixin {
     this.promoSaturday = promoSaturday ?? this.promoSaturday;
     this.promoSunday = promoSunday ?? this.promoSunday;
     this.promoEveryDay = promoEveryDay ?? this.promoEveryDay;
-    this.restrictionMinPurchase =
-        restrictionMinPurchase ?? this.restrictionMinPurchase;
-    this.restrictionDeliveryMethod =
-        restrictionDeliveryMethod ?? this.restrictionDeliveryMethod;
+    this.restrictionMinPurchase = restrictionMinPurchase ?? this.restrictionMinPurchase;
+    this.restrictionDeliveryMethod = restrictionDeliveryMethod ?? this.restrictionDeliveryMethod;
     this.hasPassCode = hasPassCode ?? this.hasPassCode;
     this.restrictionPassCode = restrictionPassCode ?? this.restrictionPassCode;
     this.benefitDiscount = benefitDiscount ?? this.benefitDiscount;
@@ -113,8 +109,7 @@ class PromoModel with ChangeNotifier, ValidationMixin {
     // this.benefitGetOneFree = benefitGetOneFree ?? this.benefitGetOneFree;
     this.benefitOther = benefitOther ?? this.benefitOther;
     this.selectedBenefit = selectedBenefits ?? this.selectedBenefit;
-    this.benefitOtherDescription =
-        benefitOtherDescription ?? this.benefitOtherDescription;
+    this.benefitOtherDescription = benefitOtherDescription ?? this.benefitOtherDescription;
     //print(selectedBenefit == null);
     notifyListeners();
   }

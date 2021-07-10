@@ -1,14 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:foodrop/core/authentication/authentication_service.dart';
-import 'package:foodrop/core/models/UserProfile.dart';
-import 'package:foodrop/screens/authentication/sign_in_page.dart';
-import 'package:foodrop/screens/user/profile/profile_home_screen.dart';
+import '../../core/authentication/authentication_service.dart';
+import '../../core/models/UserProfile.dart';
+import 'sign_in_page.dart';
+import '../user/profile/profile_home_screen.dart';
 import 'package:provider/provider.dart';
 
 class ProfileLandingScreen extends StatefulWidget {
-  // ProfileLandingScreen({this.onLoggedIn});
-  // VoidCallback onLoggedIn;
   @override
   _ProfileLandingScreenState createState() => _ProfileLandingScreenState();
 }
@@ -23,15 +21,8 @@ class _ProfileLandingScreenState extends State<ProfileLandingScreen> {
     _onUserStateChanges(_getCurrentUser(context));
 
     return _userLoggedIn
-        // ? Consumer<UserProfile>(builder: (_, userProfile, __) {
-        //     print(userProfile);
-        //     return ClientProfileScreen(
-        //       userFile: userProfile,
-        //       //onLoggedIn: () => _onLoggedIn(context),
-        //     );
-        //   })
         ? Consumer<UserProfile>(builder: (_, userProfile, __) {
-            print(userProfile);
+            print("this is the profile ${userProfile}");
             return ProfileHomeScreen(
               userProfile: userProfile,
               //onLoggedIn: () => _onLoggedIn(context),

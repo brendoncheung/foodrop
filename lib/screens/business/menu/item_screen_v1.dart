@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+<<<<<<< HEAD
 import 'package:foodrop/core/models/item.dart';
 import 'package:foodrop/core/models/items_category.dart';
 import 'package:foodrop/core/services/custom_colors.dart';
@@ -10,6 +11,10 @@ import 'package:foodrop/screens/business/menu/category_selection_screen.dart';
 import 'package:foodrop/screens/business/menu/show_selected_images.dart';
 import 'package:foodrop/screens/common_widgets/camera_multi_image_picker.dart';
 import 'package:provider/provider.dart';
+=======
+import '../../../core/models/item.dart';
+import '../../../core/services/custom_colors.dart';
+>>>>>>> brendon
 
 class ItemScreenV1 extends StatefulWidget {
   ItemScreenV1(

@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:foodrop/core/authentication/authentication_service.dart';
+import '../../core/authentication/authentication_service.dart';
 import 'package:provider/provider.dart';
 
 import '../business/common_widgets/form_submit_button.dart';

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:foodrop/core/services/database/utilities.dart';
+import '../services/database/utilities.dart';
 
 class ItemsCategory {
   ItemsCategory({String docId = "", this.name = "", @required this.businessId, DateTime creationDateTime, this.index = 1, this.isActive = true, DateTime lastUpdate})

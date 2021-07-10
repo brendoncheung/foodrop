@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import '../../../core/models/UserProfile.dart';
+import 'package:provider/provider.dart';
 
 class ClientOrderScreen extends StatelessWidget {
   const ClientOrderScreen({Key key}) : super(key: key);
@@ -7,7 +9,12 @@ class ClientOrderScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       child: Center(
-        child: Text("order"),
+        child: Consumer<UserProfile>(
+          builder: (_, user, widget) {
+            print("user profle null ${user == null}");
+            return Text(user.defaultBusinessId);
+          },
+        ),
       ),
     );
   }

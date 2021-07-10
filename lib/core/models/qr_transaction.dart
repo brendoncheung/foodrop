@@ -1,53 +1,58 @@
 import 'dart:convert';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class QRTransaction {
   final String businessId;
-  final String creatorId;
-  final String dollarAmountTransacted;
-  final String transactionId;
   final String recipientId;
+  final String creatorId;
+  final bool isTransactionCompleted = false;
+  final num dollarAmountTransacted;
+  final String uuid;
   QRTransaction({
     @required this.businessId,
+    @required this.recipientId,
     @required this.creatorId,
     @required this.dollarAmountTransacted,
-    @required this.transactionId,
-    @required this.recipientId,
+    @required this.uuid,
   });
+  final DateTime creationTime = DateTime.now();
+  final DateTime completeTime = DateTime.now();
 
   QRTransaction copyWith({
     String businessId,
-    String creatorId,
-    String dollarAmountTransacted,
-    String transactionId,
     String recipientId,
+    String creatorId,
+    num dollarAmountTransacted,
+    String uuid,
   }) {
     return QRTransaction(
       businessId: businessId ?? this.businessId,
+      recipientId: recipientId ?? this.recipientId,
       creatorId: creatorId ?? this.creatorId,
       dollarAmountTransacted: dollarAmountTransacted ?? this.dollarAmountTransacted,
-      transactionId: transactionId ?? this.transactionId,
-      recipientId: recipientId ?? this.recipientId,
+      uuid: uuid ?? this.uuid,
     );
   }
 
   Map<String, dynamic> toMap() {
     return {
       'businessId': businessId,
+      'recipientId': recipientId,
       'creatorId': creatorId,
       'dollarAmountTransacted': dollarAmountTransacted,
-      'transactionId': transactionId,
-      'recipientId': recipientId,
+      'uuid': uuid,
     };
   }
 
   factory QRTransaction.fromMap(Map<String, dynamic> map) {
     return QRTransaction(
       businessId: map['businessId'],
+      recipientId: map['recipientId'],
       creatorId: map['creatorId'],
       dollarAmountTransacted: map['dollarAmountTransacted'],
-      transactionId: map['transactionId'],
-      recipientId: map['recipientId'],
+      uuid: map['uuid'],
     );
   }
 
@@ -57,7 +62,7 @@ class QRTransaction {
 
   @override
   String toString() {
-    return 'QRTransaction(businessId: $businessId, creatorId: $creatorId, dollarAmountTransacted: $dollarAmountTransacted, transactionId: $transactionId, recipientId: $recipientId)';
+    return 'QRTransaction(businessId: $businessId, recipientId: $recipientId, creatorId: $creatorId, dollarAmountTransacted: $dollarAmountTransacted, uuid: $uuid)';
   }
 
   @override
@@ -66,14 +71,14 @@ class QRTransaction {
 
     return other is QRTransaction &&
         other.businessId == businessId &&
+        other.recipientId == recipientId &&
         other.creatorId == creatorId &&
         other.dollarAmountTransacted == dollarAmountTransacted &&
-        other.transactionId == transactionId &&
-        other.recipientId == recipientId;
+        other.uuid == uuid;
   }
 
   @override
   int get hashCode {
-    return businessId.hashCode ^ creatorId.hashCode ^ dollarAmountTransacted.hashCode ^ transactionId.hashCode ^ recipientId.hashCode;
+    return businessId.hashCode ^ recipientId.hashCode ^ creatorId.hashCode ^ dollarAmountTransacted.hashCode ^ uuid.hashCode;
   }
 }

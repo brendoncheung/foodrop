@@ -1,5 +1,6 @@
 {
     "diffEditor.wordWrap": "off",
     "editor.wordWrapColumn": 160,
-    "dart.lineLength": 200
+    "dart.lineLength": 200,
+    "dart.previewUpdateImportsOnRename": true
 }

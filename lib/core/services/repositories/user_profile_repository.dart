@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:foodrop/core/models/UserProfile.dart';
-import 'package:foodrop/core/services/database/api_path.dart';
+import '../../models/UserProfile.dart';
+import '../database/api_path.dart';
 
 import '../database/firestore_service.dart';
 

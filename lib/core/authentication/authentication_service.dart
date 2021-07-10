@@ -1,5 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:foodrop/core/models/UserProfile.dart';
+import '../models/UserProfile.dart';
 
 // import 'package:google_sign_in/google_sign_in.dart';
 
@@ -69,13 +69,10 @@ class AuthenticationService {
 
   Future<bool> isUserVendor() async {
     var result = await _auth.currentUser.getIdTokenResult(true);
-    print("Claims: ${result.claims}");
-    print("result: ${result.claims["vendor"]}");
     return result.claims["vendor"];
   }
 
   Stream<UserProfile> onAuthChangeStream() {
-    print("####### Trigger onAuthChangeStream #####");
     return _auth.authStateChanges().map((user) => _firebaseUserToUserClient(user));
   }
 
