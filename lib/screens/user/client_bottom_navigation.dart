@@ -26,7 +26,7 @@ import 'package:provider/provider.dart';
 
 class ClientBottomNavigation extends StatefulWidget {
   ClientBottomNavigation({this.userProfile});
-  UserProfile userProfile;
+  final UserProfile userProfile;
 
   static Widget create(BuildContext context, Database _db) {
     Widget _circularProgressIndicatorInCenter() {
@@ -67,7 +67,6 @@ class ClientBottomNavigation extends StatefulWidget {
                     update: (_, store, repo) => QRTransactionRepository(store: store),
                   ),
                   ChangeNotifierProvider<UserProfile>(create: (context) {
-                    print("bottom nav ${snapshot.data}");
                     return snapshot.data;
                   }),
                 ],
