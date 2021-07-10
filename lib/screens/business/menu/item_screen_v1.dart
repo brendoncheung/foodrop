@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-<<<<<<< HEAD
 import 'package:foodrop/core/models/item.dart';
 import 'package:foodrop/core/models/items_category.dart';
 import 'package:foodrop/core/services/custom_colors.dart';
@@ -11,19 +10,9 @@ import 'package:foodrop/screens/business/menu/category_selection_screen.dart';
 import 'package:foodrop/screens/business/menu/show_selected_images.dart';
 import 'package:foodrop/screens/common_widgets/camera_multi_image_picker.dart';
 import 'package:provider/provider.dart';
-=======
-import '../../../core/models/item.dart';
-import '../../../core/services/custom_colors.dart';
->>>>>>> brendon
 
 class ItemScreenV1 extends StatefulWidget {
-  ItemScreenV1(
-      {this.userId,
-      this.item,
-      this.db,
-      this.businessId,
-      this.categories,
-      this.businessAvatarUrl});
+  ItemScreenV1({this.userId, this.item, this.db, this.businessId, this.categories, this.businessAvatarUrl});
   Database db;
   Item item;
   String businessId;
@@ -91,9 +80,7 @@ class _ItemScreenV1State extends State<ItemScreenV1> {
     // final _user = Provider.of<UserProfile>(context, listen: false);
     if (_item.photoUrlList != null) {
       _thereAreNoItemImages = _item.photoUrlList.length > 0 ? false : true;
-      _photoTextColor = _item.photoUrlList.length == 0 && _formSubmittedBefore
-          ? Colors.red
-          : Colors.black54;
+      _photoTextColor = _item.photoUrlList.length == 0 && _formSubmittedBefore ? Colors.red : Colors.black54;
     }
 
     // final imageWidget = _item == null || _item.photoUrlList == ""
@@ -148,8 +135,7 @@ class _ItemScreenV1State extends State<ItemScreenV1> {
                           selectedImageFiles: file,
                           businessId: widget.businessId,
                           db: _db,
-                          newImageUrls: (listOfUrls) =>
-                              _addToCurrentUrls(listOfUrls),
+                          newImageUrls: (listOfUrls) => _addToCurrentUrls(listOfUrls),
                         ),
                     fullscreenDialog: true),
               )
@@ -173,8 +159,7 @@ class _ItemScreenV1State extends State<ItemScreenV1> {
                         Padding(
                           padding: EdgeInsets.all(8),
                           child: Placeholder(
-                            fallbackHeight:
-                                MediaQuery.of(context).size.height / 5,
+                            fallbackHeight: MediaQuery.of(context).size.height / 5,
                           ),
                         ),
                         Center(
@@ -271,11 +256,7 @@ class _ItemScreenV1State extends State<ItemScreenV1> {
   }
 
   _toDeleteImage(int index) async {
-    final selectDeleteImage = await showAlertDialog(context,
-        title: "Deleting Image",
-        content: "Are you sure",
-        defaultActionText: "Delete",
-        cancelActionText: "Cancel");
+    final selectDeleteImage = await showAlertDialog(context, title: "Deleting Image", content: "Are you sure", defaultActionText: "Delete", cancelActionText: "Cancel");
 
     if (selectDeleteImage) {
       setState(() {
@@ -322,8 +303,7 @@ class _ItemScreenV1State extends State<ItemScreenV1> {
                     controller: _tecName,
                     decoration: InputDecoration(labelText: "Name"),
                     validator: (text) {
-                      if ((text.isEmpty || text == null) &&
-                          _formSubmittedBefore) {
+                      if ((text.isEmpty || text == null) && _formSubmittedBefore) {
                         return "Cannot be empty";
                       } else {
                         return null;
@@ -336,8 +316,7 @@ class _ItemScreenV1State extends State<ItemScreenV1> {
                     controller: _tecPrice,
                     decoration: InputDecoration(labelText: "Price"),
                     validator: (price) {
-                      if (double.tryParse(price) != null &&
-                          _formSubmittedBefore) {
+                      if (double.tryParse(price) != null && _formSubmittedBefore) {
                         return null;
                       } else {
                         return "this is an invalid entry";
@@ -354,10 +333,8 @@ class _ItemScreenV1State extends State<ItemScreenV1> {
                           return null;
                         }
                       },
-                      style: TextStyle(
-                          fontWeight: FontWeight.w400, color: Colors.black),
-                      decoration: InputDecoration(
-                          labelText: "Category: ${_item.categoryName}"),
+                      style: TextStyle(fontWeight: FontWeight.w400, color: Colors.black),
+                      decoration: InputDecoration(labelText: "Category: ${_item.categoryName}"),
                     ),
                     ListTile(
                       trailing: Icon(Icons.chevron_right),
@@ -367,23 +344,16 @@ class _ItemScreenV1State extends State<ItemScreenV1> {
                             builder: (context) => Provider<List<ItemsCategory>>(
                               create: (context) => widget.categories,
                               child: Consumer<List<ItemsCategory>>(
-                                builder: (_, categories, __) =>
-                                    CategorySelectionScreen(
-                                        categories: categories,
-                                        defaultCategoryName:
-                                            _item.categoryName == ""
-                                                ? null
-                                                : _item.categoryName,
-                                        onSelectedCategory: (selectedCategory) {
-                                          setState(() {
-                                            _item.categoryName =
-                                                selectedCategory.name;
-                                            _item.categoryId =
-                                                selectedCategory.docId;
-                                            _tecCategory.text =
-                                                _item.categoryName;
-                                          });
-                                        }),
+                                builder: (_, categories, __) => CategorySelectionScreen(
+                                    categories: categories,
+                                    defaultCategoryName: _item.categoryName == "" ? null : _item.categoryName,
+                                    onSelectedCategory: (selectedCategory) {
+                                      setState(() {
+                                        _item.categoryName = selectedCategory.name;
+                                        _item.categoryId = selectedCategory.docId;
+                                        _tecCategory.text = _item.categoryName;
+                                      });
+                                    }),
                               ),
                             ),
                           ),

@@ -17,26 +17,13 @@ abstract class Database {
   Future<void> setUser(UserProfile user);
   Stream<Business> businessStream({String businessUid});
   Stream<List<BusinessUserLink>> businessUserLinkStream({String userId});
-<<<<<<< HEAD
-  Future<String> setImage(
-      {File imageFileLocalPath, String docId, String apiPath});
-  Stream<List<ItemsCategory>> itemsCategoryStream(
-      {@required String businessId});
-  Future<void> setCategory({ItemsCategory category});
-  Stream<List<Item>> businessItemsStreamByBusinessId(
-      {@required String businessId});
-=======
-  Future<String> setImage({File pickedImage, String docId, String storageCollectionName});
+  Future<String> setImage({File imageFileLocalPath, String docId, String apiPath});
   Stream<List<ItemsCategory>> itemsCategoryStream({@required String businessId});
   Future<void> setCategory({ItemsCategory category});
-  Stream<List<Item>> businessItemsStreambyBusinessId({@required String businessId});
->>>>>>> brendon
+  Stream<List<Item>> businessItemsStreamByBusinessId({@required String businessId});
   Stream<List<Item>> itemsStream();
   Future<void> setItem({Item item});
-  Future<List<String>> setImages(
-      {@required List<File> imageFiles,
-      String docId,
-      @required String apiPath});
+  Future<List<String>> setImages({@required List<File> imageFiles, String docId, @required String apiPath});
   Future<void> deleteItem(String businessId, String itemDocId);
 
 // Future<void> setJob(Job job);
@@ -76,22 +63,13 @@ class FirestoreDatabase implements Database {
     );
   }
 
-<<<<<<< HEAD
-  Future<String> setImage(
-      {File imageFileLocalPath, String docId, String apiPath}) async {
+  Future<String> setImage({File imageFileLocalPath, String docId, String apiPath}) async {
     String stringUrl;
 
     if (docId == null) {
       docId = Utilities.documentIdFromCurrentDate();
     }
-    final ref =
-        FirebaseStorage.instance.ref().child(apiPath).child(docId + '.jpg');
-=======
-  Future<String> setImage({File pickedImage, String docId, String storageCollectionName}) async {
-    String stringUrl;
-
-    final ref = FirebaseStorage.instance.ref().child(storageCollectionName).child(docId + '.jpg');
->>>>>>> brendon
+    final ref = FirebaseStorage.instance.ref().child(apiPath).child(docId + '.jpg');
 
     await ref.putFile(imageFileLocalPath).whenComplete(() async {});
     stringUrl = await ref.getDownloadURL();
@@ -100,10 +78,7 @@ class FirestoreDatabase implements Database {
     return stringUrl;
   }
 
-  Future<List<String>> setImages(
-      {@required List<File> imageFiles,
-      String docId,
-      @required String apiPath}) async {
+  Future<List<String>> setImages({@required List<File> imageFiles, String docId, @required String apiPath}) async {
     // docId is not required if these are new images to be uploaded
 
     String stringUrl;
@@ -156,13 +131,7 @@ class FirestoreDatabase implements Database {
       );
 
   @override
-<<<<<<< HEAD
-  Stream<List<Item>> businessItemsStreamByBusinessId(
-          {@required String businessId}) =>
-      _service.collectionStream<Item>(
-=======
-  Stream<List<Item>> businessItemsStreambyBusinessId({@required String businessId}) => _service.collectionStream<Item>(
->>>>>>> brendon
+  Stream<List<Item>> businessItemsStreamByBusinessId({@required String businessId}) => _service.collectionStream<Item>(
         path: APIPath.businessItems(businessId: businessId),
         builder: (data, documentID) {
           return Item.fromMap(data, documentID);
@@ -200,8 +169,7 @@ class FirestoreDatabase implements Database {
   @override
   Future<void> deleteItem(String businessId, String itemDocId) {
     _service.deleteData(
-      path: APIPath.itemByBusinessIdAndDocId(
-          businessId: businessId, itemId: itemDocId),
+      path: APIPath.itemByBusinessIdAndDocId(businessId: businessId, itemId: itemDocId),
     );
     _service.deleteData(
       path: APIPath.itemByDocId(docId: itemDocId),

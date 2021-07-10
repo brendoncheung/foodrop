@@ -36,7 +36,6 @@ class Business with ChangeNotifier {
   String businessAvatarUrl;
   // AuthenticationService auth;
 
-<<<<<<< HEAD
   void updateWith({
     String legalName,
     String tradingName,
@@ -53,20 +52,6 @@ class Business with ChangeNotifier {
   }) {
     print("insider business.updateWith");
     this.businessAvatarUrl = businessAvatarUrl ?? this.businessAvatarUrl;
-=======
-  void updateWith(
-      {String legalName,
-      String tradingName,
-      String mobilDisplayEnglishName,
-      String mobilDisplayChineseName,
-      bool isCompany,
-      String companyNumber,
-      String streetAddress,
-      String suburb,
-      String city,
-      String cuisineType,
-      String operationType}) {
->>>>>>> brendon
     this.legalName = legalName ?? this.legalName;
     this.tradingName = tradingName ?? this.tradingName;
     this.chineseName = mobilDisplayChineseName ?? this.chineseName;

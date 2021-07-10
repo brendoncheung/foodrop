@@ -183,8 +183,7 @@ class _ClientBottomNavigationState extends State<ClientBottomNavigation> {
           return Provider<Database>(
             create: (context) => FirestoreDatabase(uid: _userProfile.uid),
             child: Consumer<Business>(
-              builder: (_, business, __) =>
-                  _businessBottomNavigationScreens[_selectedIndex],
+              builder: (_, business, __) => _businessBottomNavigationScreens[_selectedBusinessIndex],
             ),
           );
         });

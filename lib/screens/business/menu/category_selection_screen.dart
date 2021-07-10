@@ -1,11 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-<<<<<<< HEAD
-import 'package:foodrop/core/models/items_category.dart';
-import 'package:foodrop/screens/business/common_widgets/show_exception_alert_dialog.dart';
-=======
 import '../../../core/models/items_category.dart';
->>>>>>> brendon
 
 class CategorySelectionScreen extends StatefulWidget {
   CategorySelectionScreen({this.categories, this.defaultCategoryName, this.onSelectedCategory});
