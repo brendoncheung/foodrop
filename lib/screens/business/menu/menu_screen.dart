@@ -255,15 +255,34 @@ class MenuScreen extends StatelessWidget {
                                             title: Text(item.name),
                                             subtitle: Text(item.description),
                                           ),
-                                          Padding(
-                                            padding: EdgeInsets.all(10),
-                                            child: Align(
-                                                alignment:
-                                                    Alignment.bottomRight,
+                                          // Padding(
+                                          //   padding: EdgeInsets.all(10),
+                                          //   child: Align(
+                                          //       alignment:
+                                          //           Alignment.bottomRight,
+                                          //       child:
+                                          //           Text("\$${double.tryParse(
+                                          //         item.price.toString(),
+                                          //       )}")),
+                                          // )
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceEvenly,
+                                            children: [
+                                              Container(
+                                                color: CustomColors
+                                                    .vendorAppBarColor,
+                                                child: Text(item.categoryName),
+                                              ),
+                                              Container(
+                                                color: CustomColors
+                                                    .vendorAppBarUnselectColor,
                                                 child:
                                                     Text("\$${double.tryParse(
                                                   item.price.toString(),
-                                                )}")),
+                                                )}"),
+                                              )
+                                            ],
                                           )
                                         ],
                                       ),
