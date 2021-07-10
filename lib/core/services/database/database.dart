@@ -18,14 +18,19 @@ abstract class Database {
   Stream<Business> businessStream({String businessUid});
   Stream<List<BusinessUserLink>> businessUserLinkStream({String userId});
   Future<String> setImage(
-      {File pickedImage, String docId, String storageCollectionName});
+      {File imageFileLocalPath, String docId, String apiPath});
   Stream<List<ItemsCategory>> itemsCategoryStream(
       {@required String businessId});
   Future<void> setCategory({ItemsCategory category});
-  Stream<List<Item>> businessItemsStreambyBusinessId(
+  Stream<List<Item>> businessItemsStreamByBusinessId(
       {@required String businessId});
   Stream<List<Item>> itemsStream();
   Future<void> setItem({Item item});
+  Future<List<String>> setImages(
+      {@required List<File> imageFiles,
+      String docId,
+      @required String apiPath});
+  Future<void> deleteItem(String businessId, String itemDocId);
 
 // Future<void> setJob(Job job);
   // Future<void> deleteJob(Job job);
@@ -66,19 +71,48 @@ class FirestoreDatabase implements Database {
   }
 
   Future<String> setImage(
-      {File pickedImage, String docId, String storageCollectionName}) async {
+      {File imageFileLocalPath, String docId, String apiPath}) async {
     String stringUrl;
 
-    final ref = FirebaseStorage.instance
-        .ref()
-        .child(storageCollectionName)
-        .child(docId + '.jpg');
+    if (docId == null) {
+      docId = Utilities.documentIdFromCurrentDate();
+    }
+    final ref =
+        FirebaseStorage.instance.ref().child(apiPath).child(docId + '.jpg');
 
-    await ref.putFile(pickedImage).whenComplete(() async {});
+    await ref.putFile(imageFileLocalPath).whenComplete(() async {});
     stringUrl = await ref.getDownloadURL();
     print(stringUrl);
 
     return stringUrl;
+  }
+
+  Future<List<String>> setImages(
+      {@required List<File> imageFiles,
+      String docId,
+      @required String apiPath}) async {
+    // docId is not required if these are new images to be uploaded
+
+    String stringUrl;
+    List<String> newImageUrlList = [];
+
+    // if (docId == null) {
+    //   docId = Utilities.documentIdFromCurrentDate();
+    // }
+
+    Reference ref;
+
+    for (var imageFile in imageFiles) {
+      docId = Utilities.documentIdFromCurrentDate();
+      ref = FirebaseStorage.instance.ref().child(apiPath).child(docId + '.jpg');
+      await ref.putFile(imageFile).whenComplete(() async {
+        // stringUrl = await ref.getDownloadURL();
+      });
+      stringUrl = await ref.getDownloadURL();
+      newImageUrlList.add(stringUrl);
+      print(stringUrl);
+    }
+    return newImageUrlList;
   }
 
   @override
@@ -114,7 +148,7 @@ class FirestoreDatabase implements Database {
       );
 
   @override
-  Stream<List<Item>> businessItemsStreambyBusinessId(
+  Stream<List<Item>> businessItemsStreamByBusinessId(
           {@required String businessId}) =>
       _service.collectionStream<Item>(
         path: APIPath.businessItems(businessId: businessId),
@@ -149,6 +183,17 @@ class FirestoreDatabase implements Database {
         itemId: item.docId,
       ),
       data: item.toMap(), // return a user object in Map format
+    );
+  }
+
+  @override
+  Future<void> deleteItem(String businessId, String itemDocId) {
+    _service.deleteData(
+      path: APIPath.itemByBusinessIdAndDocId(
+          businessId: businessId, itemId: itemDocId),
+    );
+    _service.deleteData(
+      path: APIPath.itemByDocId(docId: itemDocId),
     );
   }
 }
